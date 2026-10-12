@@ -1,6 +1,10 @@
-# 预瞄悬架台架评测：让硬件实验成为可验证的工程流程
+# BenchFlow · 可验证台架实验编排
 
 **连接个人 AI 助手、确定性执行器、共享台架与评测环境的实验编排参考实现。**
+
+Bench 表示共享实验台架，Flow 表示围绕目标、资源与证据组织的流程。名称突出项目的架构价值；预瞄悬架是这一设计落地的具体场景。
+
+**[播放架构演示](https://inner-vic.github.io/preview-suspension-bench-eval/)** · **[阅读设计契约](docs/architecture.md)** · **[了解工作站 Runner](docs/workstation-runner.md)** · **[查看公开边界](docs/publication.md)**
 
 本项目来自预瞄悬架感知链路的离线台架评测实践。其可迁移价值在于：如何把跨设备、跨平台、存在副作用的实验，组织为**输入明确、资源受控、结果可验证、失败可恢复**的工作流。
 
@@ -11,6 +15,10 @@
 **[交互架构演示](https://inner-vic.github.io/preview-suspension-bench-eval/)**：可以播放、暂停和逐步查看四种情境，包括完整执行、已有产品复用、上传失败续接与恢复失败保留锁。也可下载 [演示文件](docs/index.html) 后直接在浏览器中打开。
 
 ![通用实验编排流程动画](docs/images/workflow-demo.gif)
+
+> 核心主张：用目标表达意图，用契约约束执行，用证据决定复用与交付。
+
+图中的 GPT / Claude、Ubuntu 与开发空间用于识别环境角色。助手选择不改变执行器契约，计算空间可通过适配层替换；图标素材与使用说明见 [视觉素材说明](docs/visual-assets.md)。
 
 ## 背景：算法迭代需要可信的实验基础设施
 

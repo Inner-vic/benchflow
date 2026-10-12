@@ -27,7 +27,8 @@ def check(name,data):
             if re.search(pattern,text):findings.append({"file":name,"kind":kind})
         for value in re.findall(r'https?://[^\s"\x27<>`]+',text):
             host=urlsplit(value).hostname
-            if host and not (host.endswith('.example') or host in {'github.com','inner-vic.github.io','json-schema.org','www.w3.org','127.0.0.1','localhost'}):
+            # Public brand documentation reviewed for the architecture illustrations.
+            if host and not (host.endswith('.example') or host in {'github.com','inner-vic.github.io','json-schema.org','www.w3.org','127.0.0.1','localhost','openai.com','claude.com','design.ubuntu.com'}):
                 findings.append({"file":name,"kind":"unreviewed_endpoint"})
         for account in re.findall(r'/home/([A-Za-z0-9_.-]+)',text):
             if account not in {'bench-user','example-user','user','shared'}:
