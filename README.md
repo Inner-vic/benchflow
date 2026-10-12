@@ -4,7 +4,7 @@
 
 Bench 表示共享实验台架，Flow 表示围绕目标、资源与证据组织的流程。名称突出项目的架构价值；预瞄悬架是这一设计落地的具体场景。
 
-**[播放架构演示](https://inner-vic.github.io/preview-suspension-bench-eval/)** · **[阅读设计契约](docs/architecture.md)** · **[了解工作站 Runner](docs/workstation-runner.md)** · **[查看公开边界](docs/publication.md)**
+**[播放架构演示](https://inner-vic.github.io/benchflow/)** · **[阅读设计契约](docs/architecture.md)** · **[了解工作站 Runner](docs/workstation-runner.md)** · **[查看公开边界](docs/publication.md)**
 
 本项目来自预瞄悬架感知链路的离线台架评测实践。其可迁移价值在于：如何把跨设备、跨平台、存在副作用的实验，组织为**输入明确、资源受控、结果可验证、失败可恢复**的工作流。
 
@@ -12,7 +12,7 @@ Bench 表示共享实验台架，Flow 表示围绕目标、资源与证据组织
 
 ![系统分层与产物流转](docs/images/architecture.svg)
 
-**[交互架构演示](https://inner-vic.github.io/preview-suspension-bench-eval/)**：可以播放、暂停和逐步查看四种情境，包括完整执行、已有产品复用、上传失败续接与恢复失败保留锁。也可下载 [演示文件](docs/index.html) 后直接在浏览器中打开。
+**[交互架构演示](https://inner-vic.github.io/benchflow/)**：可以播放、暂停和逐步查看四种情境，包括完整执行、已有产品复用、上传失败续接与恢复失败保留锁。也可下载 [演示文件](docs/index.html) 后直接在浏览器中打开。
 
 ![通用实验编排流程动画](docs/images/workflow-demo.gif)
 
