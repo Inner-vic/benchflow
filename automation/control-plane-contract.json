@@ -1,0 +1,113 @@
+{
+  "schema_version": 2,
+  "runner": {
+    "version": "1.8.2",
+    "current_protocol": "1.1",
+    "accepted_job_protocols": ["1.0", "1.1"],
+    "compatibility": "protocol 1.0 is the frozen, live-validated fixed full-evaluation baseline; protocol 1.1 adds target-driven outer orchestration without changing protocol 1.0 semantics"
+  },
+  "control_plane": {
+    "location": "each user's personal AI environment",
+    "components": ["bench-eval-execution 3.5.51 generic skill with password-first workstation SSH and optional key onboarding for automated submission, plus per-space personal LPAI SSH access"],
+    "responsibilities": [
+      "use the embedded fixed-workstation access entry for SSH onboarding, one-attempt runner handshake and optional agent-forwarding verification",
+      "derive the requested products and dependency plan from this task's Job and reviewed Profile; APP, SO, configuration, dataset, scenes and scene count are variable inputs",
+      "require content identities and a new immutable run ID for every bench transaction",
+      "require a fresh bench-workstation-access/v1 READY report before submission",
+      "acquire a new APP on the submitter's personal computer, build M100 only when no SO is supplied, and directly replace the supplied sensor SO and other files",
+      "use the bench-verified /map clean-formal installer with a full old-tree backup and explicit preservation only for required runtime controls absent from the APP",
+      "derive mandatory prediction types from this task's reviewed goal and YAML; road output is required only when explicitly requested and supported by the candidate, while optional types remain audited",
+      "keep the fast path free of routine capacity and mid-transfer hash gates; report concrete install errors and verify the formal tree and service once at the end",
+      "derive eligible output frames from the reviewed replay and truth matching policy; an intentional no-truth skip is not a missing prediction",
+      "after explicit run authorization, submit each reviewed Job and relay only approvals required by its preflight plan",
+      "run Recorder stream continuously without per-scene prediction gates; verify requested workstation products after the held batch finishes, and publish or evaluate only when requested",
+      "after workstation product acceptance, create one task-level index with physical prediction and effective YAML copies under Tasks; retain immutable Cache products and receipts for existing downstream jobs, and record both paths in the index",
+      "for a reviewed multi-scene Stream Profile, hold one bench lock across the ordered batch, restore once at the end, then collect and verify the workstation product",
+      "on the reviewed hop-1 inventory ordering error, reuse a fully matching partial via an isolated fixed collection module only after formal restore and bench lock release; never replay for collection recovery",
+      "when the task requires retaining a validated package across datasets, verify actual formal-update executor and Profile support, commit the hash-identified active package once, then use_current_app for later scenes; a temporary isolated gate is not a formal commit",
+      "keep personal LPAI access in the submitter's foreground SSH agent-forwarding session",
+      "interpret JSON status, receipts, attempts and reports"
+    ],
+    "must_not": [
+      "let the execution workflow configure SSH, register keys, repair routes or bypass the embedded access gate",
+      "improvise bench lifecycle commands outside the reviewed Runner Profile or verified clean-formal installer and lock",
+      "transfer large predictions through the personal computer",
+      "persist personal LPAI credentials or private keys on the shared workstation",
+      "turn a downstream transfer or evaluation retry into another replay"
+    ]
+  },
+  "execution_plane": {
+    "location": "shared Ubuntu workstation",
+    "component": "bench-eval 1.8.2 CLI/runner",
+    "responsibilities": [
+      "persist jobs, approvals, plans, events, receipts and attempt evidence",
+      "plan protocol 1.1 dependencies from requested targets and supplied products",
+      "maintain FIFO queue order for bench work and run non-bench work without claiming bench.lock",
+      "report read-only workstation, bench-link and lock diagnostics",
+      "serialize access to the shared bench only when required",
+      "execute approved profile adapters and validate restoration or an explicitly approved formal activation",
+      "store the team-shareable authoritative prediction product",
+      "optionally publish predictions to the submitter's LPAI space",
+      "run profile-approved LPAI evaluation commands in immutable attempts and collect reports",
+      "return stable machine-readable status"
+    ],
+    "must_not": [
+      "require an AI installation",
+      "interpret free-form user prompts",
+      "reuse one user's LPAI session for another user",
+      "overwrite failed evaluation attempts or partial truth transfers"
+    ]
+  },
+  "compatibility": {
+    "handshake": "bench-eval capabilities",
+    "job_field": "runner_protocol",
+    "protocol_1_0": "accepted only by the compatible fixed-chain executor, with FULL_COMPLETED semantics and no cross-attempt evaluation reuse",
+    "protocol_1_1": "required for workflow.targets, supplied prediction sources and COMPLETED_TO_REQUESTED_GOAL semantics; it cannot be routed to full-evaluation",
+    "mismatch_action": "block before persisting or executing remote mutations"
+  },
+  "queue_boundary": {
+    "ready_state": "queued and eligible after preflight and all dynamically required approvals",
+    "ownership": "logical submitted_by plus optional coordination.allowed_actors",
+    "cancellation": "allowed before bench claim and never deletes evidence",
+    "executors": [
+      "coordination-smoke",
+      "profile-transaction",
+      "full-evaluation",
+      "target-workflow"
+    ],
+    "background_allowed": ["coordination-smoke", "profile-transaction"],
+    "foreground_only": ["full-evaluation", "target-workflow"],
+    "profile_transaction": "job selects command_set_id only; reviewed commands stay in the workstation profile",
+    "target_workflow": "protocol 1.1 executor runs the reviewed replay, transfer and evaluation path; APP acquisition, optional M100 build and clean-formal installation are separate fixed tools in this project",
+    "dynamic_bench_lock": "the worker recomputes requires_bench from immutable job.json plus the selected Profile; plan.workflow.requires_bench is audit metadata and any mismatch blocks before executor, SSH or bench.lock operations",
+    "non_bench_concurrency": "a recomputed non-bench target may proceed while the bench is occupied",
+    "unsafe_restore_policy": "retain bench.lock and block every later bench run",
+    "formal_update_policy": "only an immutable protocol 1.1 plan with workflow.bench_strategy=formal_update may retain hash-verified active inputs; failures before verified commit restore once"
+  },
+  "approval_boundary": {
+    "bench_plan": ["ACTIVATE", "REPLAY"],
+    "non_bench_plan": [],
+    "rule": "approval requirements come from the resolved plan, not from a fixed global list"
+  },
+  "diagnostic_boundary": {
+    "fixed_workstation": "ubuntu-workstation at 192.0.2.10:22 for bench-user, with a pinned ED25519 host fingerprint",
+    "personal_computer": "OpenSSH presence, alias, identity file, host trust, authentication and runner handshake",
+    "workstation": "controller return route, sshd, bench interfaces, route, neighbor, TCP 22 and bench lock",
+    "automatic_local_setup": "allowed only after explicit authorization; create a per-computer key, back up SSH config, write one managed block and immediately re-verify",
+    "automatic_network_repair": false,
+    "blocker_action": "stop before package staging, activation or replay"
+  },
+  "data_plane": {
+    "authoritative_product": "hash-verified workstation prediction inventory with an adjacent producer receipt",
+    "supplied_product_rule": "producer_run_id, current inventory, inventory SHA-256 and product identity must match the receipt before a supplied workstation product is used",
+    "legacy_product_rule": "legacy workstation products require an explicit HOP1_VERIFIED evidence-matching backfill; directory presence and automatic scans are not trust signals",
+    "bench_route": "bench -> workstation shared product",
+    "optional_lpai_route": "workstation shared product -> submitter's personal LPAI directory",
+    "resume_boundary": "publication and evaluation resume from the workstation product without replay",
+    "lpai_auth": "per-user SSH agent forwarding from the personal computer; pause when interactive authorization or paid instance start is required",
+    "truth_readiness": "partial/layout markers, empty truth and manifest mismatches block before run.sh",
+    "evaluation_validity": "process exit, nonzero candidate/completed frames and required task coverage are separate gates",
+    "evaluation_attempts": "failed or interrupted aNNN evidence is retained; retry allocates the next attempt and remote run id",
+    "release_boundary": "production current is 1.8.2 by prior user authorization; it is not switched automatically and older releases remain rollback baselines"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "runner_protocol": "1.0",
+  "run_id": "coordination-smoke-example",
+  "mode": "coordination_smoke",
+  "coordination": {
+    "allowed_actors": []
+  },
+  "coordination_smoke": {
+    "outcome": "success"
+  },
+  "blocked_before_start": []
+}

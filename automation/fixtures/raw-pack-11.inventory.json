@@ -1,0 +1,14 @@
+{
+  "archive": "/home/bench-user/inputs/example-dataset.tar.gz",
+  "member_count": 4,
+  "file_count": 2,
+  "unpacked_bytes": 2048,
+  "scenes": {
+    "2025-01-01_00-00-00_DEMO0000000000001": {
+      "members": 4,
+      "files": 2,
+      "bytes": 2048
+    }
+  },
+  "note": "Synthetic example; not an observed dataset."
+}

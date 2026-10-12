@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "profile_id": "local-transaction-smoke-only",
+  "execution": {
+    "ssh_binary": "ssh",
+    "ssh_args": ["-o", "BatchMode=yes"],
+    "command_sets": {
+      "local-isolated-smoke": {
+        "strategy": "isolated_candidate",
+        "commands": {
+          "precheck": {"transport": "local", "argv": ["/usr/bin/true"], "timeout_seconds": 10},
+          "capture_baseline": {"transport": "local", "argv": ["/usr/bin/true"], "timeout_seconds": 10},
+          "stop_active": {"transport": "local", "argv": ["/usr/bin/true"], "timeout_seconds": 10},
+          "start_candidate": {"transport": "local", "argv": ["/usr/bin/true"], "timeout_seconds": 10},
+          "health_candidate": {"transport": "local", "argv": ["/usr/bin/true"], "timeout_seconds": 10},
+          "replay": {"transport": "local", "argv": ["/usr/bin/true"], "timeout_seconds": 10},
+          "restore": {"transport": "local", "argv": ["/usr/bin/true"], "timeout_seconds": 10},
+          "verify_restore": {"transport": "local", "argv": ["/usr/bin/true"], "timeout_seconds": 10}
+        }
+      }
+    }
+  }
+}

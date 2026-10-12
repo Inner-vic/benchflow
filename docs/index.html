@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>实验编排架构 · 通用逻辑演示</title>
+<style>
+:root{color-scheme:dark;--bg:#0a101e;--panel:#151f31;--text:#edf3ff;--muted:#a5b6cd;--line:#34445f;--blue:#71c7ff;--green:#6be2b6;--red:#ff9f9f;--yellow:#f5d387}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1180px;padding:42px 28px 60px;margin:auto}h1{font-size:clamp(26px,4vw,39px);line-height:1.25;margin:12px 0}h2{font-size:21px;margin:0 0 12px}p{margin:10px 0;color:var(--muted)}a{color:var(--blue)}.eyebrow{color:var(--green);font-size:13px;letter-spacing:2px}.controls{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:26px 0}button,select{font:inherit;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 15px;cursor:pointer}button:hover{border-color:var(--blue)}button:disabled{opacity:.45;cursor:default}button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--blue);outline-offset:4px}.primary{background:#204b6b;border-color:var(--blue)}.diagram{background:var(--panel);border-radius:16px;padding:24px 18px}.diagram svg{width:100%;height:auto;display:block}.node{fill:var(--bg);stroke:var(--line);stroke-width:1.5}.node.active{stroke:var(--blue);stroke-width:3}.node.done{stroke:var(--green)}.node.failed{stroke:var(--red);stroke-width:3}.edge{fill:none;stroke:var(--line);stroke-width:2}.edge.active{stroke:var(--blue);stroke-dasharray:8 7;animation:flow 1s linear infinite}@keyframes flow{to{stroke-dashoffset:-30}}svg text{font-family:inherit;fill:var(--text)}.sub{fill:var(--muted);font-size:14px}.label{font-size:19px;font-weight:700}.legend{display:flex;gap:22px;flex-wrap:wrap;margin-top:12px;font-size:13px;color:var(--muted)}.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}.steps{display:flex;gap:6px;margin-top:20px}.step{height:5px;flex:1;background:var(--line);border:0;border-radius:0;padding:0}.step.done{background:var(--green)}.step.current{background:var(--blue)}.details{display:grid;grid-template-columns:1.35fr 1fr;gap:18px;margin-top:22px}.card{background:var(--panel);padding:24px;border-radius:14px}.badge{display:inline-block;border-radius:6px;padding:3px 9px;background:var(--bg);color:var(--green);font-size:13px;margin-bottom:10px}.facts{display:grid;gap:10px}.fact{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line);padding:5px 0}.fact span{color:var(--muted)}.fact strong{font-weight:500;text-align:right}.note{font-size:14px;margin-top:26px}input[type=range]{width:180px;accent-color:var(--blue)}@media(max-width:700px){main{padding:24px 16px}.details{grid-template-columns:1fr}.diagram{padding:12px 4px}.controls{gap:8px}.diagram svg{min-width:670px}.diagram{overflow:auto}}@media(prefers-reduced-motion:reduce){.edge.active{animation:none}}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">INTENT → PLAN → TRANSACTION → EVIDENCE</div>
+<h1>让一次硬件实验有明确的成立条件</h1>
+<p>从任务目标出发，观察工作站如何协调台架、保存权威产品，并把失败限制在对应阶段。</p>
+<div class="controls">
+<label for="scenario">情境</label><select id="scenario"><option value="full">完整回灌与评测</option><option value="reuse">已有产品，仅做评测</option><option value="upload">上传失败，从下游继续</option><option value="restore">恢复失败，保留台架锁</option></select>
+<button id="play" class="primary">播放</button><button id="next">下一步</button><button id="reset">重置</button><label for="speed">节奏</label><select id="speed"><option value="3200">讲解</option><option value="1600">快速</option></select>
+</div>
+<div class="diagram">
+<svg viewBox="0 0 1080 310" role="img" aria-labelledby="diagram-title diagram-desc">
+<title id="diagram-title">个人助手、工作站、台架与计算环境的分层架构</title><desc id="diagram-desc">助手提交任务，工作站进行确定性规划与执行。台架生产预测，结果回到工作站，按需上传计算环境评测。</desc>
+<defs><marker id="arrow" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="var(--line)"/></marker></defs>
+<path id="intent" class="edge" d="M233 115H300" marker-end="url(#arrow)"/><path id="control" class="edge" d="M555 100H610" marker-end="url(#arrow)"/>
+<path id="collect" class="edge" d="M 710 194 V 234 H 425 V 196" marker-end="url(#arrow)"/><path id="publish" class="edge" d="M 555 163 H 580 V 12 H 939 V 48" marker-end="url(#arrow)"/>
+<rect id="pc" class="node" x="20" y="50" width="215" height="145" rx="12"/><rect id="ws" class="node" x="300" y="35" width="255" height="160" rx="12"/><rect id="bench" class="node" x="612" y="50" width="185" height="145" rx="12"/><rect id="cloud" class="node" x="817" y="50" width="245" height="145" rx="12"/>
+<text x="40" y="85" class="label">个人助手</text><text x="40" y="120" class="sub">目标与输入 · 个人身份</text><text x="40" y="150" class="sub">AI + 执行 Skill</text>
+<text x="322" y="72" class="label">共享工作站 Runner</text><text x="322" y="110" class="sub">规划 · 队列 · 台架锁</text><text x="322" y="140" class="sub">确定性执行 · 收据</text><text x="322" y="171" class="sub">预测权威产品</text>
+<text x="631" y="85" class="label">专用台架</text><text x="631" y="120" class="sub">被测 APP · 回灌</text><text x="631" y="150" class="sub">基线 · 恢复核验</text>
+<text x="838" y="85" class="label">评测计算环境</text><text x="838" y="120" class="sub">预测副本 + 匹配真值</text><text x="838" y="150" class="sub">独立尝试 · 有效报告</text>
+<text x="260" y="290" class="sub">共享产品留在工作站，个人评测与认证保持独立。</text>
+<circle id="packet" r="5" fill="var(--blue)" cx="0" cy="0" visibility="hidden"/>
+</svg>
+<div class="legend"><span><i class="dot" style="background:var(--blue)"></i>当前阶段</span><span><i class="dot" style="background:var(--green)"></i>阶段已验证</span><span><i class="dot" style="background:var(--red)"></i>需要处理的失败</span><span>示意动画 · 不执行真实任务</span></div>
+<div id="steps" class="steps" aria-label="阶段选择"></div>
+</div>
+<div class="details"><section class="card" aria-live="polite"><div id="stage" class="badge"></div><h2 id="heading"></h2><p id="description"></p><p id="principle"></p></section>
+<section class="card"><h2>成立条件与资源状态</h2><div class="facts"><div class="fact"><span>台架锁</span><strong id="lock"></strong></div><div class="fact"><span>正式服务</span><strong id="service"></strong></div><div class="fact"><span>工作站产品</span><strong id="product"></strong></div><div class="fact"><span>评测状态</span><strong id="evaluation"></strong></div><div class="fact"><span>接续范围</span><strong id="resume"></strong></div></div></section></div>
+<p class="note">本演示呈现通用上层逻辑，不模拟传感器物理过程，不宣称算法指标。真实运行的状态与收据由执行器产生。<a href="https://github.com/Inner-vic/preview-suspension-bench-eval">阅读源码与设计说明 →</a></p>
+</main>
+<script>
+(()=>{'use strict';
+const base={lock:'未占用',service:'正式服务运行',product:'尚未生产',evaluation:'尚未开始',resume:'当前阶段'};
+const s=(title,description,principle,node,edge,state={})=>({title,description,principle,node,edge,state:{...base,...state}});
+const submit=s('声明目标与输入','个人助手提交本次所需产物、场景和输入身份。认证与私钥留在个人环境。','设计原则：Job 表达意图，不携带任意设备命令。','pc','intent');
+const plan=s('解析依赖与复用条件','Runner 根据目标解析必要节点，检查来源、内容身份与环境能力。','设计原则：先判断需要什么工作，再决定是否使用台架。','ws',null);
+const claim=s('进入队列并占用台架','经过必要授权后，任务排队取得独占锁，记录不可变任务身份。','设计原则：只有真正需要硬件的任务才占用稀缺资源。','ws','control',{lock:'当前 run 持有'});
+const activate=s('捕获基线并激活候选','保存变更前证据，停止正式服务，启动候选并检查回灌端点。','设计原则：变更前明确恢复契约，而不是故障后临时猜测。','bench','control',{lock:'当前 run 持有',service:'候选环境运行'});
+const replay=s('同组输入批量回灌','场景按顺序回放，输出分场景保存；批内复用同一次资源占用。','设计原则：减少重复切换，同时保持每个场景的身份边界。','bench','control',{lock:'当前 run 持有',service:'候选环境运行',product:'台架输出待收集'});
+const restore=s('恢复并核验正式服务','回灌结束后恢复服务，核验成功后释放台架锁。正式更新与服务恢复分别验收。','设计原则：没有恢复证据就不能把设备交给下一位使用者。','bench',null,{product:'台架输出待收集'});
+const collect=s('形成已验证工作站产品','集中收集预测并核对必需类型、逐文件清单和产品身份。工作站保存权威产品与收据。','设计原则：目录存在不足以证明产品可复用。','ws','collect',{product:'内容身份已验证',resume:'交付或评测阶段'});
+const publish=s('发布预测副本','使用当前个人认证向计算环境发布副本，保留工作站权威产品。','设计原则：共享生产结果与个人评测环境分离。','cloud','publish',{product:'内容身份已验证',evaluation:'预测副本已验证',resume:'评测阶段'});
+const evaluate=s('创建独立评测尝试','核对真值与评测工具，创建新尝试并保存配置、命令证据、日志和报告。','设计原则：失败尝试不可覆盖，新尝试保留新的身份。','cloud',null,{product:'内容身份已验证',evaluation:'评测进行中',resume:'新的评测尝试'});
+const report=s('按有效证据交付','检查场景、真值匹配、有效样本与任务覆盖，再交付结果。','设计原则：流程成功、传输一致、指标有效和算法达标分层判断。','ws',null,{product:'内容身份已验证',evaluation:'报告有效性已核验',resume:'任务所需目标已完成'});
+const existing=s('验证已有权威产品','重新核对生产收据、当前清单与内容身份。历史成功状态本身不够。','设计原则：复用是一个需要当前证据的决定。','ws',null,{product:'已有产品重新核验',resume:'上传或评测阶段'});
+const uploadFail=s('上传失败，保留上游成果','个人计算环境暂时不可达。记录失败并保留已验证工作站产品。','设计原则：下游故障不触发新的台架回灌。','cloud',null,{product:'内容身份已验证',evaluation:'发布失败 · 证据保留',resume:'仅处理下游发布'});uploadFail.failed=true;
+const retry=s('认证与端点就绪后继续发布','从已有工作站产品继续发布，核对目标与产品身份；台架不参与。','设计原则：恢复范围由故障边界和已验证产品决定。','cloud','publish',{product:'内容身份已验证',evaluation:'新的下游发布',resume:'评测阶段'});
+const restoreFail=s('恢复核验失败，保留锁','正式服务未达到恢复条件。保留台架锁、基线与日志，等待负责人处理。','设计原则：停止传播不确定设备状态，不能假装任务成功。','bench',null,{lock:'保留 · 不允许后续任务接管',service:'恢复未核验',product:'输出不能证明设备安全',evaluation:'不进入下游成功路径',resume:'负责人处理恢复'});restoreFail.failed=true;
+const cases={full:[submit,plan,claim,activate,replay,restore,collect,publish,evaluate,report],reuse:[submit,existing,publish,evaluate,report],upload:[submit,plan,claim,activate,replay,restore,collect,uploadFail,retry,evaluate,report],restore:[submit,plan,claim,activate,replay,restoreFail]};
+const el=id=>document.getElementById(id);let index=0,timer=null,frames=null;let data=cases.full;
+function stop(){clearInterval(timer);timer=null;el('play').textContent='播放';}
+function packet(edge){if(frames)cancelAnimationFrame(frames);frames=null;el('packet').setAttribute('visibility','hidden');if(!edge||matchMedia('(prefers-reduced-motion: reduce)').matches)return;const path=el(edge),length=path.getTotalLength(),start=performance.now();el('packet').setAttribute('visibility','visible');function move(now){const p=path.getPointAtLength(((now-start)%1800)/1800*length);el('packet').setAttribute('cx',p.x);el('packet').setAttribute('cy',p.y);frames=requestAnimationFrame(move);}frames=requestAnimationFrame(move);}
+function draw(){const v=data[index];['pc','ws','bench','cloud'].forEach(id=>el(id).setAttribute('class','node'+(id===v.node?(v.failed?' failed':' active'):'')));['intent','control','collect','publish'].forEach(id=>el(id).setAttribute('class','edge'+(id===v.edge?' active':'')));el('stage').textContent=`${index+1} / ${data.length} · ${v.failed?'失败边界':'阶段演示'}`;el('heading').textContent=v.title;el('description').textContent=v.description;el('principle').textContent=v.principle;Object.entries(v.state).forEach(([id,text])=>el(id).textContent=text);el('next').disabled=index===data.length-1;el('steps').replaceChildren(...data.map((x,i)=>{const b=document.createElement('button');b.className='step'+(i<index?' done':i===index?' current':'');b.setAttribute('aria-label',`第 ${i+1} 阶段：${x.title}`);b.title=x.title;b.onclick=()=>{stop();index=i;draw()};return b;}));packet(v.edge);}
+function next(){if(index<data.length-1){index++;draw()}else stop();}
+el('play').onclick=()=>{if(timer){stop();return}if(index===data.length-1){index=0;draw()}el('play').textContent='暂停';timer=setInterval(()=>{next();if(index===data.length-1)stop()},Number(el('speed').value));};el('next').onclick=()=>{stop();next()};el('reset').onclick=()=>{stop();index=0;draw()};el('scenario').onchange=()=>{stop();data=cases[el('scenario').value];index=0;draw()};el('speed').onchange=()=>{if(timer){stop();el('play').click()}};document.addEventListener('visibilitychange',()=>{if(document.hidden)stop()});draw();
+})();
+</script></body></html>

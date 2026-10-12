@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "profile_id": "shared-avm-workstation",
+  "workstation": {
+    "client_ssh_alias": "ubuntu-workstation",
+    "runtime_root": "/home/bench-user/bench-eval",
+    "shared_account": true
+  },
+  "management": {
+    "expected_interface": "eno2",
+    "workstation_address": "192.0.2.10",
+    "gateway": "192.0.2.1",
+    "allowed_controller_subnets": [
+      "TODO: replace with company-approved Windows management CIDR(s)"
+    ],
+    "tunnel_prefixes": ["tun", "utun", "wg", "ppp"],
+    "route_policy": "approved_management_subnets_via_physical_interface"
+  },
+  "bench": {
+    "ssh_alias": "bench-avm",
+    "address": "203.0.113.20",
+    "ssh_port": 22,
+    "ssh_auth_mode": "publickey",
+    "parent_interface": "eno1",
+    "vlan_interface": "eno1.3",
+    "exclusive_lock": "/home/bench-user/bench-eval/locks/bench.lock",
+    "isolated_root": "/app/livc-test"
+  },
+  "recorder": {
+    "http_base_url": "http://127.0.0.1:15000",
+    "camera_endpoint": "203.0.113.20:50053",
+    "lidar_endpoint": "203.0.113.20:50052"
+  },
+  "execution": {
+    "ssh_binary": "ssh",
+    "ssh_auth_mode": "publickey",
+    "ssh_args": ["-o", "BatchMode=yes"],
+    "command_sets": {}
+  },
+  "prediction_transfer": {
+    "ssh_binary": "ssh",
+    "rsync_binary": "rsync",
+    "ssh_args": ["-o", "BatchMode=yes"],
+    "sets": {}
+  },
+  "credentials": "external_ssh_configuration_only"
+}

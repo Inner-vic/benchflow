@@ -1,0 +1,7 @@
+interface:
+  display_name: "台架评测执行"
+  short_description: "按任务连接工作站，执行刷包、回灌和结果交付"
+  default_prompt: "使用 $bench-eval-execution，按本次目标检查工作站连接并执行刷包、回灌或结果交付；仅在目标包含 LPAI 时连接开发空间。"
+
+policy:
+  allow_implicit_invocation: false

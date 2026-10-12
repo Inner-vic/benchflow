@@ -1,0 +1,52 @@
+{
+  "job": {
+    "name": "mh100-smoke-eval",
+    "pcm_package": "TODO: PCM 包名称或版本",
+    "baseline": "TODO: 对比基线版本",
+    "scenes": [
+      "TODO: 一个约 10 分钟的冒烟场景"
+    ]
+  },
+  "hosts": {
+    "workstation": {
+      "ssh_alias": "TODO: 例如 sh-workstation",
+      "purpose": "编排与日志汇总"
+    },
+    "bench": {
+      "ssh_alias": "TODO: 从工作站可达的台架板子别名",
+      "purpose": "运行 PCM App，接收回灌并产生预测结果"
+    },
+    "devspace": {
+      "ssh_alias": "TODO: 开发空间别名",
+      "purpose": "保存真值、预测结果和执行评测"
+    }
+  },
+  "paths": {
+    "replay_input": "TODO: 回放数据目录，例如 /lpai/.../PCM_eval_dataset",
+    "ground_truth": "TODO: 真值目录，例如 /mnt/.../PCM_eval_dataset",
+    "bench_app_dir": "TODO: 例如 /app",
+    "bench_prediction_dir": "TODO: 台架预测结果目录",
+    "dev_prediction_dir": "TODO: 开发空间预测结果目录"
+  },
+  "commands": {
+    "health_check": "TODO: 实际确认 App/台架状态的只读命令",
+    "replay": "TODO: 实际回放脚本及参数模板",
+    "evaluate": "TODO: 开发空间评测入口，例如 run.sh"
+  },
+  "deployment": {
+    "package_local_path": "TODO: PCM/App 包在发起端的已校验路径",
+    "package_sha256": "TODO: PCM/App 包的 SHA-256",
+    "bench_stage_root": "TODO: 台架临时部署根目录；不得直接填当前生效目录",
+    "allowed_replacements": [
+      {
+        "source": "TODO: 模型、.so 或依赖文件来源",
+        "target": "TODO: 经负责人确认的台架目标相对路径",
+        "rollback_source": "TODO: 原文件备份位置"
+      }
+    ]
+  },
+  "acceptance": {
+    "metric_or_report": "TODO: 指标、阈值或人工审查规则",
+    "owner": "TODO: 评测结论确认人"
+  }
+}

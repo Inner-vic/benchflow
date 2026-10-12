@@ -1,0 +1,39 @@
+# Local environments and agent settings
+.venv*/
+.claude/
+.codex/
+.agents/
+__pycache__/
+*.py[cod]
+**/tmp*/
+.pytest_cache/
+# Runtime data, local device profiles, and historical deliveries
+/automation/runs/
+/automation/cache/
+/automation/inspection/
+/automation/automation/
+/automation/config/
+/automation/profiles/*.workstation.json
+/automation/assets/*.inventory.json
+/maintenance/
+/delivery/
+/dist/
+/CODEX_HANDOFF.md
+*.local.json
+*.pem
+*.key
+.env
+.env.*
+!.env.example
+# Large inputs and generated products belong in external artifact storage
+*.tar.gz
+*.zip
+*.7z
+*.so
+*.dll
+*.npy
+*.npz
+*.pcd
+*.bag
+/*-tests.log
+/public-release/

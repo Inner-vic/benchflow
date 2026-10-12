@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Bench staging capacity plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "package", "workstation", "bench"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "package": {"type": "string", "pattern": "^/"},
+    "workstation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system_path", "data_path", "system_free_floor_bytes", "data_free_floor_bytes", "memory_floor_bytes"],
+      "properties": {
+        "system_path": {"type": "string", "pattern": "^/"},
+        "data_path": {"type": "string", "pattern": "^/"},
+        "system_free_floor_bytes": {"type": "integer", "minimum": 1},
+        "data_free_floor_bytes": {"type": "integer", "minimum": 1},
+        "memory_floor_bytes": {"type": "integer", "minimum": 1}
+      }
+    },
+    "bench": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ssh_alias", "ssh_config", "stage_filesystem_path", "run_filesystem_path", "runner_free_floor_bytes", "output_budget_bytes", "stage_safety_bytes", "inode_floor", "memory_floor_bytes"],
+      "properties": {
+        "ssh_alias": {"type": "string", "pattern": "^[A-Za-z0-9_.@-]+$"},
+        "ssh_config": {"type": "string", "pattern": "^/"},
+        "stage_filesystem_path": {"type": "string", "pattern": "^/"},
+        "run_filesystem_path": {"type": "string", "pattern": "^/"},
+        "runner_free_floor_bytes": {"type": "integer", "minimum": 1},
+        "output_budget_bytes": {"type": "integer", "minimum": 1},
+        "stage_safety_bytes": {"type": "integer", "minimum": 536870912},
+        "inode_floor": {"type": "integer", "minimum": 1},
+        "memory_floor_bytes": {"type": "integer", "minimum": 1}
+      }
+    }
+  }
+}

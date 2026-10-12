@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "runner_protocol": "1.0",
+  "run_id": "profile-transaction-smoke-example",
+  "mode": "transaction_smoke",
+  "execution": {
+    "command_set_id": "local-isolated-smoke"
+  },
+  "coordination": {
+    "allowed_actors": []
+  },
+  "blocked_before_start": []
+}

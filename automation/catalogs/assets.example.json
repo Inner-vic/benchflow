@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "packages": {
+    "sw0045": {
+      "source_type": "bench_existing",
+      "source": "/app/example-app.tar.gz",
+      "sha256": "8bdc6bed99218119fc7df068d65c593d1e3b72b7cf363411612c418754f27361",
+      "format": ".tar.gz"
+    }
+  },
+  "datasets": {
+    "raw-pack-11": {
+      "source_type": "workstation_path",
+      "source": "/home/bench-user/example-user/raw_pack_11.tar.gz",
+      "sha256": "97a9f4bfe1111f90b6fe1fc3a3f98ab70c948bd24c0fe563bd9e4779a4d18ba1",
+      "format": ".tar.gz"
+    }
+  },
+  "allowed_source_types": [
+    "workstation_path",
+    "bench_existing",
+    "windows_upload",
+    "jfrog"
+  ],
+  "note": "JFrog is an optional acquisition adapter; credentials must remain outside this catalog."
+}

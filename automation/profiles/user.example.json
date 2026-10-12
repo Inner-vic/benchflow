@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "profile_id": "example-user-lpai",
+  "submitted_by": "example-user",
+  "lpai": {
+    "access_mode": "interactive_user_session",
+    "devspace": "example-devspace",
+    "evaluator_root": "/lpai/bench-eval/uroad-dev-eval-20260818",
+    "prediction_root": "TODO: 该用户开发空间中的预测结果根目录",
+    "run_script": "run.sh"
+  },
+  "evaluation": {
+    "ssh_binary": "ssh",
+    "ssh_args": ["-o", "BatchMode=yes"],
+    "sets": {}
+  },
+  "credentials": "never_store_in_profile"
+}

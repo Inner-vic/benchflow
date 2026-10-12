@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "runner_protocol": "1.0",
+  "run_id": "{run_id}",
+  "mode": "full_dataset_offline_evaluation",
+  "execution": {
+    "command_set_id": "sw0055-2723-full-scene-isolated"
+  },
+  "artifacts": {
+    "evaluation_library": {
+      "path": "/home/bench-user/bench-eval/cache/builds/uroad-3.1.0-sw0055-canonicaldrain-rebuild-20260917-001/liburoad_m100.so",
+      "sha256": "346b3ab7d379149f209099fade031a9e7703ac909e7e5f0484cf68c61d5cfcea"
+    }
+  },
+  "replay_input": {
+    "archive": "/home/bench-user/example-user/raw_pack_11.tar.gz",
+    "sha256": "97a9f4bfe1111f90b6fe1fc3a3f98ab70c948bd24c0fe563bd9e4779a4d18ba1",
+    "scene": "{scene}"
+  },
+  "release_package": {
+    "source": "/home/bench-user/example-user/example-app.tar.gz",
+    "sha256": "9796f0471bf344a3e9e804561d5663700ab00a34d03fbf76a70d4432a7356335",
+    "isolated_run": "/app/livc-test/{run_id}",
+    "activated": false
+  },
+  "predictions": {
+    "transfer_set_id": "sw0055-2723-bench-to-lpai",
+    "source_path": "/app/livc-test/{run_id}/outputs/eval_pred_result",
+    "destination_path": "/lpai/bench-eval/predictions/{batch_id}/{scene}"
+  },
+  "evaluation": {
+    "evaluation_set_id": "uroad-dev-eval-20260818",
+    "prediction_path": "/lpai/bench-eval/predictions/{batch_id}/{scene}",
+    "config_path": "/lpai/bench-eval/runs/{run_id}/evaluation_param.yaml",
+    "validity_policy": {
+      "minimum_candidate_frames": 1,
+      "minimum_completed_frames": 1,
+      "required_tasks": ["trajectory", "vision"]
+    }
+  },
+  "coordination": {
+    "allowed_actors": ["example-user"]
+  },
+  "bench_observation": {
+    "clock_skew_policy": "warn"
+  },
+  "blocked_before_start": []
+}

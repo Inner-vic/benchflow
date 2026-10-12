@@ -1,0 +1,169 @@
+{
+  "schema_version": 2,
+  "name": "PCM offline bench evaluation",
+  "runner": {
+    "version": "1.8.2",
+    "current_protocol": "1.1",
+    "accepted_protocols": ["1.0", "1.1"],
+    "protocol_1_0_completion": "FULL_COMPLETED",
+    "protocol_1_1_completion": "COMPLETED_TO_REQUESTED_GOAL",
+    "compatibility_model": "protocol 1.0 is the frozen, live-validated production baseline; protocol 1.1 is an additive outer orchestration layer and must not change protocol 1.0 executor semantics"
+  },
+  "scope": {
+    "request_model": "the user declares required products; the planner resolves their dependencies and executes only missing or invalid nodes",
+    "package_acquisition": "personal AI selects one approved adapter; credentials remain external",
+    "evaluation_library_compilation": "optional deterministic workstation helper inside an approved LiDocker environment",
+    "reuse_policy": "reuse only when the recorded content identity and current verification both match"
+  },
+  "deployment": {
+    "personal_computer": "AI agent plus versioned skill and the submitter's forwarded SSH agent",
+    "shared_workstation": "deterministic CLI/runner, shared prediction authority and evidence store; no AI",
+    "bench": "evaluated application and prediction producer only",
+    "lpai": "per-user prediction copy and evaluation compute space"
+  },
+  "targets": {
+    "workstation_predictions": "a hash-verified, team-shareable prediction product on the workstation",
+    "lpai_predictions": "a copy published from the verified workstation product into the submitter's personal LPAI space",
+    "evaluation_report": "a valid report produced or verified by an identity-matching immutable evaluation attempt"
+  },
+  "sources": {
+    "workstation_predictions": "allows publish-only or evaluate workflows to begin from an existing verified workstation product",
+    "lpai_predictions": "allows evaluate-only workflows to begin from an existing verified personal LPAI product",
+    "constraints": [
+      "workstation_predictions and lpai_predictions cannot both be declared as prediction sources",
+      "a product cannot be declared as both a supplied source and a requested target"
+    ]
+  },
+  "shared_and_isolated": {
+    "shared": [
+      "workstation account",
+      "runner",
+      "bench",
+      "RecorderHMI",
+      "content-addressed package and dataset caches",
+      "verified workstation prediction products"
+    ],
+    "logically_isolated": [
+      "submitted_by",
+      "run_id directory",
+      "approvals",
+      "personal LPAI target",
+      "evaluation attempts",
+      "reports"
+    ],
+    "never_shared": [
+      "personal LPAI password",
+      "browser session",
+      "access token",
+      "SSH private key"
+    ]
+  },
+  "prediction_route": {
+    "authoritative_route": "bench -> workstation shared verified product",
+    "optional_personal_route": "workstation shared verified product -> submitter's LPAI development space",
+    "rule": "LPAI upload or evaluation failure never triggers another bench replay"
+  },
+  "nodes": [
+    "ACQUIRE",
+    "BUILD",
+    "INTAKE",
+    "ASSEMBLE",
+    "PREFLIGHT",
+    "STAGE",
+    "CONFIGURE",
+    "ACTIVATE",
+    "REPLAY",
+    "RESTORE",
+    "COLLECT_WORKSTATION",
+    "PUBLISH_LPAI",
+    "EVALUATE",
+    "REPORT"
+  ],
+  "node_states": [
+    "NOT_REQUESTED",
+    "REUSED_VERIFIED",
+    "SUCCEEDED",
+    "FAILED",
+    "BLOCKED",
+    "INVALID_CACHE"
+  ],
+  "planning": {
+    "so_policy": ["installed", "prebuilt", "build", "auto"],
+    "bench_strategy": ["use_current_app", "isolated_candidate", "formal_update"],
+    "approval_rule": "ACTIVATE and REPLAY approvals are required only when the resolved plan needs the bench",
+    "lock_rule": "the worker recomputes requires_bench from immutable job.json and the selected Profile; plan.workflow.requires_bench is audit metadata that must match the recomputed value before executor, SSH or lock operations",
+    "non_bench_rule": "a workflow that starts from a supplied workstation or LPAI prediction product does not claim bench.lock and may run while the bench is occupied",
+    "strategy_authority": "workflow.bench_strategy is the schema field; formal_update is reserved for an explicitly approved, hash-identified production replacement and all other jobs must match the selected Profile command-set strategy; undocumented top-level execution_strategy is not an override",
+    "current_execution_boundary": "For this project's new APP path, local acquisition and optional SO build feed the verified /map clean-formal installer; target-workflow orchestrates the reviewed held Stream replay, transfer and optional evaluation path. Historical intake/assemble tools remain for compatibility, not the default skill path",
+    "deferred": [
+      "automatic production orchestration of ACQUIRE, BUILD, INTAKE and ASSEMBLE inside target-workflow",
+      "automatic SO selection or takeover of the validated production path for so_policy=auto",
+      "general target-workflow requeue or frame-level evaluation resume"
+    ]
+  },
+  "receipts": {
+    "identity": "canonical JSON SHA-256 plus file or inventory SHA-256 where available",
+    "reuse": "a successful receipt is only a reuse candidate; current inputs and outputs must still verify",
+    "workstation_product_receipt": "every supplied workstation prediction product must have an adjacent <product>.bench-eval-product.json receipt whose producer_run_id, current file inventory, inventory SHA-256 and product identity all verify",
+    "legacy_workstation_product": "legacy products are never trusted by directory presence or automatic scanning; an explicit backfill may create a receipt only from HOP1_VERIFIED evidence that exactly matches the current product inventory",
+    "evaluation_attempts": "evaluation-attempts/<scene>/aNNN is create-only and failed or interrupted attempts are never overwritten",
+    "evaluation_retry": "a retry uses the next aNNN directory and a matching -aNNN remote run id",
+    "legacy_evaluation": "legacy remote results may be inspected but are not equivalent to a protocol 1.1 identity-verified attempt until migrated"
+  },
+  "truth_readiness": {
+    "ready": "the scene directory is non-empty and, when required, truth-manifest.json matches its inventory",
+    "blocked": [
+      ".<scene>.partial exists",
+      ".<scene>.layout exists",
+      "the scene directory is absent or empty",
+      "the manifest is unreadable or its inventory identity differs"
+    ],
+    "rule": "run.sh must not start unless truth readiness is rechecked immediately before evaluation"
+  },
+  "coordination": {
+    "ready_state_semantics": "persisted FIFO queue entry after all approvals required by the resolved plan",
+    "worker_location": "shared workstation",
+    "background_workers": ["coordination-smoke", "profile-transaction"],
+    "foreground_only_workers": ["full-evaluation", "target-workflow"],
+    "personal_session_rule": "targets using LPAI run inside the submitter's current agent-forwarding session",
+    "cancel_before_bench_claim_only": true,
+    "logical_owner_field": "submitted_by"
+  },
+  "invariants": [
+    "Connectivity diagnostics are read-only and network routes are never auto-repaired",
+    "Every user has an individual SSH key even when the Linux account is shared",
+    "Only a task whose immutable job and selected Profile recompute to requires_bench=true may claim bench.lock, and the persisted plan must agree",
+    "Cancelling a queued run preserves its job, events and approvals",
+    "Never extract or stage directly into /app/livc",
+    "The current new-APP path prepares a /map candidate, replaces only supplied SO and other specified files, backs up the old formal tree, then installs a clean formal tree with rollback; protocol 1.0 isolated-candidate semantics remain frozen",
+    "Any activation requires explicit approval, a validated rollback contract and immutable pre-change evidence",
+    "isolated_candidate activation always restores on success or failure",
+    "formal_update may retain the new active inputs only after requested outputs, active hashes and service health are verified; any failure before that commit restores once",
+    "A bench-producing run cannot release its lock after activation until either restoration or formal activation is verified under the immutable plan",
+    "The default held Stream batch does not gate scene progression on prediction files; required workstation products are validated once after batch collection",
+    "The final workstation product inventory and the installed formal tree are verified; do not add repeated transfer-time hash gates to the fast path",
+    "Every supplied workstation prediction product has a verified producer receipt or an explicit evidence-matching legacy backfill",
+    "An existing different target blocks; a residual .partial is preserved and may be copied into a new product only after its full inventory matches the current bench source",
+    "A zero evaluator exit code is not success unless candidate frames, completed frames and required task coverage pass validity gates",
+    "Passwords, tokens, cookies and private keys are absent from jobs, profiles and reports",
+    "Jobs never contain command, argv, shell or script fields; they only select reviewed command sets",
+    "Failed evaluation evidence is preserved and each retry creates a new attempt"
+  ],
+  "failure_policy": {
+    "before_activation": "stop and preserve evidence",
+    "after_activation": "isolated_candidate always restores once; formal_update restores once on any pre-commit failure and retains only after verified commit",
+    "restore_failure": "mark run unsafe and retain the bench lock for a human owner",
+    "publication_or_evaluation_failure": "preserve the verified workstation product and resume downstream only",
+    "partial_truth": "report BLOCKED_PARTIAL and do not delete or replace markers automatically"
+  },
+  "minimum_final_evidence": [
+    "requested targets and resolved dependency plan",
+    "input content identities and node receipts",
+    "scene identity and expected frame count",
+    "activation, health-check and either restoration or formal activation evidence when the bench was used",
+    "workstation prediction inventory and hashes",
+    "LPAI publication inventory when requested",
+    "evaluation identity, attempt manifest, command evidence, report and parsed validity",
+    "requested-goal completion state"
+  ]
+}

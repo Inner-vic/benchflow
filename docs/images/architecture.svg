@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="460" viewBox="0 0 1200 460" role="img" aria-labelledby="title desc">
+<title id="title">预瞄悬架台架评测架构</title><desc id="desc">个人电脑提交工作站 Runner，工作站控制真实台架并保存预测，按需上传 LPAI 评测。</desc>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="none" stroke="#38bdf8" stroke-width="2"/></marker></defs>
+<rect width="1200" height="460" rx="20" fill="#0f172a"/>
+<g font-family="Segoe UI,Microsoft YaHei,sans-serif"><text x="44" y="55" fill="#f8fafc" font-size="27" font-weight="700">预瞄悬架评测 · 从实验意图到验证产物</text><text x="44" y="87" fill="#94a3b8" font-size="16">确定性执行 / 台架独占 / 内容身份 / 故障可追溯</text>
+<g fill="#1e293b" stroke="#475569"><rect x="40" y="140" width="225" height="170" rx="14"/><rect x="325" y="140" width="260" height="170" rx="14"/><rect x="650" y="140" width="245" height="170" rx="14"/><rect x="955" y="140" width="205" height="170" rx="14"/></g>
+<g fill="#f8fafc" font-size="21" font-weight="700"><text x="63" y="180">个人电脑</text><text x="348" y="180">共享工作站</text><text x="673" y="180">真实台架</text><text x="978" y="180">计算环境 · 可选</text></g>
+<g fill="#cbd5e1" font-size="17"><text x="63" y="220">AI + 执行 Skill</text><text x="63" y="252">输入确认 / Job 提交</text><text x="63" y="284">个人认证与交付目标</text><text x="348" y="220">Runner / 队列 / 锁</text><text x="348" y="252">事务执行与恢复核验</text><text x="348" y="284">预测权威产品 + 收据</text><text x="673" y="220">APP + 传感器 SO</text><text x="673" y="252">相机 / 雷达 Stream</text><text x="673" y="284">Recorder / 预测输出</text><text x="978" y="220">预测副本 + 真值</text><text x="978" y="252">独立评测尝试</text><text x="978" y="284">有效性与精度报告</text></g>
+<g stroke="#38bdf8" stroke-width="2" fill="none" marker-end="url(#a)"><path d="M270 205 H318"/><path d="M590 205 H643"/><path d="M650 333 H460 V316"/><path d="M585 365 H1055 V315"/></g>
+<g fill="#7dd3fc" font-size="15"><text x="272" y="190">SSH</text><text x="595" y="190">控制</text><text x="535" y="354">预测回收</text><text x="745" y="391">已校验工作站产品 → 个人空间 → 评测</text></g><text x="44" y="432" fill="#94a3b8" font-size="15">凭据留在外部认证环境；工作站保存共享产品，个人空间隔离评测任务。</text></g></svg>
