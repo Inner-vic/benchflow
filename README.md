@@ -20,6 +20,14 @@ Bench 表示共享实验台架，Flow 表示围绕目标、资源与证据组织
 
 图中的 GPT / Claude、Ubuntu 与开发空间用于识别环境角色。助手选择不改变执行器契约，计算空间可通过适配层替换；图标素材与使用说明见 [视觉素材说明](docs/visual-assets.md)。
 
+## 本轮更新（2026-10-29）
+
+公开副本同步队列校验隔离、预测内容验证与默认关闭的到点后处理编排。到点入口复用已交付预测和同场景信号，独立记录尝试，失败只重试后处理。公开源码包含输入解析、来源核验、编排、统计和 XLSX 渲染；真实计算还需自行提供并审核计算核心、设备适配及数据。核心与生产依赖未随公开仓库分发，示例哈希不能用于生产验真。
+
+内部实现同时增加独立离线评测、双 TXT 固定模板发版报告及 PCM 普通/评测双包工具。它们依赖组织内评测器、模板或构建/通知平台，本公开副本仅说明能力与接口边界。Windows 可作为 SSH 客户端；本地原生评测仍需补充可用 EXE 和依赖。
+
+功能、依赖与验证范围见[工具索引](docs/tooling.md)、[到点后处理](docs/arrival-accuracy.md)和[更新记录](CHANGELOG.md)。公开范围见[脱敏说明](docs/publication.md)。
+
 ## 背景：算法迭代需要可信的实验基础设施
 
 预瞄悬架利用前方道路信息支持后续控制决策。本项目聚焦其中的感知结果生产与离线评测：将已录制的传感器数据送入运行真实软件的台架，回收预测，再与对应真值进行比较。它不实现悬架控制算法，也不替代车辆道路试验。
@@ -177,6 +185,7 @@ docs/                        # 架构说明、工程图示与脱敏说明
 使用 Python 3.12，在仓库根目录执行：
 
 ```powershell
+python -m pip install -r automation/requirements-test.txt
 python automation/bench_eval.py capabilities
 python automation/bench_eval.py plan --job automation/jobs/coordination-smoke.example.json
 python automation/bench_eval.py audit
@@ -186,6 +195,11 @@ python -m unittest discover -s skills -p "test_build_skill_packages.py"
 ```
 
 前三条命令展示协议、规划与实现覆盖，不触发真实回灌。示例地址使用文档专用网段，账号、路径和内容身份为脱敏示例。离线测试检查部分逻辑约束，无法证明传感器协议、真实服务恢复或预测精度。
+
+
+队列校验失败的任务进入 `BLOCKED_VALIDATION` 并移出 READY，记录原因和 `RUN_QUARANTINED` 事件；后续合格任务继续执行。缺失 Worker Profile 或异常台架锁不会触发整队隔离或自动解锁。
+
+`validate-output` 默认检查 NPY/JSON 内容，拒绝损坏、空数组、非数值数组、NaN/Inf 和非递增帧时间戳；NPY 禁止 pickle。可用 `--expected-shapes shapes.json` 显式指定形状。校验只能说明产品结构与数值有效性，不能替代真值匹配或算法验收。
 
 接入设备前，需要准备本环境的 Profile、受控命令集与适配器，核对软件和传感器依赖，确认恢复路径并完成实机准入。内部构建补丁、原始回放源码快照、真实数据、商业二进制和原运行证据不包含在公开副本中。脱敏范围见 [公开副本说明](docs/publication.md)。
 

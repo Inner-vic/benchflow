@@ -190,7 +190,76 @@ class QueueWorkerTests(unittest.TestCase):
             self.assertEqual("BLOCKED", result["status"])
             self.assertEqual("INVALID_EXECUTION_PROFILE", result["reason"])
             self.assertFalse((root / "locks" / "bench.lock").exists())
-            self.assertEqual("READY", runner_status(root / "runs", root / "locks", "live-run")["run"]["state"])
+            self.assertEqual("BLOCKED_VALIDATION", runner_status(root / "runs", root / "locks", "live-run")["run"]["state"])
+
+    def test_invalid_job_is_isolated_and_next_job_runs(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "lpai").mkdir()
+            bad = target_job(root, "bad", requires_bench=False)
+            submit_target(root, bad, planned_requires_bench=True)
+            good = target_job(root, "good", requires_bench=False)
+            submit_target(root, good, planned_requires_bench=False)
+            result = process_next(root / "runs", root / "locks", "target-workflow", target_profile(root))
+            self.assertEqual("good", result["run_id"])
+            snapshot = queue_snapshot(root / "runs", root / "locks")
+            self.assertEqual(["bad"], [item["run_id"] for item in snapshot["blocked"]])
+            self.assertEqual(0, snapshot["queued_count"])
+            events = (root / "runs" / "bad" / "events.jsonl").read_text(encoding="utf-8")
+            self.assertIn("RUN_QUARANTINED", events)
+            with self.assertRaises(RunnerError):
+                requeue_run(root / "runs", root / "locks", "bad", "mallory")
+            self.assertEqual("READY", requeue_run(root / "runs", root / "locks", "bad", "bob")["state"])
+
+    def test_missing_worker_profile_does_not_quarantine_job(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            submit_ready(root, "run-a", "alice")
+            result = process_next(root / "runs", root / "locks", "profile-transaction")
+            self.assertEqual("EXECUTION_PROFILE_REQUIRED", result["reason"])
+            self.assertEqual(1, queue_snapshot(root / "runs", root / "locks")["queued_count"])
+
+    def test_unreadable_worker_profile_does_not_quarantine_queue(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            submit_ready(root, "run-a", "alice")
+            result = process_next(root / "runs", root / "locks", "profile-transaction", root / "missing.json")
+            self.assertEqual("INVALID_WORKER_PROFILE", result["reason"])
+            self.assertEqual(1, queue_snapshot(root / "runs", root / "locks")["queued_count"])
+
+    def test_corrupt_job_does_not_block_following_job(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            submit_ready(root, "bad", "alice")
+            submit_ready(root, "good", "bob")
+            (root / "runs" / "bad" / "job.json").write_text("{", encoding="utf-8")
+            result = process_next(root / "runs", root / "locks", "coordination-smoke")
+            self.assertEqual("good", result["run_id"])
+            self.assertEqual("INVALID_JOB", queue_snapshot(root / "runs", root / "locks")["blocked"][0]["reason"])
+
+    def test_active_bench_is_preserved_while_invalid_job_is_skipped(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            submit_ready(root, "bench-owner", "alice")
+            claim_bench(root / "runs", root / "locks", "bench-owner")
+            (root / "lpai").mkdir()
+            submit_target(root, target_job(root, "bad", requires_bench=False), planned_requires_bench=True)
+            submit_target(root, target_job(root, "good", requires_bench=False), planned_requires_bench=False)
+            result = process_next(root / "runs", root / "locks", "target-workflow", target_profile(root))
+            self.assertEqual("good", result["run_id"])
+            self.assertEqual("bench-owner", queue_snapshot(root / "runs", root / "locks")["active"]["run_id"])
+
+    def test_corrected_profile_can_be_requeued_and_executed(self) -> None:
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            (root / "lpai").mkdir()
+            submit_target(root, target_job(root, "upload", requires_bench=False), planned_requires_bench=False)
+            profile = root / "profile.json"
+            profile.write_text("{}", encoding="utf-8")
+            self.assertEqual("BLOCKED", process_next(root / "runs", root / "locks", "target-workflow", profile)["status"])
+            target_profile(root)
+            requeue_run(root / "runs", root / "locks", "upload", "bob")
+            self.assertEqual("COMPLETED_TO_REQUESTED_GOAL", process_next(root / "runs", root / "locks", "target-workflow", profile)["state"])
 
     def test_profile_transaction_processes_local_smoke(self) -> None:
         with tempfile.TemporaryDirectory() as temp:

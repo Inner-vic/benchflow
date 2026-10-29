@@ -499,7 +499,7 @@ def parser() -> argparse.ArgumentParser:
     cancel.add_argument("--reason", required=True)
     cancel.add_argument("--runs-dir", type=Path, default=Path.home() / "bench-eval" / "runs")
     cancel.add_argument("--locks-dir", type=Path, default=Path.home() / "bench-eval" / "locks")
-    requeue = subparsers.add_parser("requeue", help="Requeue a retryable coordination failure")
+    requeue = subparsers.add_parser("requeue", help="Requeue a coordination failure or validation-blocked run")
     requeue.add_argument("--run-id", required=True)
     requeue.add_argument("--requeued-by", required=True)
     requeue.add_argument("--runs-dir", type=Path, default=Path.home() / "bench-eval" / "runs")

@@ -37,3 +37,5 @@ __pycache__/
 *.bag
 /*-tests.log
 /public-release/
+# Local document drafts and recording assets
+/draft_*_folder/

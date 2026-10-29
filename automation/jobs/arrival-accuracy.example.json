@@ -1,0 +1,23 @@
+{
+  "enabled": false,
+  "engine": "bench_csv_trial_v1",
+  "source": {
+    "input_root": "../inspection/arrival-input/scenes",
+    "receipt": "../inspection/arrival-input/source-receipt.json",
+    "receipt_base": "../..",
+    "run_id": "REPLACE_WITH_VERIFIED_SOURCE_RUN",
+    "product_identity": "REPLACE_WITH_VERIFIED_PRODUCT_IDENTITY",
+    "truth_root": "/REPLACE_WITH_WORKSTATION_TRUTH_ROOT",
+    "upstream": {
+      "task_index": {"path": "REPLACE_WITH_TASK_INDEX_COPY", "sha256": "REPLACE_WITH_SHA256"},
+      "producer_receipt": {"path": "REPLACE_WITH_PRODUCER_RECEIPT_COPY", "sha256": "REPLACE_WITH_SHA256"},
+      "transfer_receipt": {"path": "REPLACE_WITH_COLLECTION_RECEIPT_COPY", "sha256": "REPLACE_WITH_SHA256"},
+      "run_state": {"path": "REPLACE_WITH_RUN_STATE_COPY", "sha256": "REPLACE_WITH_SHA256"},
+      "restore_receipt": {"path": "REPLACE_WITH_RESTORE_RECEIPT_COPY", "sha256": "REPLACE_WITH_SHA256"}
+    }
+  },
+  "core": "REPLACE_WITH_AUDITED_speedbump_accuracy.py",
+  "output": "../../delivery/arrival-accuracy-NEW_ATTEMPT",
+  "node": "REPLACE_WITH_NODE_EXECUTABLE",
+  "artifact_runtime_root": "REPLACE_WITH_DIRECTORY_CONTAINING_NODE_MODULES"
+}

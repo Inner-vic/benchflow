@@ -24,6 +24,8 @@ from runner_state import (
     read_json,
     release_bench,
     set_state,
+    transition_lock,
+    inspect_bench_lock,
 )
 
 
@@ -60,6 +62,36 @@ def process_next(
     executor: str,
     profile_path: Path | None = None,
 ) -> dict[str, Any]:
+    """Quarantine invalid ready jobs before trying the next eligible job."""
+    if profile_path is not None:
+        try:
+            read_json(profile_path.expanduser().resolve())
+        except RunnerError as exc:
+            return {"status": "BLOCKED", "reason": "INVALID_WORKER_PROFILE", "message": str(exc)}
+    blocked = None
+    while True:
+        result = _process_next(runs_dir, locks_dir, executor, profile_path)
+        if result.get("reason") not in ("INVALID_EXECUTION_PROFILE", "INVALID_JOB"):
+            return blocked if blocked and result.get("status") == "IDLE" else result
+        run_dir = runs_dir.expanduser().resolve() / result["run_id"]
+        with transition_lock(run_dir):
+            lock = inspect_bench_lock(locks_dir.expanduser().resolve() / "bench.lock")
+            if lock and (lock.get("safe_to_claim") is False or lock.get("run_id") == result["run_id"]):
+                return result
+            if read_json(run_dir / "state.json").get("state") != "READY":
+                return result
+            details = {"reason": result["reason"], "message": result.get("message", ""), "executor": executor}
+            append_event(run_dir, {"event": "RUN_QUARANTINED", "state": "BLOCKED_VALIDATION", **details})
+            set_state(run_dir, "BLOCKED_VALIDATION", **details)
+        blocked = result
+
+
+def _process_next(
+    runs_dir: Path,
+    locks_dir: Path,
+    executor: str,
+    profile_path: Path | None = None,
+) -> dict[str, Any]:
     if executor not in SUPPORTED_EXECUTORS:
         raise RunnerError(f"executor must be one of: {', '.join(SUPPORTED_EXECUTORS)}")
     snapshot = queue_snapshot(runs_dir, locks_dir)
@@ -77,8 +109,8 @@ def process_next(
         item = None
         for candidate in snapshot["queued"]:
             candidate_run_dir = runs_dir.expanduser().resolve() / candidate["run_id"]
-            candidate_job = read_json(candidate_run_dir / "job.json")
             try:
+                candidate_job = read_json(candidate_run_dir / "job.json")
                 resolved = validate_target_plan(
                     candidate_job, profile_path, candidate_run_dir,
                 )
@@ -102,7 +134,10 @@ def process_next(
 
     run_id = item["run_id"]
     run_dir = runs_dir.expanduser().resolve() / run_id
-    job = read_json(run_dir / "job.json")
+    try:
+        job = read_json(run_dir / "job.json")
+    except RunnerError as exc:
+        return {"status": "BLOCKED", "reason": "INVALID_JOB", "run_id": run_id, "message": str(exc)}
     if executor == "coordination-smoke" and job.get("mode") != "coordination_smoke":
         return {
             "status": "BLOCKED",

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -27,12 +28,58 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
+def validate_content(path: Path, expected_shapes: dict[str, list[int]] | None = None) -> None:
+    """Read actual output; never unpickle prediction data."""
+    try:
+        if path.suffix == ".npy":
+            import numpy as np
+
+            array = np.load(path, allow_pickle=False)
+            if not isinstance(array, np.ndarray):
+                array.close()
+                raise ValueError("expected an NPY array")
+            if array.size == 0 or array.dtype.kind not in "biufc" or not np.isfinite(array).all():
+                raise ValueError("expected a nonempty finite numeric array")
+            for prefix, shape in (expected_shapes or {}).items():
+                if path.name.startswith(prefix) and list(array.shape) != shape:
+                    raise ValueError(f"shape mismatch for {prefix}: expected={shape}, actual={list(array.shape)}")
+        else:
+            value = json.loads(path.read_text(encoding="utf-8"))
+
+            def check(item: Any) -> None:
+                if isinstance(item, float) and not math.isfinite(item):
+                    raise ValueError("nonfinite JSON number")
+                if isinstance(item, dict):
+                    for child in item.values():
+                        check(child)
+                elif isinstance(item, list):
+                    for child in item:
+                        check(child)
+
+            if not isinstance(value, (dict, list)) or not value:
+                raise ValueError("expected a nonempty JSON object or array")
+            check(value)
+    except ImportError as exc:
+        raise PredictionError("NumPy is required for content validation; install automation/requirements-test.txt") from exc
+    except (OSError, ValueError, TypeError, EOFError) as exc:
+        raise PredictionError(f"invalid prediction content in {path}: {exc}") from exc
+
+
 def validate_scene(
     scene_root: Path,
     *,
     expected_frames: int | None = None,
     required_prefixes: tuple[str, ...] = (),
+    expected_shapes: dict[str, list[int]] | None = None,
 ) -> dict[str, Any]:
+    if expected_shapes is not None and (
+        not isinstance(expected_shapes, dict) or any(
+            not isinstance(prefix, str) or not prefix or not isinstance(shape, list)
+            or not shape or any(type(size) is not int or size <= 0 for size in shape)
+            for prefix, shape in expected_shapes.items()
+        )
+    ):
+        raise PredictionError("expected_shapes must map nonempty prefixes to positive integer dimensions")
     if not scene_root.is_dir():
         raise PredictionError(f"scene output does not exist: {scene_root}")
     frames: list[dict[str, Any]] = []
@@ -55,6 +102,8 @@ def validate_scene(
         missing_prefixes = [prefix for prefix in required_prefixes if not any(name.startswith(prefix) for name in names)]
         if missing_prefixes:
             raise PredictionError(f"frame {entry.name} is missing required outputs: {missing_prefixes}")
+        for path in files:
+            validate_content(path, expected_shapes)
         frames.append(
             {
                 "directory": entry.name,
@@ -72,6 +121,9 @@ def validate_scene(
     indices = [item["index"] for item in frames]
     if len(indices) != len(set(indices)):
         raise PredictionError(f"duplicate frame indices: {indices}")
+    timestamps = [int(item["timestamp"]) for item in frames]
+    if any(right <= left for left, right in zip(timestamps, timestamps[1:])):
+        raise PredictionError("frame timestamps must be unique and strictly increasing by frame index")
     if expected_frames is not None:
         if expected_frames <= 0:
             raise PredictionError("expected frame count must be positive")
@@ -99,6 +151,7 @@ def validate_predictions(
     expected_frames: int | None,
     required_prefixes: tuple[str, ...],
     required_tasks: tuple[str, ...] = (),
+    expected_shapes: dict[str, list[int]] | None = None,
 ) -> dict[str, Any]:
     root = root.expanduser().resolve()
     if not root.is_dir():
@@ -115,7 +168,8 @@ def validate_predictions(
         [*required_prefixes, *(prefix for task in required_tasks for prefix in TASK_PREFIXES[task])]
     ))
     results = [
-        validate_scene(root / scene, expected_frames=expected_frames, required_prefixes=effective_prefixes)
+        validate_scene(root / scene, expected_frames=expected_frames, required_prefixes=effective_prefixes,
+                       expected_shapes=expected_shapes)
         for scene in requested
     ]
     return {
@@ -130,6 +184,8 @@ def validate_predictions(
         "required_prefixes": list(effective_prefixes),
         "scenes": results,
         "transfer_eligible": True,
+        "content_validated": True,
+        "expected_shapes": expected_shapes or {},
     }
 
 
@@ -141,13 +197,21 @@ def main() -> int:
     parser.add_argument("--require-prefix", action="append", default=[])
     parser.add_argument("--required-task", action="append", default=[], choices=sorted(TASK_PREFIXES))
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--expected-shapes", type=Path, help='JSON mapping of filename prefixes to exact array dimensions')
     args = parser.parse_args()
+    shapes = None
+    if args.expected_shapes:
+        try:
+            shapes = json.loads(args.expected_shapes.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as exc:
+            raise PredictionError(f"cannot read expected shapes: {exc}") from exc
     result = validate_predictions(
         args.root,
         args.scene,
         expected_frames=args.expected_frames,
         required_prefixes=tuple(args.require_prefix),
         required_tasks=tuple(args.required_task),
+        expected_shapes=shapes,
     )
     encoded = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
     if args.output:

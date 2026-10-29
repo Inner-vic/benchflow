@@ -20,8 +20,8 @@ from typing import Any
 SAFE_RUN_ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 APPROVAL_STAGES = ("ACTIVATE", "REPLAY")
 RELEASE_REASONS = ("NO_ACTIVATION", "RESTORE_VERIFIED", "FORMAL_ACTIVATED_VERIFIED")
-CANCELLABLE_STATES = ("WAITING_INPUT", "WAITING_APPROVAL", "PARTIALLY_APPROVED", "READY")
-REQUEUEABLE_STATES = ("FAILED_COORDINATION",)
+CANCELLABLE_STATES = ("WAITING_INPUT", "WAITING_APPROVAL", "PARTIALLY_APPROVED", "READY", "BLOCKED_VALIDATION")
+REQUEUEABLE_STATES = ("FAILED_COORDINATION", "BLOCKED_VALIDATION")
 
 
 class RunnerError(RuntimeError):
@@ -411,6 +411,7 @@ def queue_snapshot(runs_dir: Path, locks_dir: Path) -> dict[str, Any]:
     root = runs_dir.expanduser().resolve()
     queued: list[dict[str, Any]] = []
     waiting: list[dict[str, Any]] = []
+    blocked: list[dict[str, Any]] = []
     if root.is_dir():
         for run_dir in root.iterdir():
             if not run_dir.is_dir() or not (run_dir / "state.json").is_file() or not (run_dir / "manifest.json").is_file():
@@ -426,6 +427,8 @@ def queue_snapshot(runs_dir: Path, locks_dir: Path) -> dict[str, Any]:
             }
             if state.get("state") == "READY":
                 queued.append(item)
+            elif state.get("state") == "BLOCKED_VALIDATION":
+                blocked.append({**item, "reason": state.get("reason"), "message": state.get("message")})
             elif state.get("state") in ("WAITING_INPUT", "WAITING_APPROVAL", "PARTIALLY_APPROVED"):
                 waiting.append(item)
     def queue_key(item: dict[str, Any]) -> tuple[Any, ...]:
@@ -446,6 +449,8 @@ def queue_snapshot(runs_dir: Path, locks_dir: Path) -> dict[str, Any]:
         "active": active,
         "queued": queued,
         "waiting": waiting,
+        "blocked": sorted(blocked, key=lambda item: item["run_id"]),
+        "blocked_count": len(blocked),
         "queued_count": len(queued),
         "waiting_count": len(waiting),
     }
