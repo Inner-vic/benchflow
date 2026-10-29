@@ -12,7 +12,38 @@
 
 ## 一条业务任务怎样执行
 
-![核心执行时序](images/lifecycle.svg)
+<!-- BEGIN EXECUTION SEQUENCE -->
+```mermaid
+sequenceDiagram
+    participant F as 飞书
+    participant PC as 个人电脑网关
+    participant WS as 共享工作站
+    participant B as 专用台架
+    participant EV as 评测环境
+
+    F->>PC: 确认当前材料
+    PC->>WS: 准备并冻结本次候选
+    Note over PC,WS: 锁外准备完成后，按 FIFO 派发
+    PC->>WS: 派发本次小场景预检
+    WS->>B: 按需部署并运行预检
+    B-->>WS: 恢复核验与预检产品
+    WS-->>PC: 本次预检 PASS
+    PC->>WS: 派发完整选定范围
+    WS->>B: 全量回灌
+    B-->>WS: 恢复核验与预测产品
+    WS-->>PC: 结果目录与产品收据
+    PC-->>F: 原卡交付回灌目录
+
+    opt 本次选择回灌后评测
+        PC->>EV: 独立队列派发，关联本任务 GT
+        EV-->>PC: 原始 TXT 与覆盖检查结果
+        PC-->>F: 原卡更新并交付 TXT
+    end
+
+    Note over WS,B: 预检与全量分别恢复，全量包含预检场景
+    Note over F,WS: 到点精度由回灌交付后的原卡按钮另行触发
+```
+<!-- END EXECUTION SEQUENCE -->
 
 ### 1. 准备发生在台架占用之前
 

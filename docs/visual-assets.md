@@ -1,14 +1,17 @@
 # 图示与维护
 
-当前只维护两张主图，均为亮色 1600 × 900（16:9）SVG：
+整体架构沿用带图标的卡片风格：飞书作为上方统一入口，个人电脑、Ubuntu 工作站、专用台架与评测环境保留四张独立卡片。画布为亮色 1600 × 900（16:9），控制、产品回流和独立评测使用不同线型/颜色。
 
-| 图示 | 用途 |
+执行时序使用原生 Mermaid `sequenceDiagram`，不再维护手绘时序 SVG，也不强制原生图表的宽高比。可从[时序说明](execution-sequence.md)复制代码到飞书文档的 Mermaid 图表，或下载[原始 .mmd](execution-sequence.mmd)。`README.md` 与当前系统说明中的代码块来自同一份源文件。
+
+运行 `python tools/render_diagrams.py`，由 `render_current_diagrams.py` 更新图标架构 SVG、Mermaid 文档代码块及离线[查看页](index.html)。查看页提供架构预览与 SVG 下载、时序源码复制与 .mmd 下载，不自行绘制时序图。
+
+## 图标来源
+
+| 图标 | 来源 |
 | --- | --- |
-| [整体架构](images/architecture.svg) | 飞书作为统一入口；个人电脑、共享工作站、专用台架与评测环境保持独立职责 |
-| [执行时序](images/lifecycle.svg) | 五个参与方的确认、准备、本次预检、全量及可选独立评测；到点按钮在交付后另行触发 |
+| OpenAI / Codex、Ubuntu | 沿用仓库已保存的 Simple Icons 素材（[OpenAI](https://github.com/simple-icons/simple-icons/blob/15.0.0/icons/openai.svg)、[Ubuntu](https://github.com/simple-icons/simple-icons/blob/15.0.0/icons/ubuntu.svg)） |
+| 台架、评测环境 | 沿用本仓库绘制的通用 SVG |
+| 飞书统一入口 | 本地通用消息图标，位于 `images/icons/feishu.svg` |
 
-白底与浅色分区为主。蓝色实线表示请求、控制或数据交付，绿色虚线表示结果/证据返回。正文只保留这两张图，不重复生成流程、场景或动画图。图内采用简短职责与消息标签，恢复规则和验收范围留在正文。
-
-运行 `python tools/render_diagrams.py`，由 `tools/render_current_diagrams.py` 生成两张 SVG 与离线查看页 [index.html](index.html)。查看页复用同一组 SVG，只提供架构/时序切换和当前 SVG 下载，不连接外部服务。
-
-旧 GIF 与 `images/icons/` 是历史素材，保留归档但不再用于当前主文档。历史 OpenAI、Claude 和 Ubuntu 标识来自 Simple Icons，品牌权利仍属各自权利人；当前两张主图不使用这些标识。源码和图示的使用仍遵循仓库已有授权边界。
+图标保存在 `images/icons/` 并内嵌到架构图，离线不依赖外部图片服务。Simple Icons 素材沿用其 [CC0 声明](https://github.com/simple-icons/simple-icons/blob/15.0.0/LICENSE.md)，商标权仍属各自权利人；图标仅用于识别角色。旧 GIF 和 Claude 图标保留为历史素材。

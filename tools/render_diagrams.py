@@ -1,7 +1,6 @@
-"""Regenerate the two light 16:9 figures and their offline viewer."""
+"""Refresh the icon architecture and native Mermaid documentation."""
 from render_current_diagrams import render
-
 
 if __name__ == '__main__':
     render()
-    print('Rendered two light 16:9 SVG figures and one offline viewer')
+    print('Rendered icon architecture and updated native Mermaid sources')
