@@ -1,35 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
-<title id="title">回灌事务与故障恢复边界</title><desc id="desc">锁内进行候选激活、批量回灌和正式服务恢复核验，随后收集产品并发布评测。恢复失败保留台架锁，下游失败保留工作站产品。</desc>
-<defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#101b30"/><stop offset="1" stop-color="#0a101e"/></linearGradient>
-<marker id="blue" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#71c7ff"/></marker>
-<marker id="green" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#6be2b6"/></marker>
-<marker id="purple" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#c5afff"/></marker></defs>
-<rect width="1200" height="360" rx="20" fill="url(#bg)"/>
-<g font-family="Segoe UI,Microsoft YaHei,sans-serif">
-<text x="38" y="50" font-size="27" fill="#edf3ff" font-weight="700" >一次回灌，分阶段验证与交付</text>
-<text x="38" y="80" font-size="12" fill="#a5b6cd" font-weight="400" >TRANSACTION → VERIFIED PRODUCT → INDEPENDENT ATTEMPT</text>
-<rect x="221" y="99" width="526" height="123" rx="14" fill="#172b3a" stroke="#71c7ff"/>
-<text x="242" y="125" font-size="16" fill="#71c7ff" font-weight="400" >独占台架锁 · 恢复或正式激活核验后才释放</text>
-<rect x="35" y="148" width="156" height="52" rx="8" fill="#151f31" stroke="#34445f"/>
-<text x="113.0" y="181" font-size="17" fill="#edf3ff" font-weight="400" text-anchor="middle">冻结输入 / 预检</text>
-<text x="218.0" y="181" font-size="22" fill="#71c7ff" font-weight="400" text-anchor="middle">→</text>
-<rect x="245" y="148" width="135" height="52" rx="8" fill="#151f31" stroke="#34445f"/>
-<text x="312.5" y="181" font-size="17" fill="#edf3ff" font-weight="400" text-anchor="middle">候选激活</text>
-<text x="395.0" y="181" font-size="22" fill="#71c7ff" font-weight="400" text-anchor="middle">→</text>
-<rect x="410" y="148" width="135" height="52" rx="8" fill="#151f31" stroke="#34445f"/>
-<text x="477.5" y="181" font-size="17" fill="#edf3ff" font-weight="400" text-anchor="middle">批量回灌</text>
-<text x="560.0" y="181" font-size="22" fill="#71c7ff" font-weight="400" text-anchor="middle">→</text>
-<rect x="575" y="148" width="147" height="52" rx="8" fill="#151f31" stroke="#34445f"/>
-<text x="648.5" y="181" font-size="17" fill="#edf3ff" font-weight="400" text-anchor="middle">服务恢复核验</text>
-<text x="753.0" y="181" font-size="22" fill="#71c7ff" font-weight="400" text-anchor="middle">→</text>
-<rect x="784" y="148" width="160" height="52" rx="8" fill="#151f31" stroke="#34445f"/>
-<text x="864.0" y="181" font-size="17" fill="#edf3ff" font-weight="400" text-anchor="middle">收集 / 校验产品</text>
-<text x="968.0" y="181" font-size="22" fill="#71c7ff" font-weight="400" text-anchor="middle">→</text>
-<rect x="992" y="148" width="174" height="52" rx="8" fill="#151f31" stroke="#34445f"/>
-<text x="1079.0" y="181" font-size="17" fill="#edf3ff" font-weight="400" text-anchor="middle">发布 / 评测报告</text>
-<text x="38" y="269" font-size="15" fill="#71c7ff" font-weight="600" >设备边界</text>
-<text x="140" y="269" font-size="17" fill="#a5b6cd" font-weight="400" >台架事务失败保留证据；恢复核验失败保留锁，由负责人处理。</text>
-<text x="38" y="303" font-size="15" fill="#6be2b6" font-weight="600" >产品边界</text>
-<text x="140" y="303" font-size="17" fill="#a5b6cd" font-weight="400" >下游交付或评测失败保留权威产品，从对应阶段继续处理。</text>
-<text x="38" y="337" font-size="14" fill="#a5b6cd" font-weight="400" >工程一致性与算法精度分别验收；算法结论仍依赖匹配真值与有效样本。</text>
-</g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="570" viewBox="0 0 1440 570" role="img" aria-labelledby="title desc">
+<title id="title">BenchFlow · 当前事务与恢复边界</title><desc id="desc">准备在锁外，小场景和全量独立；后处理失败不导致重放，未知硬件结果保留屏障。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#74c7fa"/></marker></defs>
+<rect width="1440" height="570" rx="20" fill="#0d1729"/>
+<g font-family="Segoe UI,Microsoft YaHei,sans-serif"><text x="40" y="55" font-size="29" font-weight="700" fill="#f3f7ff">BenchFlow · 当前事务与恢复边界</text><rect x="40" y="110" width="300" height="255" rx="16" fill="#16263c" stroke="#74c7fa"/><text x="62" y="148" fill="#74c7fa" font-size="23" font-weight="700">锁外准备</text><text x="62" y="188" fill="#d4e2f3" font-size="18">材料版本确认</text><text x="62" y="220" fill="#d4e2f3" font-size="18">软件 / YAML / 数据</text><text x="62" y="252" fill="#d4e2f3" font-size="18">冻结候选与入口 FIFO</text><rect x="390" y="110" width="300" height="255" rx="16" fill="#16263c" stroke="#74c7fa"/><text x="412" y="148" fill="#74c7fa" font-size="23" font-weight="700">本次预检事务</text><text x="412" y="188" fill="#d4e2f3" font-size="18">按需部署 → 首选场景</text><text x="412" y="220" fill="#d4e2f3" font-size="18">回灌 → 恢复 → 产品核验</text><text x="412" y="252" fill="#d4e2f3" font-size="18">失败：诊断，不进全量</text><rect x="740" y="110" width="300" height="255" rx="16" fill="#16263c" stroke="#74c7fa"/><text x="762" y="148" fill="#74c7fa" font-size="23" font-weight="700">完整回灌事务</text><text x="762" y="188" fill="#d4e2f3" font-size="18">选定范围含预检场景</text><text x="762" y="220" fill="#d4e2f3" font-size="18">回灌 → 恢复 → 结果目录</text><text x="762" y="252" fill="#d4e2f3" font-size="18">未知：保留锁 / 待核验</text><rect x="1090" y="110" width="310" height="255" rx="16" fill="#16263c" stroke="#79dec1"/><text x="1112" y="148" fill="#79dec1" font-size="23" font-weight="700">独立交付与后处理</text><text x="1112" y="188" fill="#d4e2f3" font-size="18">交付目录，释放硬件队列</text><text x="1112" y="220" fill="#d4e2f3" font-size="18">普通评测 → 原始 TXT</text><text x="1112" y="252" fill="#d4e2f3" font-size="18">原卡到点按钮 → XLSX</text><path d="M340 230L382 230" fill="none" stroke="#74c7fa" stroke-width="2.5" marker-end="url(#arrow)"/><path d="M690 230L732 230" fill="none" stroke="#74c7fa" stroke-width="2.5" marker-end="url(#arrow)"/><path d="M1040 230L1082 230" fill="none" stroke="#74c7fa" stroke-width="2.5" marker-end="url(#arrow)"/><text x="40" y="430" font-size="23" fill="#79dec1">只有本次预检 PASS 且冻结身份一致，才进入全量；成功回灌不因后处理失败重做。</text><text x="40" y="478" font-size="20" fill="#cbdaf1">入口 FIFO 确定用户任务顺序，Runner JSON 锁协调安装、回灌、清理等共享硬件操作。</text><text x="40" y="522" font-size="20" fill="#cbdaf1">未知执行结果只核验原 run / attempt；连接恢复或进程重启都不能替代恢复收据。</text></g></svg>

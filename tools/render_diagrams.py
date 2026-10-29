@@ -94,7 +94,6 @@ def html_diagram():
 
 
 if __name__ == "__main__":
-    architecture()
-    lifecycle()
-    html_diagram()
-    print("Rendered architecture.svg, lifecycle.svg and the standalone HTML diagram")
+    from render_current_diagrams import render
+    render()
+    print("Rendered current unified-entry architecture, transaction boundaries and offline demo")

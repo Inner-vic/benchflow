@@ -1,23 +1,29 @@
 # 功能与维护索引
 
-更新时间：2026-10-29。
+更新时间：2026-10-29。仓库保存可复核源码，实际设备状态、个人认证与每次运行证据由部署环境管理。
 
-| 能力 | 公开范围 | 接入要求 |
-| --- | --- | --- |
-| Runner 与预测交付 | 规划、队列/锁、事务恢复、收据、预测校验和离线测试 | 当前设备 Profile、回放驱动、恢复基线 |
-| 到点后处理 | CSV/XCP 适配、来源验证、编排、统计和 XLSX 源码 | 经审核外部核心、同场景数据、真实哈希及报表运行时 |
-| 独立离线评测 | 能力与来源边界说明 | 环境自备评测器与 GT；内部实现默认全场景，Linux 执行 |
-| 双 TXT 发版报告 | 能力与模板边界说明 | 两份结果、明确角色与版本、当前包链接、审核模板及发布身份 |
-| PCM 双包 | 构建流程边界说明 | 同源码/依赖的 OFF/ON 组件、组织内构建和通知平台 |
+## 业务入口与下层工具
 
-后面三项的组织内实现、评测器、模板、构建/通知工具不分发。公开仓库没有通用原生评测器或生产构建服务。
+当前统一入口是飞书材料/任务卡，完整流程与源码映射见[当前系统](current-system.md)。用户不需要手工挑选以下 Skill。
 
-## 离线验证
+| 层次/目标 | 当前入口与作用 |
+| --- | --- |
+| 用户材料、确认和任务状态 | 内部 `gateway/bench_gateway/service.py`、卡片/确认模块；本人材料版本与原卡核验 |
+| 准备和硬件执行 | `preparation.py`、`executor.py`、`worker.py`；冻结候选、FIFO、本次小场景→全量 |
+| 普通评测 | 独立 postprocess 队列；按任务创建时间选择云端/既有后端，GT 显式关联本次数据源 |
+| 到点精度 | 已交付原任务卡“计算到点精度”按钮；独立分析记录，复用原工作站 CSV/XCP |
+| 下层 Runner/兼容脚本 | `automation/` 和 [bench-eval-execution](../skills/bench-eval-execution/SKILL.md)，保留 Job/Profile、事务、原 CLI |
+| 配套离线评测 v0.4.1 | bench-offline-eval（组织内配套工具），网关按 vendor 固定的相关源码复用，不等于每次重跑原全量内容校验 |
+| 配套报告/构建工具 | 双 TXT 报告（组织内配套工具）、PCM 双包（组织内配套工具），当前未自动接入统一主链路 |
 
-Python 3.12 下先安装 `automation/requirements-test.txt`，再执行 README 中的 Python 测试命令；Windows 可另运行 `powershell -NoProfile -File automation/test_arrival_stream_hook.ps1`。公开到点测试使用核心替身，不验证真实检测算法。公开扫描工具 `tools/audit_public_tree.py` 检查当前文件和可达 Git 历史。
+网关普通评测交付原始 TXT，不自动创建在线飞书报告。旧 `-ArrivalAccuracy` 是脚本兼容接口，不能作为当前飞书事前开关。网关生产配置、密钥、数据库和运行结果不随快照归档。
 
-2026-10-29 在 Windows/Python 3.12 上验证公开副本：230 项自动化、22 项执行脚本、34 项 SSH 接入、5 项打包测试全部通过，另有 7 条 PowerShell 模拟编排路径通过。未连接真实设备或重新计算实机精度。
+## 到点精度的当前入口
 
-真实到点运行还需 NumPy/SciPy、openpyxl 和 LibreOffice，以及当前输入、核心版本和同步口径的独立验收。仅生成报告或离线测试通过不足以证明算法达标。
+飞书当前仅在本人已交付原任务卡显示计算按钮，详见[当前系统](current-system.md)。公开版的[到点说明](arrival-accuracy.md)与[下层脚本契约](../skills/bench-eval-execution/references/到点精度可选后处理.md)保留计算依赖与兼容接口；历史输入追查和内部18场景证据不随公开源码分发。
 
-历史本地配置入口 `automation/run_arrival_accuracy.py` 使用 `render_arrival_workbook.mjs`，另需 Node 和可解析 `@oai/artifact-tool` 的显式运行时目录；日常工作站入口使用 openpyxl/LibreOffice。两种渲染入口的运行依赖不能互换。
+## 公开源码验证
+
+Python 3.12 安装 `automation/requirements-test.txt` 后可运行 README 中的公开 Runner/适配测试。前轮公开副本 291 项 Python 测试和 7 条 PowerShell 模拟路径通过；这不覆盖未公开的统一网关，也不证明真实云端/逐帧或按钮端到端验收。
+
+完整网关代码、固定 vendor 和隔离测试在内部仓库维护，公开版保留职责和接口说明。真实计算核心、数据、身份配置、平台凭据和部署状态不公开。当前版本的验收范围见[当前系统](current-system.md)。

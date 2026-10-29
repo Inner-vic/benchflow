@@ -1,0 +1,73 @@
+"""Generate the current unified-entry diagrams and offline documentation demo."""
+from html import escape
+from pathlib import Path
+
+ROOT=Path(__file__).resolve().parents[1]
+
+def box(x,y,w,h,title,lines,color='#74c7fa'):
+    return (f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="16" fill="#16263c" stroke="{color}"/>'
+        +f'<text x="{x+22}" y="{y+38}" fill="{color}" font-size="23" font-weight="700">{escape(title)}</text>'
+        +''.join(f'<text x="{x+22}" y="{y+78+i*32}" fill="#d4e2f3" font-size="18">{escape(line)}</text>' for i,line in enumerate(lines)))
+
+def svg(title,desc,body,height=650):
+    return f'''<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="{height}" viewBox="0 0 1440 {height}" role="img" aria-labelledby="title desc">
+<title id="title">{escape(title)}</title><desc id="desc">{escape(desc)}</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#74c7fa"/></marker></defs>
+<rect width="1440" height="{height}" rx="20" fill="#0d1729"/>
+<g font-family="Segoe UI,Microsoft YaHei,sans-serif"><text x="40" y="55" font-size="29" font-weight="700" fill="#f3f7ff">{escape(title)}</text>{body}</g></svg>'''
+
+def arrow(x1,y1,x2,y2):
+    return f'<path d="M{x1} {y1}L{x2} {y2}" fill="none" stroke="#74c7fa" stroke-width="2.5" marker-end="url(#arrow)"/>'
+
+def render():
+    body=box(40,100,310,310,'飞书统一入口',['本人材料与同一任务卡','APP / SO / YAML / 数据','明确确认当前材料版本','目标 / 范围 / 回放方式'])
+    body+=box(390,100,310,310,'个人电脑网关',['CC Connect + Codex','锁外准备与冻结候选','持久 FIFO / 单调度器','独立评测与报告状态'])
+    body+=box(740,100,310,310,'工作站与台架',['既有 Runner + JSON 锁','按需部署本次软件','本次小场景 → 全量','分别恢复、核验和留存'])
+    body+=box(1090,100,310,310,'产品与后处理',['工作站预测产品与目录','普通评测：独立队列','任务关联 GT → 原始 TXT','到点按钮 → XLSX / 计划'],'#79dec1')
+    for x in (350,700,1050):body+=arrow(x,253,x+34,253)
+    body+='<text x="40" y="462" font-size="23" fill="#79dec1">保留：确定性事务、服务恢复、预测产品身份与跨入口硬件互斥</text>'
+    body+='<text x="40" y="506" font-size="21" fill="#cbdaf1">改变：卡片确认 / 本次预检 / 云端原始输入直传 / 独立评测 / 任务 GT / 到点原卡按钮</text>'
+    body+='<text x="40" y="556" font-size="19" fill="#a9bbd3">预检与全量是两个 Runner 事务；评测与到点后处理不占台架锁。</text>'
+    body+='<text x="40" y="592" font-size="19" fill="#a9bbd3">源码归档与历史验证不等于当前服务就绪，也不证明 PCM 或逐帧实机已验收。</text>'
+    (ROOT/'docs/images/architecture.svg').write_text(svg('BenchFlow · 当前统一入口与执行分层','飞书材料卡经个人电脑网关进入工作站Runner；小场景和全量分别恢复，普通评测与到点分析独立运行。',body),encoding='utf-8')
+    body=box(40,110,300,255,'锁外准备',['材料版本确认','软件 / YAML / 数据','冻结候选与入口 FIFO'])
+    body+=box(390,110,300,255,'本次预检事务',['按需部署 → 首选场景','回灌 → 恢复 → 产品核验','失败：诊断，不进全量'])
+    body+=box(740,110,300,255,'完整回灌事务',['选定范围含预检场景','回灌 → 恢复 → 结果目录','未知：保留锁 / 待核验'])
+    body+=box(1090,110,310,255,'独立交付与后处理',['交付目录，释放硬件队列','普通评测 → 原始 TXT','原卡到点按钮 → XLSX'],'#79dec1')
+    for a,b in ((340,390),(690,740),(1040,1090)):body+=arrow(a,230,b-8,230)
+    body+='<text x="40" y="430" font-size="23" fill="#79dec1">只有本次预检 PASS 且冻结身份一致，才进入全量；成功回灌不因后处理失败重做。</text>'
+    body+='<text x="40" y="478" font-size="20" fill="#cbdaf1">入口 FIFO 确定用户任务顺序，Runner JSON 锁协调安装、回灌、清理等共享硬件操作。</text>'
+    body+='<text x="40" y="522" font-size="20" fill="#cbdaf1">未知执行结果只核验原 run / attempt；连接恢复或进程重启都不能替代恢复收据。</text>'
+    (ROOT/'docs/images/lifecycle.svg').write_text(svg('BenchFlow · 当前事务与恢复边界','准备在锁外，小场景和全量独立；后处理失败不导致重放，未知硬件结果保留屏障。',body,570),encoding='utf-8')
+    (ROOT/'docs/index.html').write_text(HTML,encoding='utf-8')
+
+HTML=r'''<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>BenchFlow · 飞书统一入口执行链路</title><style>
+:root{font-family:Segoe UI,Microsoft YaHei,sans-serif;color:#e8f0fe;background:#0d1729}*{box-sizing:border-box}body{margin:0}main{max-width:1160px;margin:auto;padding:38px 24px}a{color:#8cd3ff}header{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.eyebrow{color:#79dec1;letter-spacing:2px;font-size:13px}h1{font-size:38px;line-height:1.3;max-width:850px}p{line-height:1.8;color:#b4c4dc}.toolbar{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:28px 0}button,select{font:inherit;color:#e8f0fe;background:#192b43;border:1px solid #45617f;border-radius:8px;padding:10px 14px}button{cursor:pointer}button:focus-visible,select:focus-visible{outline:3px solid #79dec1}.primary{background:#1672a2}.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:22px}.panel{padding:24px;background:#14243a;border-radius:16px}ol{padding:0;list-style:none;counter-reset:n}.step{padding:13px 16px;margin:8px 0;border:1px solid #294362;border-radius:9px;color:#aabed8;cursor:pointer}.step:before{counter-increment:n;content:counter(n) ' · ';color:#79dec1}.step.current{border-color:#79dec1;background:#1c3945;color:white}.step.done{border-color:#42607d;color:#d8e6f8}.badge{display:inline-block;padding:5px 10px;border-radius:6px;background:#203b4b;color:#79dec1}.facts{display:grid;gap:14px;margin-top:24px}.fact{padding-bottom:12px;border-bottom:1px solid #294362}.fact b{display:block;color:#8cd3ff;margin-bottom:7px}.note{margin-top:24px;font-size:14px}.legend{display:flex;gap:10px;flex-wrap:wrap}.legend span{padding:7px 12px;border:1px solid #294362;border-radius:20px;color:#b4c4dc}@media(max-width:760px){main{padding:24px 16px}h1{font-size:28px}.grid{grid-template-columns:1fr}select{max-width:100%}.panel{padding:18px}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto}}
+</style></head><body><main>
+<header><strong>BenchFlow</strong><a href="current-system.md">当前执行链路与证据边界 ↗</a></header>
+<p class="eyebrow">飞书材料卡 → 确认 → FIFO → 本次预检 → 全量 → 独立后处理</p>
+<h1>一个业务入口，保留清晰的执行与恢复边界。</h1>
+<p>个人电脑网关负责材料确认和调度，工作站复用既有 Runner。这个演示只解释当前链路，不连接飞书、设备或计算平台。</p>
+<div class="legend"><span>本人材料与版本确认</span><span>入口 FIFO + Runner JSON 锁</span><span>本次预检 / 全量两次事务</span><span>后处理不重放</span></div>
+<div class="toolbar"><label for="scenario">情境</label><select id="scenario"><option value="full">回灌后评测</option><option value="only">仅回灌</option><option value="cloud">云端 original 数据输入</option><option value="existing">已有结果，单独评测</option><option value="arrival">原卡计算到点精度</option><option value="missing">到点缺少距离 CSV</option><option value="unknown">硬件结果未知</option></select><button id="play" class="primary">播放</button><button id="next">下一步</button><button id="reset">重置</button></div>
+<div class="grid"><section class="panel"><h2>实际阶段</h2><ol id="steps"></ol></section><section class="panel" aria-live="polite"><span id="badge" class="badge"></span><h2 id="title"></h2><p id="description"></p><div class="facts"><div class="fact"><b>台架与队列</b><span id="hardware"></span></div><div class="fact"><b>证据与恢复</b><span id="proof"></span></div></div></section></div>
+<p class="note">历史源码中的 CLI、LPAI agent 转发和到点事前开关属于下层兼容接口。当前飞书到点仅由已交付原任务卡按钮触发；新评测 GT 显式绑定本次数据源，常规评测不做预测/GT全文哈希。</p>
+<p class="note">本演示不宣称 PCM 实机、逐帧时序或真实按钮端到端已验收。源码归档不表示当前维护已解除或真实执行已开启。</p>
+<script>
+const material=['材料卡与版本确认','本人提交APP/SO/YAML与本次数据，明确范围、回放方式和目标。点击确认绑定当前材料版本；旧卡或未收完附件不能执行。','不占台架锁；尚未入硬件FIFO。','材料改变使旧确认失效；已提交材料冻结。'];
+const prepare=['锁外准备与冻结','后台检查软件、YAML和场景入口，绑定本次候选、适配器、范围与实现。','准备队列与台架队列分开。','静态通过只代表可验证；不证明ABI或上机兼容。'];
+const fifo=['入口FIFO与派发检查','单调度器按顺序等待资源，合并检查Runner、容量和Job/Profile，需要时部署本次软件。','入口FIFO负责顺序；Runner JSON锁保留跨入口互斥。','资源忙或派发前不可达时保持等待。'];
+const smoke=['本次小场景预检','先执行本任务选定范围的第一个场景，回放、恢复和产品核验通过才进入全量。','独立Runner事务；不是任意历史成功的复用。','预检失败只做有限诊断，不能进入全量。'];
+const full=['完整选定范围回灌','新的Runner run执行全部选定场景，全量仍包含预检场景；流式或逐帧选择已经冻结。','第二个独立事务；全量内部批次持锁。','结束核验正式服务恢复和实际预测产品。'];
+const delivered=['原卡交付工作站目录','真实结果目录与生产收据保存到本人任务，业务编号映射实际内部run。','硬件队列可继续下一项。','TJ展示编号不改名或搬动工作站目录；装配归档可独立进行。'];
+const evaluate=['独立普通评测','按任务登记策略选择云端或既有后端；本次数据源明确关联GT，完整场景精确匹配。','postprocess队列，不占台架锁。','未知结果只续收原attempt，不重算、更不重做回灌。'];
+const txt=['原始TXT交付','保持原生评测器、任务开关和阈值，检查TXT场景覆盖；缺GT等缺口按部分完成交付。','通知失败只处理交付。','核对固定工具/配置/小清单/报告；常规不做预测与GT全文哈希。'];
+const click=['原任务卡点击到点按钮','仅本人真实回灌已交付任务可用；核验原卡、私聊、nonce和归属，不接收任意路径。','独立arrival_analyses状态，不占台架锁。','按原Tasks及冻结数据源读取CSV/XCP；不换库、不编译、不补跑。'];
+const arrival=['固定扩展计算与报告','复用已有工作站到点扩展，生成XLSX与analysis_plan.json。','不改变原回灌或普通评测状态。','远端未知不自动重算，附件发送未知不重复发送。'];
+const scenarios={full:[material,prepare,fifo,smoke,full,delivered,evaluate,txt],only:[material,prepare,fifo,smoke,full,delivered],cloud:[material,prepare,['云端输入直达工作站','SDK短期只读凭据经SSH标准输入给工作站；仅下载所选original所需文件，GT留云端。','数据不经个人电脑或CC Connect中转。','计划固定对象、大小和ETag；来源变化停止。'],fifo,smoke,full,delivered,evaluate,txt],existing:[['选择本人已有结果','先核验并登记授权来源，再对本人源任务追加独立评测；不重新提交软件包。','无台架事务。','新评测可在来源一致时明确补充GT关联，不改原回灌或旧收据。'],evaluate,txt],arrival:[delivered,click,arrival],missing:[delivered,click,['缺少距离CSV','原卡说明本次回灌没有距离CSV，无法计算；原回灌结果保留。','没有硬件动作，不重新回灌。','不要求重交整套材料，也不把普通预测数组冒充距离输出。']],unknown:[material,prepare,fifo,smoke,['已派发但结果未知','SSH中断或进程重启不能说明远端已停止；保留NEEDS_REVIEW并核验同一run。','阻止新的硬件变更，不能按超时清锁。','有原始完成/恢复/产品证据才续接；连接恢复不触发重放。']]};
+let cursor=0,timer=null;const $=id=>document.getElementById(id);function stop(){clearInterval(timer);timer=null;$('play').textContent='播放'}function render(){const rows=scenarios[$('scenario').value];$('steps').replaceChildren(...rows.map((r,i)=>{const li=document.createElement('li');li.className='step'+(i===cursor?' current':i<cursor?' done':'');li.textContent=r[0];li.tabIndex=0;li.onclick=()=>{stop();cursor=i;render()};li.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();li.click()}};return li}));const r=rows[cursor];$('badge').textContent=`阶段 ${cursor+1} / ${rows.length}`;$('title').textContent=r[0];$('description').textContent=r[1];$('hardware').textContent=r[2];$('proof').textContent=r[3]}function next(){const rows=scenarios[$('scenario').value];if(cursor<rows.length-1){cursor++;render()}else stop()}$('play').onclick=()=>{if(timer){stop();return}if(cursor===scenarios[$('scenario').value].length-1)cursor=0;$('play').textContent='暂停';render();timer=setInterval(next,3200)};$('next').onclick=()=>{stop();next()};$('reset').onclick=()=>{stop();cursor=0;render()};$('scenario').onchange=()=>{stop();cursor=0;render()};render();
+</script></main></body></html>'''
+
+if __name__=='__main__':render()
