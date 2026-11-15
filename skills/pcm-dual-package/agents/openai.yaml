@@ -1,0 +1,4 @@
+interface:
+  display_name: "PCM M100构建与APP交付"
+  short_description: "解析uroad源码和配套依赖，分别管理M100编译能力、单APP或显式双APP交付及台架衔接"
+  default_prompt: "使用 $pcm-dual-package 从提供的uroad分支核对依赖和构建来源，按明确交付范围准备M100与可选APP，不默认双发APP，也不自动启动台架。"

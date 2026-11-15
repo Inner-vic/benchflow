@@ -1,0 +1,36 @@
+#!/home/lixiang/miniconda3/envs/tvg/bin/python
+"""Compatibility observer owned by the existing supervisor; never starts CC Connect."""
+import json
+import os
+from pathlib import Path
+import sys
+import time
+
+root=Path(__file__).resolve().parent
+args=sys.argv[1:]
+if args in (['--version'],['version']):
+    print('cc-connect desktop-external-observer 1.0');raise SystemExit(0)
+if args and args[0]=='send':
+    cfg=json.loads((root/'config/gateway.json').read_text())
+    legacy=Path(cfg['desktop_legacy_cc_binary']).resolve(strict=True)
+    if root not in legacy.parents or legacy.name!='cc-connect-linux-amd64':raise SystemExit(2)
+    os.execv(str(legacy),[str(legacy),*args])
+if args!=['--config',str(root/'config/cc-connect.toml')]:raise SystemExit(2)
+path=root/'runtime/desktop-bridge/lease.json'
+ready=False
+while True:
+    try:
+        value=json.loads(path.read_text())
+        cfg=json.loads((root/'config/gateway.json').read_text())
+        connected=(value.get('state')=='CONNECTED' and value.get('connected') is True and
+                   cfg.get('desktop_bridge_enabled') is True and
+                   value.get('generation')==cfg.get('desktop_bridge_generation') and
+                   0<=time.time()-value['updated']<10)
+    except (OSError,ValueError,KeyError,TypeError):connected=False
+    if connected and not ready:
+        # Same readiness marker expected by the already-running supervisor.
+        # It is emitted only after the real desktop process reports WSS connected.
+        print('[connected to wss://desktop-connector-verified] desktop connector heartbeat verified',flush=True)
+        ready=True
+    if ready and not connected:raise SystemExit(2)
+    time.sleep(1)

@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "upstream": {
+    "project": "预瞄悬架台架评测",
+    "skill": "bench-offline-eval",
+    "skill_version": "0.4.1",
+    "shared_worker_version": "0.3.0"
+  },
+  "policy": {
+    "byte_identical": true,
+    "credentials_included": false,
+    "shared_tools_redeployed": false,
+    "binary_files_included": false,
+    "shared_evaluator_file_count": 117,
+    "notes": "Reuse the existing fixed shared workstation worker and evaluator package; no authentication or Feishu publishing scripts are copied."
+  },
+  "files": {
+    "scripts/evaluate_directory.py": {
+      "source": "skills/bench-offline-eval/scripts/evaluate_directory.py",
+      "sha256": "d62d89d6453254fa5ac7eaaba906763e6f6480e54f8a13f1951ffc262efa7607",
+      "size_bytes": 9004
+    },
+    "scripts/directory_worker.py": {
+      "source": "skills/bench-offline-eval/scripts/directory_worker.py",
+      "sha256": "7531544e94626c2a2e66322b09e0cb5110eb171136ed933e4e5fee2071b5e56a",
+      "size_bytes": 15906
+    },
+    "scripts/report_scope.py": {
+      "source": "skills/bench-offline-eval/scripts/report_scope.py",
+      "sha256": "2d8617dd331887abfea78bc8e3787bd61c1b1a4309d2594cce3eacac4c5d2e3b",
+      "size_bytes": 1200
+    },
+    "scripts/shared_runtime.py": {
+      "source": "skills/bench-offline-eval/scripts/shared_runtime.py",
+      "sha256": "9d4998201c9aebbf64170dbe5f17d8b97c82106bb26160b3f3126b18bc7b331a",
+      "size_bytes": 3533
+    },
+    "scripts/runtime_support.py": {
+      "source": "skills/bench-offline-eval/scripts/runtime_support.py",
+      "sha256": "432eccb26871ba7c3acd53181f10152291adbd87e9931209173fadab3a59fecd",
+      "size_bytes": 832
+    },
+    "scripts/runtime/parse_eval_report.py": {
+      "source": "automation/parse_eval_report.py",
+      "sha256": "6a03148eacd54710ba29d67079489cb7288af2b4e5e4c9403532242db33dabf9",
+      "size_bytes": 7740
+    },
+    "assets/shared-workstation.json": {
+      "source": "skills/bench-offline-eval/assets/shared-workstation.json",
+      "sha256": "2fafd73675120dfc1a3ad79fd9d7fbabbb0f9ed9245294bf8ba0c0819fe868f3",
+      "size_bytes": 1332
+    }
+  }
+}

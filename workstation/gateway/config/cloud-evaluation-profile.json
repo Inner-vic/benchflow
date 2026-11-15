@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "kind": "lpai-mounted-v1",
+  "instance": "bench-eval-offline",
+  "namespace": "vc-chassis",
+  "cluster": "cnhb01-algorithm-bidu-p-03",
+  "gt_root": "/mnt/volumes/jfs-dip-vfsc-chassis-ga/DataInLoop/gt-analyze/v151/dataset",
+  "run_root": "/mnt/volumes/vc-chassis-bd-ga/bench-eval-offline/developer/runs",
+  "volume_uid": "2da0a26d1ab44fed845235a9fcd56c98",
+  "volume_prefix": "bench-eval-offline/developer/runs/",
+  "tool_hashes": {
+    "run.sh": "dc1a2c2ea7bae26b8fa5b9f3e5090894b25715f4e0e76b77a7c423fb1b4c62da",
+    "build/uroad_offline_eval": "ef297bc6cb04aeafff40e79de4e97ec25e3ddcad11719c07cae43589027854b7",
+    "etc/evaluation_param.yaml": "02b413697b470373f4583312b9275440da2fc17bde6073c307cef5f69e0d6782",
+    "runtime-libs/libyaml-cpp.so.0.6": "b8a2d129e9b39d03ad7dade4eaa4eb1327a2562e203c17b50bcd8eb117d1ed7e"
+  },
+  "code_hashes": {
+    "cloud_evaluation.py": "1edf9d942bfe75c47f42211e5925ea3caf679bc5e70a7f33fc679a6a3d9f55a7",
+    "cloud_agent.py": "cdbc8e9af4a36d098955e65f85c34f14e5a29bec26e377e689d1c646e9769a71",
+    "bench_cloud_server.py": "4fb8751ddabc0bd74f0b7c9a26a210d63b37d2285c8c76e9c5754150c57aa344",
+    "report_scope.py": "2d8617dd331887abfea78bc8e3787bd61c1b1a4309d2594cce3eacac4c5d2e3b",
+    "parse_eval_report.py": "6a03148eacd54710ba29d67079489cb7288af2b4e5e4c9403532242db33dabf9",
+    "public.pem": "e0ed97041520dbeb165a454b143dce76768c501ffa9ffc8e2f3bd0218550d603"
+  },
+  "profile_sha256": "d0ceb6ba476b29622bf41bb5e6791404b68edc7027710f2a3637dc0d27e526e5"
+}

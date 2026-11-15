@@ -1,0 +1,13 @@
+{
+  "deployment_role": "ai-client",
+  "workstation": "ubuntu-workstation",
+  "remote_project_root": "/mnt/data/bench-eval/service/gateway",
+  "remote_python": "/home/lixiang/miniconda3/envs/tvg/bin/python",
+  "cc_project": "bench-gateway",
+  "codex_binary": "codex",
+  "desktop_bridge_generation": "72204e45d64f498e8b121b50cc8f6780",
+  "desktop_menu_native_adapter": true,
+  "desktop_menu_warm_transport": true,
+  "desktop_intake_timeout_seconds": 600,
+  "desktop_cc_binary": "<ClientRoot>/tools/cc-connect/v1.5.1-beta.1-desktop-return/cc-connect.exe"
+}

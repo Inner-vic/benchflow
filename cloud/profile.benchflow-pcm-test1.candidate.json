@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "kind": "lpai-mounted-v1",
+  "instance": "benchflow-pcm-test1",
+  "namespace": "vc-chassis",
+  "cluster": "cnhb01-algorithm-bidu-p-03",
+  "run_root": "/mnt/volumes/vc-chassis-bd-ga/bench-eval-offline/developer/receivers/benchflow-pcm-test1-v1/runs",
+  "volume_uid": "2da0a26d1ab44fed845235a9fcd56c98",
+  "volume_prefix": "bench-eval-offline/developer/receivers/benchflow-pcm-test1-v1/runs/",
+  "tool_hashes": {
+    "run.sh": "dc1a2c2ea7bae26b8fa5b9f3e5090894b25715f4e0e76b77a7c423fb1b4c62da",
+    "build/uroad_offline_eval": "ef297bc6cb04aeafff40e79de4e97ec25e3ddcad11719c07cae43589027854b7",
+    "etc/evaluation_param.yaml": "02b413697b470373f4583312b9275440da2fc17bde6073c307cef5f69e0d6782",
+    "runtime-libs/libyaml-cpp.so.0.6": "b8a2d129e9b39d03ad7dade4eaa4eb1327a2562e203c17b50bcd8eb117d1ed7e"
+  },
+  "gt_policy": "task-dataset-v1",
+  "gt_mount_roots": [
+    "/mnt/volumes/jfs-dip-vfsc-dataset-ga",
+    "/mnt/volumes/jfs-dip-vfsc-chassis-ga"
+  ],
+  "code_hashes": {
+    "cloud_evaluation.py": "8a89f28f0dc2aa1af3db7d6383ec8d3192aea96b66d33bfbe1ff652f9bc11d8f",
+    "cloud_agent.py": "72363d0e85c1b970c994d41983de22d3cd431ec541c4ec5ad8996ca265fdd60c",
+    "cloud_truth.py": "d8d71643ea8cb821d7228c7555726d6198bb91d83738f1ef02fc8107d990095e",
+    "bench_cloud_server.py": "4fb8751ddabc0bd74f0b7c9a26a210d63b37d2285c8c76e9c5754150c57aa344",
+    "report_scope.py": "2d8617dd331887abfea78bc8e3787bd61c1b1a4309d2594cce3eacac4c5d2e3b",
+    "parse_eval_report.py": "6a03148eacd54710ba29d67079489cb7288af2b4e5e4c9403532242db33dabf9",
+    "public.pem": "e0ed97041520dbeb165a454b143dce76768c501ffa9ffc8e2f3bd0218550d603"
+  },
+  "instance_uid": "05949a37-93a9-4751-9991-8c1caad5b26c",
+  "profile_sha256": "b0a3ebc661e9d3476ca5dd39b1c20c44f62d211909a731ea4b10d6b79320d0c2"
+}

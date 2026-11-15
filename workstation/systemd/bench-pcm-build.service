@@ -1,0 +1,16 @@
+[Unit]
+Description=PCM dual APP software build queue (no bench operations)
+After=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/mnt/data/bench-eval/service/gateway
+ExecStart=/home/lixiang/miniconda3/envs/tvg/bin/python -B -m bench_gateway.pcm_dual_worker --root /mnt/data/bench-eval/service/gateway
+Restart=on-failure
+RestartSec=10
+TimeoutStopSec=45
+UMask=0077
+Environment=PYTHONDONTWRITEBYTECODE=1
+
+[Install]
+WantedBy=default.target

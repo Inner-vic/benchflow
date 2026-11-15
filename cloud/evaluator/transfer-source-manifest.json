@@ -1,0 +1,624 @@
+{
+  "source": "/mnt/volumes/vc-chassis-bd-ga/ZL/eval_code/uroad-dev-eval-20260818",
+  "key_files": {
+    "run.sh": "dc1a2c2ea7bae26b8fa5b9f3e5090894b25715f4e0e76b77a7c423fb1b4c62da",
+    "build/uroad_offline_eval": "ef297bc6cb04aeafff40e79de4e97ec25e3ddcad11719c07cae43589027854b7"
+  },
+  "files": [
+    {
+      "path": "CMakeLists.txt",
+      "size": 1492,
+      "sha256": "fb2ff9a7a487efa23d8e83d47953af651c403da4b09fa4a192cbe0c9675d2abf"
+    },
+    {
+      "path": "Plot/README.md",
+      "size": 7058,
+      "sha256": "26cd225980bab83cf5810bfc755c4440475eb756ca179b094569cef4cd7b46de"
+    },
+    {
+      "path": "Plot/__pycache__/run.cpython-39.pyc",
+      "size": 213,
+      "sha256": "32bdc8d8cba7c28dd5e8e56680525432e18902a6a87c13e6628b96de95827f2c"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__init__.py",
+      "size": 149,
+      "sha256": "621d0e2ba453cb03b7b516e8ea644152e09f8b87a2d376f21a31b75a5bac3b53"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/__init__.cpython-310.pyc",
+      "size": 320,
+      "sha256": "4152284082d814fb064d9b8dc9dc8e4c1a06daebdb7c2b6b819351e4f9f4ef8d"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/__init__.cpython-38.pyc",
+      "size": 354,
+      "sha256": "08473c8323360aba28cc0f6d5134acbb7578b6a98a57ed861c1b4f78991a881d"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/__init__.cpython-39.pyc",
+      "size": 287,
+      "sha256": "0899f641e9ac276364cb7c2da02aab02c40044688fb0cb7a91d965a6dcd309f7"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/aspect_resize.cpython-38.pyc",
+      "size": 2913,
+      "sha256": "14df87dd30dbcdbb71cff2c16524a296f80ce3aa4bbd77d15ccbc5a93041384a"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/aspect_resize.cpython-39.pyc",
+      "size": 2848,
+      "sha256": "8eaf3ca4f1d52b56b0ee5d9f8b5ae05ea3b40d10b9774573f9ea2e24a195d9d6"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/axis_overlay.cpython-38.pyc",
+      "size": 5312,
+      "sha256": "d574f8ecbf8b4137bba1b39aaf0c97fad846c3c0c2e90067f5058c7ed2f2e360"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/axis_overlay.cpython-39.pyc",
+      "size": 5259,
+      "sha256": "fb25ecdcbf5e7e820d094ddf35fb2bc2361c0e445219e3c570a16fb07c468e63"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/image_overlay.cpython-38.pyc",
+      "size": 5979,
+      "sha256": "7e96863d2fc341ff3fc4315deb4d8b6db0e793902bb1b9523f6069d51d2a1475"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/image_overlay.cpython-39.pyc",
+      "size": 5912,
+      "sha256": "47301eafde4e3f915954f46b8df0095f0746e40ad3831ae481400cdcb9b92d10"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/interaction.cpython-38.pyc",
+      "size": 4409,
+      "sha256": "78ed3bf51c0408dbbaea06c1cc7e55a591d7b2be51d627309fcccc72be032d16"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/interaction.cpython-39.pyc",
+      "size": 4340,
+      "sha256": "4c9ddf1d4f6a4b9cab1bf1ce5cf726b284a6c5a5266114eea801f790a1f15bd2"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/loaders.cpython-38.pyc",
+      "size": 5227,
+      "sha256": "7c773cba1c61631c7ed57de9e9edbb1ca870ca1c2c03c19720da83a6f0c119d8"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/loaders.cpython-39.pyc",
+      "size": 5160,
+      "sha256": "b017a7163e402b14471ddd14b10ac3f4b9ab69f917f41d8074c29499b41dcc16"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/main_window.cpython-310.pyc",
+      "size": 11995,
+      "sha256": "da7d1d8432318e9606aa8d5e87a5b9de32bf5ccf1d1a1ed4205502862003bd28"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/main_window.cpython-38.pyc",
+      "size": 31112,
+      "sha256": "4e23fe7c3e8cf9ebd90aa2f30d12a02a6b164b2202776fa4cf015eb0f0e9c1d9"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/main_window.cpython-39.pyc",
+      "size": 31055,
+      "sha256": "08fef570b0a4eb5da58244329668e65cab8f8eaa68c814755678be1e7d7f2928"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/models.cpython-310.pyc",
+      "size": 2518,
+      "sha256": "7e351cd5c2282823ad608cc9b6ee43d6140c3195ddf7e5ea038265c6a78253e7"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/models.cpython-38.pyc",
+      "size": 2514,
+      "sha256": "d5fccd1413e98c7888e0512ea828bae3c8107dde168d11fa01e0d179566123a6"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/models.cpython-39.pyc",
+      "size": 2441,
+      "sha256": "5ebd5bbe7b3cab6c1d67b5edd03b6dce6a0cdf20b23c05ebda7dc84a5f3f65e9"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/palette.cpython-38.pyc",
+      "size": 3288,
+      "sha256": "f1bdcdfe1e345947025244ed1f703edc7afc0b5bbc58ab18fb22fc8949e341be"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/palette.cpython-39.pyc",
+      "size": 3185,
+      "sha256": "f6ed6cb2f294971895a92dd731b06195ad95b04eb1b8989fab2aa6b669e5d8fa"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/renderer.cpython-38.pyc",
+      "size": 4782,
+      "sha256": "b11d2aed428b70ec8941fefb7e829d061255a24b8d0c0fe6b0f3368ce4ab291e"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/renderer.cpython-39.pyc",
+      "size": 4715,
+      "sha256": "e3e501c7a11614a40eb981e4c42d7538f962f81d7963835e96191624f724e0be"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/scene_index.cpython-38.pyc",
+      "size": 6888,
+      "sha256": "50e025ebea28b114b216e8db008520fcb75c9f10282989ae43dc33c96fa34ddb"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/scene_index.cpython-39.pyc",
+      "size": 6781,
+      "sha256": "4733f6b8de38c13fa239738e0922d62bbd067196cdbbd5480dad34dd61c4fe21"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/settings.cpython-38.pyc",
+      "size": 1598,
+      "sha256": "436f378f7808f4c2ab8055b22270ca5ee1bce8fadba71694195b94aec9f2f7aa"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/settings.cpython-39.pyc",
+      "size": 1529,
+      "sha256": "0b8b342a73a8d14b026e1e0fa8ebd7355c7445ab356e4ac5918b86fd266f208f"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/view_presets.cpython-38.pyc",
+      "size": 1292,
+      "sha256": "3a2a6cd45a3e13076d68757247c1cc7224b70ccbe73c01df0fb3c270d8f90bf4"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/__pycache__/view_presets.cpython-39.pyc",
+      "size": 1223,
+      "sha256": "096a52dd94fbd58d9a9a7a7e2360465995ac72155bb76e78ebb1ff53c2bfc3e7"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/aspect_resize.py",
+      "size": 2359,
+      "sha256": "327ac71904ae2a497a670c91a8258c92ca41491b73738eac5e264c37c5162045"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/axis_overlay.py",
+      "size": 5857,
+      "sha256": "22bd81590e060cc797579d9cbb5a11d55db35cbb5949d60011c0c13046617619"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/image_overlay.py",
+      "size": 6782,
+      "sha256": "39be78cd59ac39d21b3bb29313352f6a4679fc86516562f83d5646c5a2427e27"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/interaction.py",
+      "size": 3746,
+      "sha256": "55286334d898a3ec5e71ac75153a26b7237cc19a69210c0dabae2dfa9a6842a3"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/loaders.py",
+      "size": 5773,
+      "sha256": "989408116bcf79bdfc11292d52b659da972b778982753d23e3de964f8c4b76e7"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/main_window.py",
+      "size": 39063,
+      "sha256": "031f37df9ead2242f3db7031877766172b578f1c185dcec75e91883c27c65390"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/models.py",
+      "size": 1703,
+      "sha256": "e00a3b46cddafabba589786585cb88c90998a6aaa9a03ce1c231ee128f02a745"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/palette.py",
+      "size": 2658,
+      "sha256": "bcb60ad76beda2356a448f0ea1a0a1f2037808759bcea8104c17b97f79f528c5"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/renderer.py",
+      "size": 4947,
+      "sha256": "eaf62f4454d348183d89228d6597d6050d2d825a72b5de6393d531f9628213c6"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/scene_index.py",
+      "size": 6425,
+      "sha256": "91d513721e78ac6ff53dde7056e12fb98aa1b9fd411203dad2a4eb5d7b5176bc"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/settings.py",
+      "size": 1579,
+      "sha256": "294109b649603cf36740f4734c49919548062229e70ef1930f120755bab3a552"
+    },
+    {
+      "path": "Plot/pointcloud_viewer/view_presets.py",
+      "size": 892,
+      "sha256": "55e36d5bb86b21f6bbd81bda5b31b1ffea46ee9553aedbc7bb41bc87096a68d8"
+    },
+    {
+      "path": "Plot/requirements.txt",
+      "size": 55,
+      "sha256": "db685468845d02569a2f71b0c82efcf62c1170abe42ba5b9f4e5e3caa5980ccf"
+    },
+    {
+      "path": "Plot/run.py",
+      "size": 103,
+      "sha256": "461a395866993d292607d4a795447a18290a0d6eeccc06fc3f66aa057c60a356"
+    },
+    {
+      "path": "Plot/tests/__pycache__/test_aspect_resize.cpython-39.pyc",
+      "size": 1200,
+      "sha256": "704cd4cf318d4fd7e2bec76c2befccec3ed5fb45257c87b4c57facd0bb2a08d5"
+    },
+    {
+      "path": "Plot/tests/__pycache__/test_axis_overlay.cpython-39.pyc",
+      "size": 1674,
+      "sha256": "177884cc8cca94b62a7daafe5c4b743d7973f58cd627054541bb5586795fb054"
+    },
+    {
+      "path": "Plot/tests/__pycache__/test_image_overlay.cpython-39.pyc",
+      "size": 2255,
+      "sha256": "88772133383b5fbdecdcb4b175b20d6405c18c28b5c4d694b773a4d6326a0ba5"
+    },
+    {
+      "path": "Plot/tests/__pycache__/test_interaction.cpython-39.pyc",
+      "size": 1823,
+      "sha256": "eb69e4d84dfc7cf7f8a3ffa45f88a4105a35700e90090c9ece7fd64f879b076b"
+    },
+    {
+      "path": "Plot/tests/__pycache__/test_loaders.cpython-39.pyc",
+      "size": 3223,
+      "sha256": "6e3b724e10b9946a4aa1a5737d7673f8cf194e3442dcf45e975f02471aa302ec"
+    },
+    {
+      "path": "Plot/tests/__pycache__/test_matched_scenes.cpython-39.pyc",
+      "size": 2876,
+      "sha256": "90ce124e0948c730f5a32444672bec2381fc19f8bd99b7f897170ae7ee8858a5"
+    },
+    {
+      "path": "Plot/tests/__pycache__/test_palette.cpython-39.pyc",
+      "size": 1871,
+      "sha256": "fb6e7bef2e776f138d29d560d8e5c5326d51095cac255397097766ebbddb2b6d"
+    },
+    {
+      "path": "Plot/tests/__pycache__/test_scene_index.cpython-39.pyc",
+      "size": 4475,
+      "sha256": "da114f5591234724998e020727c7939f2ea5b7c87d7cd9a62a03454a3a07b829"
+    },
+    {
+      "path": "Plot/tests/__pycache__/test_settings.cpython-39.pyc",
+      "size": 1914,
+      "sha256": "5fb9570f0916134a7adf364d47c12c6cec808990599bf2041ad37bdebbed7a80"
+    },
+    {
+      "path": "Plot/tests/__pycache__/test_view_presets.cpython-39.pyc",
+      "size": 2856,
+      "sha256": "900158b4cbfe6b699e9c9d8056407b100036cfa80e45ed5f2a76462ad88a3670"
+    },
+    {
+      "path": "Plot/tests/test_aspect_resize.py",
+      "size": 746,
+      "sha256": "533c40e6cb189446fa9ab9a749f4a8397fb6d19b469b693e8028ec2ac8be0f35"
+    },
+    {
+      "path": "Plot/tests/test_axis_overlay.py",
+      "size": 1014,
+      "sha256": "d3b141a05231bad8a3a4b50ccfed9905dbb68750650de2efa93b75fb80639513"
+    },
+    {
+      "path": "Plot/tests/test_image_overlay.py",
+      "size": 1637,
+      "sha256": "aada04cb68f80680cea5ee7bb087e247a8bacf7420415fc37d2a87fc81e296b1"
+    },
+    {
+      "path": "Plot/tests/test_interaction.py",
+      "size": 1245,
+      "sha256": "4ab17e4907088be6f7d2355f0466106198dbdd33d90f5bd91f959a4108a96f7f"
+    },
+    {
+      "path": "Plot/tests/test_loaders.py",
+      "size": 2531,
+      "sha256": "3bffe47ee2d1f074be34ea946040f35e86bf976e5837aa5f1d9b6157e4b59b75"
+    },
+    {
+      "path": "Plot/tests/test_matched_scenes.py",
+      "size": 2430,
+      "sha256": "e54ef2d9ccb4d74115e8423eebc94edfaae781e0d88dd7e63cf4635b78b59637"
+    },
+    {
+      "path": "Plot/tests/test_palette.py",
+      "size": 1183,
+      "sha256": "b46605ad06a12ffd2efa6abd88b98ded6d9110b17a0ac8f7c730f6c605b77be2"
+    },
+    {
+      "path": "Plot/tests/test_scene_index.py",
+      "size": 4174,
+      "sha256": "5a274b5429aad517b670db12d16cda3975aef7b606d1ac5cace111e1d8a88d84"
+    },
+    {
+      "path": "Plot/tests/test_settings.py",
+      "size": 1459,
+      "sha256": "29e29a086bdbaf090acdfe4572289f27ff51f2c2cccdd8dbc8d96720a3aaa650"
+    },
+    {
+      "path": "Plot/tests/test_view_presets.py",
+      "size": 2332,
+      "sha256": "48c5d5e3b7d5975b5e65d38588b54bc900d9493dc819148b2ef2422e5e5c8cb7"
+    },
+    {
+      "path": "README.md",
+      "size": 8842,
+      "sha256": "830156abf00daa5dd4c1e49c97aeec3d8875488560852c8fefce01c7bb23f826"
+    },
+    {
+      "path": "build/.ninja_deps",
+      "size": 75272,
+      "sha256": "647a2c96b02f87d6696555c8d5ac751f1e01645a8e60370114b4c7ac43a28069"
+    },
+    {
+      "path": "build/.ninja_log",
+      "size": 1214,
+      "sha256": "788cd3ef48ae8a4080ea198c5315a5ed6d62d4d13183e003c627183730110441"
+    },
+    {
+      "path": "build/CMakeCache.txt",
+      "size": 12637,
+      "sha256": "8cb2abbcd6f6d44f485f1f441c3349cecf9cadf80eb28b53280c338c6304dc74"
+    },
+    {
+      "path": "build/CMakeFiles/3.22.2/CMakeCXXCompiler.cmake",
+      "size": 5438,
+      "sha256": "0ed5c08682aedca39337b99653715a1997d892c80b3f4c00c4a32ce5eb65302d"
+    },
+    {
+      "path": "build/CMakeFiles/3.22.2/CMakeDetermineCompilerABI_CXX.bin",
+      "size": 16680,
+      "sha256": "f89ef624a5e0ae52e38fb525ace7e4cbf82d3deea259313bb3c7c6b5fcab1aca"
+    },
+    {
+      "path": "build/CMakeFiles/3.22.2/CMakeSystem.cmake",
+      "size": 402,
+      "sha256": "2988f55eb2c2932ebe94959b1297cff14db0d911c9fd2925ce972284400065fb"
+    },
+    {
+      "path": "build/CMakeFiles/3.22.2/CompilerIdCXX/CMakeCXXCompilerId.cpp",
+      "size": 24597,
+      "sha256": "3c62bd9a7604556cccd275c37ce5efdf114c99b34ac64b2f28a495c0b5d271cb"
+    },
+    {
+      "path": "build/CMakeFiles/3.22.2/CompilerIdCXX/a.out",
+      "size": 16784,
+      "sha256": "9da3d1d0887360c77f3191c792d76727aac48e8eb41891b9717012ed7efefc87"
+    },
+    {
+      "path": "build/CMakeFiles/CMakeOutput.log",
+      "size": 22048,
+      "sha256": "8e98f3786f28244ad3075089a11d4bb380b9766c4e3ae0da920b9ebda986e81b"
+    },
+    {
+      "path": "build/CMakeFiles/TargetDirectories.txt",
+      "size": 720,
+      "sha256": "f73f0e765c7db36e8d0e8b896e37529ef79ed092c0d8a83952652b63e49d6f63"
+    },
+    {
+      "path": "build/CMakeFiles/cmake.check_cache",
+      "size": 85,
+      "sha256": "a26189e394421da57f45706a07713c5720acd200a41711b0c0c590c3c63371c4"
+    },
+    {
+      "path": "build/CMakeFiles/rules.ninja",
+      "size": 2053,
+      "sha256": "1c92a7c43cc0fa9a76e6382e13c9d4c1d25a89ce2f14d347518909a210002998"
+    },
+    {
+      "path": "build/CMakeFiles/uroad_offline_eval.dir/src/data_loader.cpp.o",
+      "size": 271008,
+      "sha256": "66de45bb91882314ea3929fc14fa0185d0a808d7f9620eae2315db42a6dd9eb1"
+    },
+    {
+      "path": "build/CMakeFiles/uroad_offline_eval.dir/src/eval_road_surface.cpp.o",
+      "size": 58648,
+      "sha256": "688d89864dbe3b025faf1d3b0d41a7c1829d82397f4907653be865d0168c67c5"
+    },
+    {
+      "path": "build/CMakeFiles/uroad_offline_eval.dir/src/eval_statistics.cpp.o",
+      "size": 165256,
+      "sha256": "87af266d6dd34ae2ce6223f9fbe8bcaf1d59f313f9696a6d34ba6185ef4e97e2"
+    },
+    {
+      "path": "build/CMakeFiles/uroad_offline_eval.dir/src/eval_trajectory.cpp.o",
+      "size": 115832,
+      "sha256": "80685ed15a1b8d2e893034e867fc7d2e76b571829381f316f239671356dbd8ac"
+    },
+    {
+      "path": "build/CMakeFiles/uroad_offline_eval.dir/src/eval_vision.cpp.o",
+      "size": 51200,
+      "sha256": "585c2df0364087b8855513c8adbf14704d5ffc9eb6da851e278384f340215d75"
+    },
+    {
+      "path": "build/CMakeFiles/uroad_offline_eval.dir/src/evaluator.cpp.o",
+      "size": 260000,
+      "sha256": "289f9ecd1197962baad1bf7a84cb558d07de4836192bdd0f6e6d2ed3385a8a7f"
+    },
+    {
+      "path": "build/CMakeFiles/uroad_offline_eval.dir/src/main.cpp.o",
+      "size": 47760,
+      "sha256": "91636ef8c7673309a5f016179fc0424571d6925c737eeb9f8c6ed65d2ad3cc89"
+    },
+    {
+      "path": "build/CMakeFiles/uroad_offline_eval.dir/src/postprocess/traj_postprocess_manager.cpp.o",
+      "size": 2648,
+      "sha256": "a575fb4caf9914a1c5d9f2995ebc2771131c7370d879b7498b3fc25de4810c80"
+    },
+    {
+      "path": "build/CMakeFiles/uroad_offline_eval.dir/src/postprocess/trajectory_surface_fitter.cpp.o",
+      "size": 146224,
+      "sha256": "bd07e3e1eb6c14b06f48ad6c260c843652eeade4fbc4ad3457e2340f30acb2fb"
+    },
+    {
+      "path": "build/build.ninja",
+      "size": 15266,
+      "sha256": "b9d4a063e741809e02f2e84bde194bfc86d2dde98e94f8fd55b4ec5e57fc99be"
+    },
+    {
+      "path": "build/cmake_install.cmake",
+      "size": 2891,
+      "sha256": "68e29cd5636e202b23cfbbbf9425f6104f99f4415e6adb16935d2301290f4e8e"
+    },
+    {
+      "path": "build/compile_commands.json",
+      "size": 5300,
+      "sha256": "208254ca07667b8a95117e90624823be752d1613a97e14bfca1af6942c6892ea"
+    },
+    {
+      "path": "build/uroad_offline_eval",
+      "size": 551376,
+      "sha256": "ef297bc6cb04aeafff40e79de4e97ec25e3ddcad11719c07cae43589027854b7"
+    },
+    {
+      "path": "build.sh",
+      "size": 1364,
+      "sha256": "79f792654d9dcbf97b5e1f23850f4ba75293339f375d7378204008eba223b2cf"
+    },
+    {
+      "path": "conanfile.py",
+      "size": 779,
+      "sha256": "f3e7ea10fd670bcb741e605a4811c91a23499264d7c980f6c638c2b8b86b2468"
+    },
+    {
+      "path": "etc/evaluation_param.yaml",
+      "size": 7662,
+      "sha256": "02b413697b470373f4583312b9275440da2fc17bde6073c307cef5f69e0d6782"
+    },
+    {
+      "path": "evaluator.md",
+      "size": 12315,
+      "sha256": "214afdb2bd906eae8cfa425a7deadbe8e1a521b57ee9ce32f5fb6db0c8e14204"
+    },
+    {
+      "path": "http_replay_multi_scene.py",
+      "size": 12328,
+      "sha256": "6552e46d0dbcb780e75f425fb85f41fb869c7d74ea073f49d72b19f1d3495ede"
+    },
+    {
+      "path": "include/compat/logging_compat.hpp",
+      "size": 3921,
+      "sha256": "833e041dd211d6d8b6ca2953fcda10f5f40e83534324f98b9e8924f089af2cc6"
+    },
+    {
+      "path": "include/data/road_surface.hpp",
+      "size": 367,
+      "sha256": "5925a4c66677cda87500d260a46c857334ea034b0f1d8862256d056843da234b"
+    },
+    {
+      "path": "include/data/wheel_trajectory.hpp",
+      "size": 683,
+      "sha256": "1dc55aec7874a34eff3f3e62181be08552ee2565ba621157c2fdb2e4280891ad"
+    },
+    {
+      "path": "include/eval/iou.hpp",
+      "size": 18042,
+      "sha256": "bffc3b5db2ace07e237eb8fe85abd5e6d2d8bf8e1f5c21b4baecb37e99e5842e"
+    },
+    {
+      "path": "include/eval/map.hpp",
+      "size": 15217,
+      "sha256": "ad6a446276d98faeb3baab12a3352a000e5f969ed2b59e57a024b8522d037456"
+    },
+    {
+      "path": "include/evaluator.hpp",
+      "size": 32895,
+      "sha256": "3b9e91f1f78cd3dbca8aee255f86bad1f28dd222db85bcc899ceffaac5eabd05"
+    },
+    {
+      "path": "include/postprocess/traj_postprocess_manager.hpp",
+      "size": 1585,
+      "sha256": "379c909b5645e1982104b3b94ae2256d2183224f18e087fb6414c834726d7fca"
+    },
+    {
+      "path": "include/postprocess/trajectory_surface_fitter.hpp",
+      "size": 11057,
+      "sha256": "2954591afb458cddabc53649f98a88c2e1056ed4a6f923bdec9cfbe5856a6831"
+    },
+    {
+      "path": "run.sh",
+      "size": 455,
+      "sha256": "dc1a2c2ea7bae26b8fa5b9f3e5090894b25715f4e0e76b77a7c423fb1b4c62da"
+    },
+    {
+      "path": "src/data_loader.cpp",
+      "size": 33430,
+      "sha256": "66c67bbbf42677d92301fc1195ce6985fde358b7713f5b630118916e2d05f7bf"
+    },
+    {
+      "path": "src/eval_road_surface.cpp",
+      "size": 9426,
+      "sha256": "78a48b7d18931bfb84036c2925ed939a92dde763e169f6c57afb51b617572623"
+    },
+    {
+      "path": "src/eval_statistics.cpp",
+      "size": 35742,
+      "sha256": "85439d8548a60fed772c5158b2201c88f70ac5950f23f13f4952da319a273c68"
+    },
+    {
+      "path": "src/eval_trajectory.cpp",
+      "size": 34880,
+      "sha256": "d98e333228707d2a63a071e0252f96312a0441c1bf3d1aa75bd3db13071824fb"
+    },
+    {
+      "path": "src/eval_vision.cpp",
+      "size": 1675,
+      "sha256": "af7cb53e07e5eba170dca8c25ec74fd70650b8b169689e68736cdd30c8f94974"
+    },
+    {
+      "path": "src/evaluator.cpp",
+      "size": 29820,
+      "sha256": "768abba7a3bdf8de689e69a375c08b3df698555a63243f5ed6e50d2a6ebab8f4"
+    },
+    {
+      "path": "src/main.cpp",
+      "size": 2382,
+      "sha256": "1752acf470ca94373a0a8482409b7ccee99d8903565f3c60ac06f5e2c0a316b7"
+    },
+    {
+      "path": "src/postprocess/traj_postprocess_manager.cpp",
+      "size": 307,
+      "sha256": "fdaf26f4c62a4004aa0657434d1d004bb735b0aa89f46014412771d849865527"
+    },
+    {
+      "path": "src/postprocess/trajectory_surface_fitter.cpp",
+      "size": 57032,
+      "sha256": "a34539f9d882b145c7d14d511314cdb8b64bca2a9066d3f849c79000cfa489c1"
+    },
+    {
+      "path": "src/vc140.pdb",
+      "size": 235008,
+      "sha256": "87e4f36ec486aa5c6caa740ff4d99ddb4fb1c7cd44005291f1b9fff11cbf722f"
+    }
+  ],
+  "excluded_non_runtime_files": [
+    ".git/HEAD",
+    ".git/config",
+    ".git/description",
+    ".git/gk/config",
+    ".git/hooks/applypatch-msg.sample",
+    ".git/hooks/commit-msg.sample",
+    ".git/hooks/fsmonitor-watchman.sample",
+    ".git/hooks/post-update.sample",
+    ".git/hooks/pre-applypatch.sample",
+    ".git/hooks/pre-commit.sample",
+    ".git/hooks/pre-merge-commit.sample",
+    ".git/hooks/pre-push.sample",
+    ".git/hooks/pre-rebase.sample",
+    ".git/hooks/pre-receive.sample",
+    ".git/hooks/prepare-commit-msg.sample",
+    ".git/hooks/update.sample",
+    ".git/info/exclude",
+    ".vscode/settings.json",
+    "core.roadmodel-dev-copy-0.0.python.89154.1787907469",
+    "eval_report/eval_report_2026-08-17_17-54-11.txt",
+    "eval_report/eval_report_2026-08-17_18-02-09.txt",
+    "eval_report/eval_report_2026-08-18_09-59-28.txt",
+    "eval_report/eval_report_2026-08-18_11-49-37.txt",
+    "eval_report/eval_report_2026-08-18_15-23-03.txt",
+    "eval_report/eval_report_2026-08-18_17-45-58.txt",
+    "eval_report/eval_report_2026-08-21_13-17-33.txt",
+    "eval_report/eval_report_2026-08-28_16-00-40.txt",
+    "eval_report/uroad-dev-eval-20260721.code-workspace"
+  ]
+}

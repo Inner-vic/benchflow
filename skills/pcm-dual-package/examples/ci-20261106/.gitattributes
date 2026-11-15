@@ -1,0 +1,2 @@
+# Recipe snapshots are byte-bound by the reviewed SHA-256, including whitespace.
+internal_pcm_pair/recipes/*/conanfile.py -text whitespace=-blank-at-eol,-blank-at-eof

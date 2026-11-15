@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "host": "192.0.2.12",
+  "user": "operator",
+  "port": 22,
+  "host_keys": []
+}

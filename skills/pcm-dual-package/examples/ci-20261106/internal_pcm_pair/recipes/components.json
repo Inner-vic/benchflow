@@ -1,0 +1,38 @@
+{
+  "schema": "pcm-existing-components/v1",
+  "pair_id": "dev314-20261027-001",
+  "source_commit": "9a61fe17167b97d7b13c5b0c02348762e84ed206",
+  "xlidar_commit": "9ae4cb4d3efd1dd334b5e04203f1087b36867b04",
+  "channel": "pcm-dev314-20261027-001",
+  "status": "LOCAL_RECIPES_ONLY",
+  "published": false,
+  "components": {
+    "OFF": {
+      "ref": "uroad_m100/3.1.4-pcm-off.dev314-20261027-001@livc/pcm-dev314-20261027-001",
+      "recipe_sha256": "457e7b36d19fc5c29bd48a640ccfd2bd05e561833feeb5e7350f20a6ff9047fb",
+      "source_recipe_sha256": "7fce91f199543fbdcdddf8da69f84435b00c1bbf68098e41a34a5b4ec09c226c",
+      "source_commit": "9a61fe17167b97d7b13c5b0c02348762e84ed206",
+      "cmake": {
+        "WITH_EVAL_DUMP": "OFF"
+      }
+    },
+    "ON": {
+      "ref": "uroad_m100/3.1.4-pcm-on.dev314-20261027-001@livc/pcm-dev314-20261027-001",
+      "recipe_sha256": "991c59684d944d623f4e90b5e7511395e431a30a053e644b2f2908bc0bebe7e8",
+      "source_recipe_sha256": "7fce91f199543fbdcdddf8da69f84435b00c1bbf68098e41a34a5b4ec09c226c",
+      "source_commit": "9a61fe17167b97d7b13c5b0c02348762e84ed206",
+      "cmake": {
+        "WITH_EVAL_DUMP": "ON"
+      }
+    },
+    "xlidar": {
+      "ref": "xlidar/0.2.8-pcm.dev314-20261027-001@livc/pcm-dev314-20261027-001",
+      "recipe_sha256": "c58056601bf55359d7968fb48620f9df64a5c195145aba2b0ecb223bad584cd8",
+      "source_recipe_sha256": "95e51e51ce9d4013823ba2d6d8472c4cc3e708ef95a0d55fcf687e80035b13d2",
+      "source_commit": "9ae4cb4d3efd1dd334b5e04203f1087b36867b04",
+      "cmake": {
+        "WITH_REPLAY": "ON"
+      }
+    }
+  }
+}

@@ -1,2 +1,0 @@
-# Also required by validate-output when reading NPY prediction contents.
-numpy==2.5.3

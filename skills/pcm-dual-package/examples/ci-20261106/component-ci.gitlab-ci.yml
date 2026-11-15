@@ -1,0 +1,33 @@
+# Only for the isolated PCM maintenance branch; never merge into a shared branch.
+include:
+  - project: "liconan/conan_ci_template"
+    ref: "develop/livc-vside"
+    file: ".gitlab-ci-template.yml"
+workflow:
+  rules:
+    - if: '$CI_PROJECT_PATH == "livc-acore/chassis/uroad" && $CI_COMMIT_BRANCH == "codex/pcm-dual-publish-20261106" && $CI_COMMIT_TAG == null'
+    - when: never
+publish-pcm-recipes:
+  extends: .conan_upload:base
+  stage: deploy
+  resource_group: pcm-dev314-20261027-001
+  interruptible: false
+  timeout: 10 minutes
+  variables:
+    GIT_DEPTH: "20"
+    GIT_SUBMODULE_STRATEGY: none
+    PYTHONDONTWRITEBYTECODE: "1"
+  before_script:
+    - set +x
+    - !reference [.download_scripts, script]
+  script:
+    - python3 internal_pcm_pair/publish_recipes_ci.py
+  after_script: []
+  cache: []
+  artifacts:
+    when: always
+    paths:
+      - pcm-publication-receipt.json
+    expire_in: 30 days
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push" || $CI_PIPELINE_SOURCE == "web"'

@@ -1,0 +1,147 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# 第一部分：数据路径与场景筛选
+# ═══════════════════════════════════════════════════════════════════════════════
+dataset:
+  # 真值根目录
+  labeled_data_root: /lpai/volumes/jfs-dip-vfsc-dataset-ga/tvg/Baidu_Data/PCM_eval_v14
+  # 预测根目录
+  pred_data_root: /mnt/volumes/jfs-dip-vfsc-dataset-ga/tvg/Baidu_Data/PCM_eval_pred_result/eval_pred_result_20260817_2563
+  # 场景过滤前缀
+  scene_folder_prefix: "2026-"
+  # 调试模式：0 全量，>0 仅评测前N个场景
+  max_scenes_for_debug: 0
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 第二部分：评测任务开关
+# ═══════════════════════════════════════════════════════════════════════════════
+eval_tasks:
+  eval_road:    OFF   # 路面
+  eval_traj:    ON    # 轨迹/减速带
+  eval_vision:  ON   # 视觉分类
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 第三部分：路面评测参数
+# ═══════════════════════════════════════════════════════════════════════════════
+road_surface:
+  # 预测网格参数（用于路面预测 OCC 索引化）
+  predictor:
+    NX: 400
+    NY: 48
+    NZ: 200
+    CELL_X: 0.05
+    CELL_Y: 0.15
+    CELL_Z: 0.01
+    X_MIN: 5.0
+    Y_MIN: -3.6
+    Z_MIN: -1.0
+
+  # 真值网格参数
+  # (部署推理时200个z格子(0.01m精度)，评测时100个z格子(0.02m精度))
+  ground_truth_grid:
+    NX: 400
+    NY: 48
+    NZ: 100
+    CELL_X: 0.05
+    CELL_Y: 0.15
+    CELL_Z: 0.02   # z向格子大小(m)
+    X_MIN: 5.0
+    Y_MIN: -3.6
+    Z_MIN: -1.0
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 第四部分：轨迹评测参数（含减速带）
+# ═══════════════════════════════════════════════════════════════════════════════
+trajectory:
+  # 点云 ROI 过滤参数（用于稠密点云 ROI 过滤）
+  point_cloud_roi:
+    x_min: 5.0
+    x_max: 25.0
+    y_min: -3.6
+    y_max: 3.6
+    z_min: -1.0
+    z_max: 1.0
+
+  # 稠密点云加载（dense_labeled_*.npy，5维数据）
+  dense_cloud:
+    reserve_capacity: 4020000       # 预分配点数
+    filtered_indices_reserve_capacity: 400000  # ROI过滤固定内存空间初始容量
+    search_radius: 0.05             # 搜索半径(m)，直径为10cm，对齐occ
+    min_points: 0                   # 最少邻域点数
+    neighbor_reserve_capacity: 12000 # 预分配邻域点数容量
+
+  # 评测阈值
+  eval_thresholds:
+    z_tolerance_m: 0.01           # 高度合格判定阈值（单位：米）
+    # 轨迹高度误差容器预分配容量
+    # 计算公式：场景数 × 每场景样本数 × 4轮 × 每轮点数
+    # 示例：30场景 × 200样本 × 4轮 × 400点 = 9,600,000点
+    height_errors_reserve_capacity: 10000000  # 默认1000万点（约76MB）
+
+  # 减速带/井盖/大桥接缝 目标物评测参数
+  target_object:
+    # 锁帧窗口 [eval_x_min, eval_x_max]m；reference_x(16:peak_x, 17/23:x_leading) < ideal 时持续更新代表帧
+    # 代表帧更新策略对齐 App UpdateLockedFeatures：err = ideal - ref_x，取 err 最小帧
+    eval_x_min: 9.0
+    eval_x_max: 13.0
+    eval_x_ideal: 10.8
+    # 跨帧关联：相邻帧 reference_x 递减量 < same_target_dx_max 视为同一物理目标（m）
+    same_target_dx_max: 2.5
+    # 关注的目标物 label 集合：16=减速带  17=井盖  23=大桥接缝
+    focus_labels: [16, 17, 23]
+    # 提取基础参数
+    min_points: 3            # 有效目标物最少点数
+    # 匹配与误差统计阈值（代表帧化后，pred↔GT 按物理目标匹配；仅同 label 匹配）
+    match_threshold: 0.5     # 预测与真值 x_peak 匹配阈值（单位：m）
+    errors_reserve: 3000     # 误差容器预分配容量
+    # 大误差告警阈值
+    x_error_large: 0.20     # 极值点x大误差告警阈值（单位：m）
+    z_error_large: 0.05     # 极值点z大误差告警阈值（单位：m）
+    w_error_large: 0.20     # 宽度大误差告警阈值（单位：m）
+    # 中误差统计阈值
+    x_error_mid: 0.10       # 极值点x中误差统计阈值（单位：m）
+    z_error_mid: 0.02       # 极值点z中误差统计阈值（单位：m）
+
+  # PCA 拟合参数（与 dev-clean PostprocessManager 保持一致，无帧间历史）
+  surface_fitter:
+    # 直线主干提取（近端约束+迭代内点筛选），参数与预测后处理对齐
+    trunk_near_min: 5.0          # 近端起始距离(m)
+    trunk_near_max: 15.0         # 近端结束距离(m)，与预测对齐
+    trunk_threshold: 0.02        # 内点阈值(m)，与预测对齐
+    trunk_near_weight: 1.1       # 近端权重倍数
+    trunk_near_constraint: 0.03  # 近端最大偏差(m)
+    trunk_max_iter: 15           # 最大迭代次数
+    trunk_min_points: 8          # 迭代拟合最小点数
+    trunk_converge_eps: 1e-4     # 收敛阈值(弧度)
+    # 场景自适应检测（台阶/凹坑）
+    trunk_near_max_step: 10.0        # 台阶场景的trunk_near_max(m)
+    scene_step_mean_threshold: 0.03  # 台阶判断：mean_delta_z阈值(m)
+    scene_step_std_threshold: 0.02   # 台阶判断：std阈值(m)
+    scene_pit_max_threshold: 0.05    # 凹坑判断：max_delta_z阈值(m)
+
+
+# ═══════════════════════════════════════════════════════════════════════════════
+# 第五部分：视觉分类评测参数
+# ═══════════════════════════════════════════════════════════════════════════════
+vision:
+  # 视觉头配置（须与 App 侧 postprocess_param.yaml::head_info 保持一致）
+  # label_offset: GT标签偏移量，默认0；GT 标签直接映射到概率索引
+  heads:
+    - name: bump_type
+      num_classes: 4
+    - name: pothole_damage
+      num_classes: 2
+    - name: bridge_joint_type
+      num_classes: 3
+    - name: overall_road_bumpiness
+      num_classes: 2  
+    - name: surface_attachment
+      num_classes: 6
+    - name: surface_attachment_distribution
+      num_classes: 5
+    - name: basic_road_surface
+      num_classes: 13
+    - name: rainfall_intensity
+      num_classes: 5

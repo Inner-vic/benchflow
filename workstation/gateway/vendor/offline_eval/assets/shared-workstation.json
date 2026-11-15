@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "workstation_alias": "ubuntu-workstation",
+  "worker": {
+    "path": "/mnt/data/bench-eval/offline-eval/releases/0.3.0/workstation_eval.py",
+    "version": "0.3.0",
+    "sha256": "ca3ad638575732441faa247380571d166395f12665a669959ac997a1b320bfca"
+  },
+  "evaluator": {
+    "version": "uroad-dev-eval-20260818",
+    "root": "/mnt/data/bench-eval/environments/uroad-dev-eval-20260818-20261020-001",
+    "manifest_file": "transfer-source-manifest.json",
+    "manifest_sha256": "c53ff5e52e659b2a2aef774747aaace0a0cc4626ee19eae4f2808efa5afac5b0",
+    "file_count": 117,
+    "key_files": {
+      "run.sh": "dc1a2c2ea7bae26b8fa5b9f3e5090894b25715f4e0e76b77a7c423fb1b4c62da",
+      "build/uroad_offline_eval": "ef297bc6cb04aeafff40e79de4e97ec25e3ddcad11719c07cae43589027854b7",
+      "etc/evaluation_param.yaml": "02b413697b470373f4583312b9275440da2fc17bde6073c307cef5f69e0d6782"
+    }
+  },
+  "prediction_root": "/mnt/data/bench-eval/cache/predictions",
+  "runs_root": "/mnt/data/bench-eval/offline-eval/runs",
+  "discovery": {
+    "tasks_root": "/mnt/data/bench-eval/tasks",
+    "prepared_manifest_root": "/mnt/data/bench-eval/inputs",
+    "truth_root": "/mnt/data/bench-eval/datasets"
+  },
+  "on_mismatch": "stop_and_contact_workstation_maintainer",
+  "download_or_deploy": false
+}

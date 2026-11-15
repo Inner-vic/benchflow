@@ -1,0 +1,274 @@
+{
+  "mode": "simulate",
+  "live_enabled": false,
+  "cc_project": "bench-gateway",
+  "feishu_app_id": "cli_0000000000000001",
+  "cc_binary": "/mnt/data/bench-eval/service/gateway/desktop_bridge_observer",
+  "codex_binary": "__pc_broker_only__",
+  "workstation": "ubuntu-workstation",
+  "remote_users_root": "/mnt/data/bench-eval/users",
+  "download_hosts": [
+    "artifactory.ep.chehejia.com"
+  ],
+  "notifications_enabled": false,
+  "parser_timeout_seconds": 75,
+  "poll_seconds": 3,
+  "provision_from_feishu": true,
+  "asset_backend": "workstation",
+  "dataset_catalog": "/mnt/data/bench-eval/state/dataset-catalog.json",
+  "resource_probe_enabled": true,
+  "notification_retry_seconds": 5,
+  "material_download_timeout_seconds": 300,
+  "workstation_runtime_release": "/home/lixiang/bench-gateway/runtime/releases/0e3e3781ca5a9eba331d9ef57629cd980a217ae82c03409490e6307042dc9ec9",
+  "yaml_runtime_archive": "/home/lixiang/bench-gateway/yaml-runtime/b1f6d2fcd4a0d9be3061b7e419e75792055444b5a3288d3f70758fedb76aa441/pyyaml.zip",
+  "adapter_templates": {
+    "reviewed-stream-v1": {
+      "schema_version": 1,
+      "source_run": "sw0058-v151-m1004-smoke-20261012-001",
+      "protocol": "reviewed-sw0058-stream-v1",
+      "snapshot": {
+        "/home/lixiang/bench-eval/adapters/sw0058-v151-m1004-smoke-20261012-001/job.json": "f6f8e67573912e6798a5022c9ca0b68073d10f99b6666c5e27021d60fe4bb711",
+        "/home/lixiang/bench-eval/adapters/sw0058-v151-m1004-smoke-20261012-001/profile.json": "a6de45cd902a39156d4f19d077558a1bebe36c462a07395bc2672c9f7a5afa31",
+        "/home/lixiang/bench-eval/adapters/sw0058-v151-m1004-smoke-20261012-001/small_stream_adapter.py": "333b557136a6110d27ff3a769132dc570ef0d5befc7c564fd2532b6552740ef3",
+        "/home/lixiang/bench-eval/adapters/sw0058-v151-m1004-smoke-20261012-001/sw0058_gate_probe_driver_reference.py": "95d1f55505f42f1423c09d925aaece43d34fa7d209d01a1ad925154fcb3e4d06",
+        "/mnt/data/bench-eval/runs/sw0058-v151-m1004-smoke-20261012-001/state.json": "b610d53a89f665a8e1ea50a888f0826ed653fabd392add90bda31f2c66ee83ee",
+        "/mnt/data/bench-eval/runs/sw0058-v151-m1004-smoke-20261012-001/restore-verification.json": "f0f1279aa534a639349d9b4818137c94aa4c97844351945d8caf48715a00659b",
+        "/mnt/data/bench-eval/runs/sw0058-v151-m1004-smoke-20261012-001/workstation-predictions.json": "42f818d82e9f70b1ba0afc2dae775fb2516002e113c4b8ae015ff89cf60d7cc5",
+        "/mnt/data/bench-eval/cache/predictions/sw0058-v151-m1004-smoke-20261012-001/predictions.bench-eval-product.json": "506e69229b641dd333680f77edf3306ace8879f90e292613d0c5777a1a9c864b",
+        "/mnt/data/bench-eval/inputs/sw0058-v151-fullgt-20261010-001/manifest.json": "f3ebc415f48838d72bceb3b3f884e0b6ae23fc54d5937982da0739e529edd82e",
+        "/home/lixiang/bench-eval/adapters/gt-toggle-off-stream-20260929-001/v18/controlled-replay/run_controlled_sweep.py": "b874c7ed8dc11bf29152440a2c37f50985e2a704ceba2093826818de72bd0f95",
+        "/mnt/data/bench-eval/adapters/controlled-replay-native-stream-20260929-006/recorder/lixplayCLI": "5a81ced712f27dc6b4cd2c9c9ecef217f8cc2516e4c6c29614fb86289df6421f",
+        "/home/lixiang/bench-eval/adapters/gt-toggle-off-stream-20260929-001/v18/controlled-replay/adapter-manifest.json": "a5ba8a7674570ee55afcc11a4fe87d1643ce10023eea395ef28c8c29f316bdae",
+        "/home/lixiang/bench-eval/adapters/gt-toggle-off-stream-20260929-001/v18/controlled-replay/native_stream_replay.py": "b24764580a9ee6566365a2580767b947ac0cf9e18eb7fd127b76cd90a07fe6b1",
+        "/home/lixiang/bench-gateway/adapter-tools/fdb1c5482e6664d412819347743c22e4f62efff4255b8553988785f5a314430c/bench-replay-mode": "cb0d617cfcf0a48cab87e8ff042cf50d3a5e26fd8dc78b3b1f6144b761aafcac",
+        "/home/lixiang/bench-gateway/adapter-tools/fdb1c5482e6664d412819347743c22e4f62efff4255b8553988785f5a314430c/formal-replay-wrapper.sh": "4d97a9f376a4a50b91c13c5098426976a94e5bc165059eb43a4662f76c4d49ed",
+        "/home/lixiang/bench-gateway/adapter-tools/fdb1c5482e6664d412819347743c22e4f62efff4255b8553988785f5a314430c/infer_expert_pcm_replay.sdf": "7c0eb2c9bc53a188336522d047ac7dfb4caa1364ffc182a0465242b12d7dc225"
+      },
+      "controls": [
+        {
+          "target": "bin/bench-replay-mode",
+          "path": "/home/lixiang/bench-gateway/adapter-tools/fdb1c5482e6664d412819347743c22e4f62efff4255b8553988785f5a314430c/bench-replay-mode",
+          "sha256": "cb0d617cfcf0a48cab87e8ff042cf50d3a5e26fd8dc78b3b1f6144b761aafcac"
+        },
+        {
+          "target": "bin/formal-replay-wrapper.sh",
+          "path": "/home/lixiang/bench-gateway/adapter-tools/fdb1c5482e6664d412819347743c22e4f62efff4255b8553988785f5a314430c/formal-replay-wrapper.sh",
+          "sha256": "4d97a9f376a4a50b91c13c5098426976a94e5bc165059eb43a4662f76c4d49ed"
+        },
+        {
+          "target": "sdf/infer_expert_pcm_replay.sdf",
+          "path": "/home/lixiang/bench-gateway/adapter-tools/fdb1c5482e6664d412819347743c22e4f62efff4255b8553988785f5a314430c/infer_expert_pcm_replay.sdf",
+          "sha256": "7c0eb2c9bc53a188336522d047ac7dfb4caa1364ffc182a0465242b12d7dc225"
+        }
+      ],
+      "recorder_dependencies": [
+        {
+          "path": "/mnt/data/bench-eval/adapters/controlled-replay-native-stream-20260929-006/recorder/_internal",
+          "target": "/home/lixiang/bench-eval/cache/tools/RecorderHMI-v0.2.4/_internal",
+          "resolved": "/mnt/data/bench-eval/cache/tools/RecorderHMI-v0.2.4/_internal",
+          "files": 4497,
+          "links": 119,
+          "bytes": 673868761,
+          "content_sha256": "4a0d996db6308304f5c321961f0177b8976424db478e45d805fc70b3324afa1f"
+        },
+        {
+          "path": "/mnt/data/bench-eval/adapters/controlled-replay-native-stream-20260929-006/recorder/config",
+          "target": "/home/lixiang/bench-eval/cache/tools/RecorderHMI-v0.2.4/config",
+          "resolved": "/mnt/data/bench-eval/cache/tools/RecorderHMI-v0.2.4/config",
+          "files": 26,
+          "links": 0,
+          "bytes": 125908,
+          "content_sha256": "5a36155e897649c414763dc9e164f9c03535fa4e085d2b40d2a65f6714c5c4eb"
+        }
+      ],
+      "python_runtime": {
+        "links": [
+          {
+            "path": "/home/lixiang/bench-eval/venvs/xcamera-replay/bin/python",
+            "target": "python3"
+          },
+          {
+            "path": "/home/lixiang/bench-eval/venvs/xcamera-replay/bin/python3",
+            "target": "/usr/bin/python3"
+          },
+          {
+            "path": "/usr/bin/python3",
+            "target": "python3.8"
+          }
+        ],
+        "executable": "/usr/bin/python3.8",
+        "sha256": "298a9e830ed52f36c299427565485d717d1ce0179c0597cc16560513eb780b06",
+        "version": "Python 3.8.10",
+        "pyvenv_cfg_sha256": "5a1892809e00dee17a748a73515cfaf82baef47eebe19cda088a6121c07bbc4f"
+      },
+      "recorder_image": {
+        "tag": "vehicle-ppo:v1.0",
+        "id": "sha256:f12aab10271e6b6b2a67477745a892779aebe418d86719e3950b02872ec3f5e2"
+      },
+      "template_id": "abdb7eb19cc4f99b8a0f1b271d03994866bdba0dda2c57d546881bec24c798ea"
+    }
+  },
+  "default_adapter_template": "reviewed-stream-v1",
+  "workstation_evaluation_enabled": true,
+  "default_evaluator": {
+    "schema_version": 1,
+    "kind": "workstation-offline-v1",
+    "implementation_sha256": {
+      "scripts/evaluate_directory.py": "d62d89d6453254fa5ac7eaaba906763e6f6480e54f8a13f1951ffc262efa7607",
+      "scripts/directory_worker.py": "7531544e94626c2a2e66322b09e0cb5110eb171136ed933e4e5fee2071b5e56a",
+      "scripts/report_scope.py": "2d8617dd331887abfea78bc8e3787bd61c1b1a4309d2594cce3eacac4c5d2e3b",
+      "scripts/shared_runtime.py": "9d4998201c9aebbf64170dbe5f17d8b97c82106bb26160b3f3126b18bc7b331a",
+      "scripts/runtime_support.py": "432eccb26871ba7c3acd53181f10152291adbd87e9931209173fadab3a59fecd",
+      "scripts/runtime/parse_eval_report.py": "6a03148eacd54710ba29d67079489cb7288af2b4e5e4c9403532242db33dabf9",
+      "assets/shared-workstation.json": "2fafd73675120dfc1a3ad79fd9d7fbabbb0f9ed9245294bf8ba0c0819fe868f3"
+    },
+    "pin": {
+      "schema_version": 1,
+      "workstation_alias": "ubuntu-workstation",
+      "worker": {
+        "path": "/mnt/data/bench-eval/offline-eval/releases/0.3.0/workstation_eval.py",
+        "version": "0.3.0",
+        "sha256": "ca3ad638575732441faa247380571d166395f12665a669959ac997a1b320bfca"
+      },
+      "evaluator": {
+        "version": "uroad-dev-eval-20260818",
+        "root": "/mnt/data/bench-eval/environments/uroad-dev-eval-20260818-20261020-001",
+        "manifest_file": "transfer-source-manifest.json",
+        "manifest_sha256": "c53ff5e52e659b2a2aef774747aaace0a0cc4626ee19eae4f2808efa5afac5b0",
+        "file_count": 117,
+        "key_files": {
+          "run.sh": "dc1a2c2ea7bae26b8fa5b9f3e5090894b25715f4e0e76b77a7c423fb1b4c62da",
+          "build/uroad_offline_eval": "ef297bc6cb04aeafff40e79de4e97ec25e3ddcad11719c07cae43589027854b7",
+          "etc/evaluation_param.yaml": "02b413697b470373f4583312b9275440da2fc17bde6073c307cef5f69e0d6782"
+        }
+      },
+      "prediction_root": "/mnt/data/bench-eval/cache/predictions",
+      "runs_root": "/mnt/data/bench-eval/offline-eval/runs",
+      "discovery": {
+        "tasks_root": "/mnt/data/bench-eval/tasks",
+        "prepared_manifest_root": "/mnt/data/bench-eval/inputs",
+        "truth_root": "/mnt/data/bench-eval/datasets"
+      },
+      "on_mismatch": "stop_and_contact_workstation_maintainer",
+      "download_or_deploy": false
+    },
+    "bridge_sha256": "50976a87be87657ffa76219f4cf7691629ea34de97366f9f398a0dc0f500e0bc",
+    "input_verification": "paths-and-report-v1",
+    "direct_worker_sha256": "d7981148d59d99997847fa0c65bb820b25a023a5572611fe8c9c86e80f46a8fa",
+    "validity": {
+      "minimum_candidate_frames": 1,
+      "minimum_completed_frames": 1,
+      "required_tasks": []
+    },
+    "required_tasks": null,
+    "timeout_seconds": 9000,
+    "uploads": false,
+    "requires_bench": false,
+    "descriptor_sha256": "d3c72772b16266d90d6355d90acb5a83773f01f4da84d071e6d45170b32ee350"
+  },
+  "m100_build_enabled": true,
+  "m100_follow_official_build_enabled": true,
+  "m100_buildsh_enabled": true,
+  "m100_reviewed_buildsh_sha256": [
+    "2c9db9ee0c319766a794a28c01e96a4e48159e7ad85803a39af60df7b6c9ebf0"
+  ],
+  "replay_only_no_dump_enabled": false,
+  "recover_completed_on_restart": true,
+  "reconciliation_timeout_seconds": 60,
+  "task_cards_enabled": true,
+  "defer_assembly_archive": true,
+  "auto_execute_on_complete": true,
+  "intake_settle_seconds": 15,
+  "unified_status_cards": true,
+  "card_callbacks_enabled": true,
+  "require_material_confirmation": true,
+  "inline_material_card": true,
+  "native_material_menu": true,
+  "state_root": "/mnt/data/bench-eval/state",
+  "livc_app_base_url": "https://artifactory.ep.chehejia.com/artifactory/xcu-acore-test-local/Acore/Civu/Release/app/",
+  "cloud_sdk_python": "/usr/bin/python3",
+  "cloud_node_binary": "/usr/local/bin/node",
+  "cloud_evaluation_profiles": [
+    {
+      "effective_after": 1793092308.1226609,
+      "profile": {
+        "schema_version": 1,
+        "kind": "lpai-mounted-v1",
+        "instance": "bench-eval-offline",
+        "namespace": "vc-chassis",
+        "cluster": "cnhb01-algorithm-bidu-p-03",
+        "gt_root": "/mnt/volumes/jfs-dip-vfsc-chassis-ga/DataInLoop/gt-analyze/v151/dataset",
+        "run_root": "/mnt/volumes/vc-chassis-bd-ga/bench-eval-offline/developer/runs",
+        "volume_uid": "2da0a26d1ab44fed845235a9fcd56c98",
+        "volume_prefix": "bench-eval-offline/developer/runs/",
+        "tool_hashes": {
+          "run.sh": "dc1a2c2ea7bae26b8fa5b9f3e5090894b25715f4e0e76b77a7c423fb1b4c62da",
+          "build/uroad_offline_eval": "ef297bc6cb04aeafff40e79de4e97ec25e3ddcad11719c07cae43589027854b7",
+          "etc/evaluation_param.yaml": "02b413697b470373f4583312b9275440da2fc17bde6073c307cef5f69e0d6782",
+          "runtime-libs/libyaml-cpp.so.0.6": "b8a2d129e9b39d03ad7dade4eaa4eb1327a2562e203c17b50bcd8eb117d1ed7e"
+        },
+        "code_hashes": {
+          "cloud_evaluation.py": "1edf9d942bfe75c47f42211e5925ea3caf679bc5e70a7f33fc679a6a3d9f55a7",
+          "cloud_agent.py": "cdbc8e9af4a36d098955e65f85c34f14e5a29bec26e377e689d1c646e9769a71",
+          "bench_cloud_server.py": "4fb8751ddabc0bd74f0b7c9a26a210d63b37d2285c8c76e9c5754150c57aa344",
+          "report_scope.py": "2d8617dd331887abfea78bc8e3787bd61c1b1a4309d2594cce3eacac4c5d2e3b",
+          "parse_eval_report.py": "6a03148eacd54710ba29d67079489cb7288af2b4e5e4c9403532242db33dabf9",
+          "public.pem": "e0ed97041520dbeb165a454b143dce76768c501ffa9ffc8e2f3bd0218550d603"
+        },
+        "profile_sha256": "d0ceb6ba476b29622bf41bb5e6791404b68edc7027710f2a3637dc0d27e526e5"
+      }
+    },
+    {
+      "effective_after": 1793256396.3991637,
+      "profile": {
+        "schema_version": 1,
+        "kind": "lpai-mounted-v1",
+        "instance": "bench-eval-offline",
+        "namespace": "vc-chassis",
+        "cluster": "cnhb01-algorithm-bidu-p-03",
+        "run_root": "/mnt/volumes/vc-chassis-bd-ga/bench-eval-offline/developer/runs",
+        "volume_uid": "2da0a26d1ab44fed845235a9fcd56c98",
+        "volume_prefix": "bench-eval-offline/developer/runs/",
+        "tool_hashes": {
+          "run.sh": "dc1a2c2ea7bae26b8fa5b9f3e5090894b25715f4e0e76b77a7c423fb1b4c62da",
+          "build/uroad_offline_eval": "ef297bc6cb04aeafff40e79de4e97ec25e3ddcad11719c07cae43589027854b7",
+          "etc/evaluation_param.yaml": "02b413697b470373f4583312b9275440da2fc17bde6073c307cef5f69e0d6782",
+          "runtime-libs/libyaml-cpp.so.0.6": "b8a2d129e9b39d03ad7dade4eaa4eb1327a2562e203c17b50bcd8eb117d1ed7e"
+        },
+        "gt_policy": "task-dataset-v1",
+        "gt_mount_roots": [
+          "/mnt/volumes/jfs-dip-vfsc-dataset-ga",
+          "/mnt/volumes/jfs-dip-vfsc-chassis-ga"
+        ],
+        "code_hashes": {
+          "cloud_evaluation.py": "8a89f28f0dc2aa1af3db7d6383ec8d3192aea96b66d33bfbe1ff652f9bc11d8f",
+          "cloud_agent.py": "72363d0e85c1b970c994d41983de22d3cd431ec541c4ec5ad8996ca265fdd60c",
+          "cloud_truth.py": "d8d71643ea8cb821d7228c7555726d6198bb91d83738f1ef02fc8107d990095e",
+          "bench_cloud_server.py": "4fb8751ddabc0bd74f0b7c9a26a210d63b37d2285c8c76e9c5754150c57aa344",
+          "report_scope.py": "2d8617dd331887abfea78bc8e3787bd61c1b1a4309d2594cce3eacac4c5d2e3b",
+          "parse_eval_report.py": "6a03148eacd54710ba29d67079489cb7288af2b4e5e4c9403532242db33dabf9",
+          "public.pem": "e0ed97041520dbeb165a454b143dce76768c501ffa9ffc8e2f3bd0218550d603"
+        },
+        "profile_sha256": "60d37ff14a45acc798c1e373a2c9d76dbafca601370b260b94fe670d188724e8"
+      }
+    }
+  ],
+  "cloud_browser_autostart": false,
+  "require_explicit_dataset": true,
+  "evaluation_gt_binding_required_after": 1793256396.3991637,
+  "cloud_dataset_enabled": true,
+  "cloud_dataset_volumes": {
+    "jfs-dip-vfsc-dataset-ga": {
+      "uid": "53a8e589e3a342ac893c54a554494f60"
+    }
+  },
+  "cloud_dataset_max_bytes": 68719476736,
+  "cloud_dataset_timeout_seconds": 3600,
+  "workstation_local_execution": true,
+  "feishu_direct_delivery": true,
+  "ai_backend": "workstation-broker",
+  "central_datasets_root": "/mnt/data/bench-eval/datasets",
+  "desktop_bridge_generation": "72204e45d64f498e8b121b50cc8f6780",
+  "desktop_bridge_enabled": true,
+  "desktop_legacy_cc_binary": "/mnt/data/bench-eval/service/gateway/tools/cc-connect/cc-connect-linux-amd64"
+}

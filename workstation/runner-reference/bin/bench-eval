@@ -1,0 +1,2 @@
+#!/bin/sh
+exec python3 -B /home/lixiang/bench-eval/extensions/candidate-environments/1.0.0/src/runner_entry.py "$@"

@@ -1,0 +1,5 @@
+{
+  "JUPYTER_CONFIG_DIR": "/lpai/bench-eval-offline/jupyter-config",
+  "PYTHONPATH": "/lpai/bench-eval-offline/runtime",
+  "BENCH_EVAL_RUN_ROOT": "/mnt/volumes/vc-chassis-bd-ga/bench-eval-offline/developer/runs"
+}

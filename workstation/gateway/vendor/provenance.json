@@ -1,0 +1,23 @@
+{
+  "run_stream_batch.py": {
+    "source": "D:\\developer\\Desktop\\Project\\预瞄悬架台架评测\\skills\\bench-eval-execution\\scripts\\run_stream_batch.py",
+    "sha256": "6150daed6717b4e72251fce344296502294c4fdd479f275f769ceccfda84d128",
+    "policy": "Gateway-local reviewed derivative; original project unchanged",
+    "original_sha256": "6a0152bed4d8bb45db3f32d9b80098ea47e4cd7defc3c32d1377619d26751eba",
+    "modifications": [
+      "Candidate delivery checks frozen output types against current precheck instead of inheriting historical product types.",
+      "Candidate dispatch shares one batch preflight before reviewed activation; native READY arbitration and Runner lock retained."
+    ]
+  },
+  "parse_eval_report.py": {
+    "source": "D:\\developer\\Desktop\\Project\\预瞄悬架台架评测\\automation\\parse_eval_report.py",
+    "sha256": "6a03148eacd54710ba29d67079489cb7288af2b4e5e4c9403532242db33dabf9",
+    "policy": "read-only snapshot; original project unchanged"
+  },
+  "build_uroad_eval.py": {
+    "source": "maintained gateway compiler helper",
+    "original_sha256": "1a2ac5c332302860615213d86717e201eed37d311a8db0a0170eebcd5e71040e",
+    "sha256": "cc5b42132d5107b0ea29f99e5f7a97cdf6edf6130e7d812539f24188c8ddb065",
+    "policy": "Reviewed per-APP source/lock snapshots and explicit eval-dump mode; no default baselock"
+  }
+}

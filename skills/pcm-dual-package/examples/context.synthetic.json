@@ -1,0 +1,55 @@
+{
+  "pair_id": "synthetic-pair-001",
+  "source": {
+    "repository": "https://gitlab.chehejia.com/livc-acore/chassis/uroad.git",
+    "branch": "feature/example",
+    "commit": "1111111111111111111111111111111111111111"
+  },
+  "baseline_lock_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+  "common_parameters": {
+    "CONTROLLER": "CCU_M100_AVMLIVC",
+    "BASE_LINE": "0075",
+    "SOFTWARE_BRANCH": "0111",
+    "BUILDVARIANT": "release",
+    "MANIFEST_NAME": "successful.lock",
+    "BUILD_REPLAY": true,
+    "UPLOAD_ALL_PACKAGE": false,
+    "SILENT_BUILD": false,
+    "NOTIFY_CHAT_ID": "",
+    "LIWARE_URL": "",
+    "LIMESH_URL": "",
+    "PORTAL_TRIGGER_URL": "",
+    "PORTAL_RESOURCE_KEY": "",
+    "NOTIFY_USER": "",
+    "RUN_INTE_TEST": false
+  },
+  "common_app_refs": [
+    "livc_integrate/0.2.11-avm@livc/stable"
+  ],
+  "common_locked_refs": [
+    "xlidar/0.2.8-pcm.synthetic@livc/pcm-synthetic-pair-001"
+  ],
+  "common_recipe_evidence": {},
+  "components": {
+    "OFF": {
+      "ref": "uroad_m100/3.1.4-pcm-off.synthetic@livc/pcm-synthetic-pair-001",
+      "source_commit": "1111111111111111111111111111111111111111",
+      "cmake": {
+        "WITH_EVAL_DUMP": "OFF"
+      },
+      "recipe_revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "recipe_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "availability": "local_recipe"
+    },
+    "ON": {
+      "ref": "uroad_m100/3.1.4-pcm-on.synthetic@livc/pcm-synthetic-pair-001",
+      "source_commit": "1111111111111111111111111111111111111111",
+      "cmake": {
+        "WITH_EVAL_DUMP": "ON"
+      },
+      "recipe_revision": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "recipe_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+      "availability": "local_recipe"
+    }
+  }
+}
