@@ -8,6 +8,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import shutil
 import subprocess
 import sys
 from urllib.parse import unquote
@@ -35,8 +36,13 @@ def boundary_errors(relative,raw):
     return errors
 
 def main():
-    result=subprocess.run(['git','ls-files','--cached','--others','--exclude-standard','-z'],cwd=ROOT,capture_output=True,check=True)
-    files=sorted({ROOT/p for p in result.stdout.decode('utf-8').split('\0') if p})
+    if shutil.which('git'):
+        result=subprocess.run(['git','ls-files','--cached','--others','--exclude-standard','-z'],cwd=ROOT,capture_output=True,check=True)
+        files=sorted({ROOT/p for p in result.stdout.decode('utf-8').split('\0') if p})
+    else:
+        # GitLab's clean checkout is also checked in slim images without Git.
+        files=sorted(p for p in ROOT.rglob('*') if p.is_file()
+                     and not {'.git','__pycache__'}.intersection(p.relative_to(ROOT).parts))
     errors=[];python_count=markdown_count=link_count=json_count=0
     for path in files:
         if not path.is_file():continue

@@ -177,12 +177,14 @@ class DraftTests(unittest.TestCase):
     def test_old_database_upgrade_preserves_material_and_adds_no_release_default(self):
         import sqlite3
         path = Path(self.temp.name)/'old.sqlite3'
-        with sqlite3.connect(path) as c:
+        from contextlib import closing
+        with closing(sqlite3.connect(path)) as c:
             c.execute('''CREATE TABLE pcm_dual_drafts(id TEXT PRIMARY KEY,owner TEXT,session TEXT,revision INTEGER,
                          nonce TEXT,state TEXT,branch_url TEXT,component_versions TEXT,attempt TEXT,
                          last_revision INTEGER,input_sha TEXT,report TEXT,baseline_build INTEGER)''')
             c.execute('INSERT INTO pcm_dual_drafts VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)',
                       ('old', 'owner-a', 'session-a', 7, 'nonce', 'DRAFT', URL, TEXT, None, None, None, None, 101))
+            c.commit()
         d = Drafts(path).open('owner-a', 'session-a')
         self.assertEqual((d['id'], d['revision'], d['component_versions'], d['baseline_build']), ('old', 7, TEXT, 101))
         self.assertEqual(d['release_parameters'], {})

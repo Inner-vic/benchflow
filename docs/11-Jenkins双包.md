@@ -1,6 +1,6 @@
 # Jenkins普通版OFF与评测版ON双包
 
-> 早期独立模块说明，保留兼容接口与历史验证。当前 Bot 构建和真实双包交付见[当前实现](16-双版本构建确认与派发.md)；本页“未部署”等描述仅对应当时模块，不代表当前 Bot 状态。
+> 本页为早期设计与兼容接口记录，正文中的输入字段、版本方案及使用命令不作为当前操作指引。当前入口见[Jenkins 发包](17-Jenkins发包.md)，原部署事实见[历史验收](16-双版本构建确认与派发.md)。
 
 本模块专门生成两个APP普包：普通版OFF和评测版ON。入口为[pcm-dual-package Skill](../skills/pcm-dual-package/SKILL.md)，代码、测试和历史CI示例见[模块说明](../skills/pcm-dual-package/README.md)。模块独立调用，未连接材料卡、任务队列或台架Runner，也不修改共享Jenkins流水线。
 

@@ -212,6 +212,12 @@ class PipelineTests(unittest.TestCase):
             'event_id': 'synthetic-confirm', 'action': 'pcm_confirm_build', 'form_value': {},
             'value': {'task_id': self.review['draft_id'], 'nonce': self.review['nonce'], 'revision': self.review['revision']}}
     def confirm(self):
+        # Seed the already-authorized pre-upgrade job. The current entry rejects
+        # new v1 confirmations but must recover these frozen historical jobs.
+        try:
+            self.jobs.confirm("ou_tester", SESSION, self.event(), self.review["review_sha256"])
+        except ValueError as error:
+            raise GatewayError(str(error)) from None
         self.entry.review_action(SESSION, self.event())
         return self.jobs.for_draft('ou_tester', SESSION, self.review['draft_id'])
     def worker(self):
@@ -245,6 +251,7 @@ class PipelineTests(unittest.TestCase):
         data = dict(self.event(), schema=1, app_id='cli_test')
         raw = json.dumps(data).encode();mac = hmac.new(b'synthetic-secret', raw, hashlib.sha256).hexdigest()
         packet = '@@BENCH_CARD@@'+base64.urlsafe_b64encode(raw).decode().rstrip('=')+'.'+mac
+        self.jobs.confirm('ou_tester', SESSION, self.event(), self.review['review_sha256'])
         with patch.object(entry, 'Entry', return_value=self.entry):
             self.assertEqual(entry.maybe_handle(SimpleNamespace(cfg=self.cfg), SESSION, packet), 'NO_REPLY')
         self.assertIsNotNone(self.jobs.for_draft('ou_tester', SESSION, self.review['draft_id']))
@@ -264,7 +271,7 @@ class PipelineTests(unittest.TestCase):
                 self.entry.review_action(SESSION, data)
         data = self.event();data['value']['nonce'] = 'wrong'
         with self.assertRaises(GatewayError): self.entry.review_action(SESSION, data)
-        with patch.object(self.entry, 'source_check', return_value=False), self.assertRaises(GatewayError): self.confirm()
+        with patch.object(self.entry, 'source_check', return_value=False), self.assertRaises(GatewayError): self.entry.review_action(SESSION, self.event())
         with self.store.connect() as c: self.assertEqual(c.execute('SELECT count(*) FROM pcm_build_jobs').fetchone()[0], 0)
 
     def test_return_to_edit_invalidates_review_but_keeps_inputs(self):
@@ -362,6 +369,7 @@ class PipelineTests(unittest.TestCase):
             surface = c.execute('SELECT message_id FROM pcm_dual_surfaces WHERE owner=?', ('ou_tester',)).fetchone()[0]
         event = dict(self.event(), event_id='second-confirm', message_id=surface,
             value={'task_id': review['draft_id'], 'nonce': review['nonce'], 'revision': review['revision']})
+        self.jobs.confirm('ou_tester', SESSION, event, review['review_sha256'])
         self.entry.review_action(SESSION, event)
         second = self.jobs.for_draft('ou_tester', SESSION, review['draft_id'])
         self.assertEqual(self.jobs.next()['id'], first['id'])
@@ -399,8 +407,8 @@ class PipelineTests(unittest.TestCase):
         folder = self.root/'recipes';folder.mkdir()
         for path, text in self.review['payload'].items():
             if path.startswith('internal_pcm_pair/recipes/'):
-                target = folder/Path(path).relative_to('internal_pcm_pair/recipes');target.parent.mkdir(parents=True, exist_ok=True);target.write_text(text)
-        script = self.root/'publisher.py';script.write_text(self.review['payload']['internal_pcm_pair/publish_recipes_ci.py'])
+                target = folder/Path(path).relative_to('internal_pcm_pair/recipes');target.parent.mkdir(parents=True, exist_ok=True);target.write_text(text, encoding="utf-8", newline="\n")
+        script = self.root/'publisher.py';script.write_text(self.review['payload']['internal_pcm_pair/publish_recipes_ci.py'], encoding='utf-8', newline='\n')
         module = runpy.run_path(str(script), run_name='synthetic_import')
         manifest = module['reviewed_inputs'](folder)
         self.assertEqual(set(manifest['components']), {'OFF', 'ON'})

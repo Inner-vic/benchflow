@@ -253,10 +253,17 @@ class Drafts:
         if report.get('state') not in ('VALIDATED', 'NEEDS_INPUT'):
             raise ValueError('无效的校验结果。')
         if report['state'] == 'VALIDATED':
-            if (report.get('feature') != FEATURE or report.get('delivery') != 'app_pair'
-                    or report.get('app_count') != 2 or report.get('compile_modes') != ['OFF', 'ON']
+            single = (report.get('delivery') == 'app' and report.get('app_count') == 1
+                      and report.get('compile_modes') == ['OFF']
+                      and report.get('build_review', {}).get('schema') == 'pcm-bot-release/v2')
+            pair = (report.get('delivery') == 'app_pair' and report.get('app_count') == 2
+                    and report.get('compile_modes') == ['OFF', 'ON'])
+            if (report.get('feature') != FEATURE or not (single or pair)
                     or report.get('jenkins_submitted') is not False or report.get('bench_tasks') != 0):
-                raise ValueError('结果不属于独立双APP校验，不能保存。')
+                raise ValueError('结果不属于本次软件构建校验，不能保存。')
+            if single:
+                from .pcm_release import checked
+                checked(report['build_review'])
             components(report['effective_component_versions'], require_required=True)
             release_parameters(report.get('release_parameters'))
         with self.connect() as c:
@@ -298,10 +305,10 @@ def live_drafts(state_root):
     return Drafts(root/'pcm-dual-build.sqlite3')
 
 
-def run_validation(store, ticket, discover, verify_component, prepare_review=None):
+def run_validation(store, ticket, discover, verify_component, prepare_review=None, *, validator=None):
     """One read-only validation unit; stale results cannot replace newer input."""
     try:
-        report = validate_configuration(ticket, discover, verify_component)
+        report = (validator or validate_configuration)(ticket, discover, verify_component)
         if report.get('state') == 'VALIDATED' and prepare_review is not None:
             report['build_review'] = prepare_review(ticket, report)
     except Exception as error:

@@ -14,12 +14,12 @@ import uuid
 from .core import GatewayError
 from . import pcm_dual_build as feature
 
-COMMANDS = {'PCM 双版本构建', 'PCM双版本构建', '/pcm_dual_build'}
+COMMANDS = {'Jenkins 发包', 'Jenkins发包', '/jenkins_build', '/pcm_dual_build'}
 
 
 def is_command(text):
     value = ''.join(unicodedata.normalize('NFKC', text).split()).casefold()
-    return value in {'pcm双版本构建', '/pcm_dual_build'}
+    return value in {'jenkins发包', '/jenkins_build', 'pcm双版本构建', '/pcm_dual_build'}
 
 
 def enabled(cfg):
@@ -59,9 +59,13 @@ class Entry:
 
     def card(self, draft):
         if draft['state'] == 'VALIDATED' and (draft.get('report') or {}).get('build_review'):
-            from .pcm_build_plan import render_review
-            return render_review(draft, build_enabled=build_enabled(self.cfg))
-        return feature.render_card(draft, callback_value={'feature': feature.FEATURE,
+            from .pcm_release import is_release, render_review
+            if is_release(draft['report']['build_review']):
+                return render_review(draft, build_enabled=build_enabled(self.cfg))
+            from .pcm_build_plan import render_review as render_legacy
+            return render_legacy(draft, build_enabled=False)
+        from .pcm_release import render_input
+        return render_input(draft, callback_value={'feature': feature.FEATURE,
             'action': 'validate_build_config', 'draft_id': draft['id'],
             'revision': draft['revision'], 'nonce': draft['nonce']})
 
@@ -88,11 +92,16 @@ class Entry:
                 key = hashlib.sha256((self.cfg['feishu_app_id']+':pcm-dual:'+owner+':'+uuid.uuid4().hex).encode()).hexdigest()[:32]
                 c.execute("INSERT INTO pcm_dual_opens VALUES(?,?,?,'PENDING') ON CONFLICT(owner) DO UPDATE SET send_key=excluded.send_key,created=excluded.created,state=excluded.state", (owner, key, now))
         loading = {'schema': '2.0', 'config': {'update_multi': True, 'enable_forward': False},
-            'header': {'template': 'blue', 'title': {'tag': 'plain_text', 'content': 'PCM 双版本构建'}},
+            'header': {'template': 'blue', 'title': {'tag': 'plain_text', 'content': 'Jenkins 发包'}},
             'body': {'elements': [{'tag': 'markdown', 'content': '正在打开构建配置。'}]}}
         mid, chat = send_owner(self.store, self.client, owner, loading, key, lambda: 12)
         native = session.split(':')[0]+':'+chat+':'+owner
         draft = self.store.open(owner, native)
+        if draft['state'] == 'VALIDATED' and (draft.get('report') or {}).get('delivery') == 'app_pair':
+            with self.store.connect() as c:
+                c.execute("UPDATE pcm_dual_drafts SET revision=revision+1,state='DRAFT',report=NULL,attempt=NULL,last_revision=NULL,input_sha=NULL WHERE id=? AND state='VALIDATED' AND revision=? AND NOT EXISTS(SELECT 1 FROM pcm_build_jobs WHERE draft_id=?)",
+                    (draft['id'], draft['revision'], draft['id']))
+            draft = self.store.open(owner, native)
         with self.store.connect() as c:
             c.execute('INSERT INTO pcm_dual_surfaces VALUES(?,?,?,?,?) ON CONFLICT(owner) DO UPDATE SET session=excluded.session,draft_id=excluded.draft_id,message_id=excluded.message_id,chat_id=excluded.chat_id',
                       (owner, native, draft['id'], mid, chat))
@@ -108,22 +117,19 @@ class Entry:
         original = list(sys.path)
         try:
             sys.path.insert(0, str(scripts))
-            from source_build_discovery import LiveReader, discover, verify_recipe
+            from source_build_discovery import LiveReader, discover, verify_recipe, common_inputs
             reader = LiveReader(self.cfg['project_root'], ticket['owner'])
-            result = {}
             def resolve(request):
-                value = discover(request, reader);result['value'] = value
-                return value
+                return discover(request, reader)
             def verify(ref):
-                lock = result.get('value', {}).get('baseline', {}).get('lock_refs', {})
-                value = lock.get(ref.split('/')[0], '')
-                revision = value.split('#', 1)[1] if '#' in value and value.split('#')[0] == ref else None
-                return verify_recipe(reader, ref, revision)
-            prepare = None
-            if build_enabled(self.cfg):
-                from .pcm_build_plan import prepare_live_review
-                prepare = lambda current, report: prepare_live_review(self.cfg, current, report, reader, scripts=scripts)
-            return feature.run_validation(store, ticket, resolve, verify, prepare)
+                # The original Job strips #revision. Require a unique current
+                # recipe rather than silently trusting an older baseline RREV.
+                return verify_recipe(reader, ref)
+            from .pcm_release import validate
+            return feature.run_validation(store, ticket, resolve, verify,
+                validator=lambda value, discovery, verifier: validate(
+                    value, discovery, verifier, reader, common_inputs))
+
         finally:
             sys.path[:] = original
 
@@ -156,7 +162,7 @@ class Entry:
             row = c.execute('SELECT d.* FROM pcm_dual_surfaces s JOIN pcm_dual_drafts d ON d.id=s.draft_id WHERE s.owner=? AND s.session=? AND s.message_id=? AND s.chat_id=?',
                             (owner, session, data['message_id'], data['chat_id'])).fetchone()
             if not row or row['nonce'] != value.get('nonce'):
-                raise GatewayError('PCM卡片已失效或不属于本人私聊，请发送“PCM 双版本构建”重新打开。')
+                raise GatewayError('PCM卡片已失效或不属于本人私聊，请发送“Jenkins 发包”重新打开。')
             draft = feature.Drafts.unpack(row)
             old = c.execute('SELECT * FROM pcm_dual_events WHERE event_id=?', (data['event_id'],)).fetchone()
             if old:
@@ -211,7 +217,7 @@ class Entry:
         except Exception:
             with self.store.connect() as c:
                 c.execute("UPDATE pcm_dual_events SET state='DELIVERY_PENDING' WHERE event_id=?", (data['event_id'],))
-            raise GatewayError('PCM校验或卡片更新未完成，输入已保留；请发送“PCM 双版本构建”重新打开。') from None
+            raise GatewayError('PCM校验或卡片更新未完成，输入已保留；请发送“Jenkins 发包”重新打开。') from None
         with self.store.connect() as c:
             c.execute("UPDATE pcm_dual_events SET state='DONE' WHERE event_id=?", (data['event_id'],))
         return 'NO_REPLY'
@@ -241,6 +247,9 @@ class Entry:
             if value.get('nonce') != review['nonce'] or value.get('revision') != draft['revision']:
                 raise ValueError('最终参数卡已更新，请重新核对。')
             existing = self.jobs.for_draft(owner, session, draft['id'])
+            from .pcm_release import is_release
+            if data['action'] == 'pcm_confirm_build' and existing is None and not is_release(review):
+                raise ValueError('这是旧版构建参数，请返回修改并重新校验后再确认发包。')
             if data['action'] == 'pcm_confirm_build':
                 if not build_enabled(self.cfg): raise ValueError('自动构建暂未开启，本次未提交。')
                 if existing is None:
@@ -284,6 +293,6 @@ def maybe_handle(service, session, text):
         if not any(k.startswith('pcm_dual_') for k in form) and data.get('action') not in ('pcm_confirm_build', 'pcm_edit_build'):
             return None
     if not enabled(service.cfg):
-        raise GatewayError('PCM双版本构建校验暂未开启，未提交任何任务。')
+        raise GatewayError('Jenkins 发包暂未开启，未提交任何任务。')
     entry = Entry(service.cfg)
     return entry.open(session) if command else entry.handle(session, data)

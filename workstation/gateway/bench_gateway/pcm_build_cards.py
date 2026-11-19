@@ -24,6 +24,9 @@ def card(title, state, content):
 
 
 def render_parent(job):
+    from .pcm_release import is_release
+    if is_release(job['review']):
+        return render_release(job)
     review = job['review'];params = review['parameters']['OFF']
     summary = '**'+html.escape(job['progress'])+'**'
     if job['error']: summary += '\n'+html.escape(job['error'])
@@ -62,9 +65,35 @@ def render_mode(job, mode):
     return card(title, state, elements)
 
 
+def render_release(job):
+    review = job['review'];params = review['parameters']['APP']
+    result = job['modes'].get('APP', {})
+    summary = '**'+html.escape(job['progress'])+'**'
+    if job.get('error'):
+        summary += '\n'+html.escape(job['error'])
+    context = [md('SW'+params['BASE_LINE']+' · ID0111 · '+params['BUILDVARIANT']),
+               md('**源码** '+html.escape(review['source']['branch'])+' · `'+review['source']['commit']+'`')]
+    if result.get('build_url'):
+        context.append(md('[Jenkins 构建]('+result['build_url']+')'))
+    if result.get('app'):
+        context += [md('**LIVC APP**\n['+html.escape(result['app']['name'])+']('+result['app']['url']+')'),
+                    md('[集成 Lockfile]('+result['lock']['url']+')'),
+                    md('**APP SHA-256** `'+result['app']['sha256']+'`')]
+    return card('Jenkins 发包', job['state'], [panel([md(summary)], theme(job['state'])),
+        panel(context), md('正式卡片沿用原 Jenkins 通知配置。依赖替换、M100 准备和台架执行另行处理。'),
+        md('构建任务 '+job['id'])])
+
+
 def deliver(store, client, jobs, job):
     from .card_entities import send_owner, update
     from .pcm_build_plan import PROJECT
+    from .pcm_release import is_release
+    if is_release(job['review']):
+        # Reuse the original private configuration card; the original Job owns
+        # the formal group notification. Delivery retries do not create cards.
+        update(store, client, job['message_id'], render_release(job), lambda: 10)
+        jobs.delivered(job)
+        return
     publication = jobs.step(job['id'], 'CI_PIPELINE')
     if publication and publication['state'] == 'DONE':
         job = dict(job, publication_url='https://gitlab.chehejia.com/'+PROJECT+'/-/pipelines/'+str(publication['result']['id']))

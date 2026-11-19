@@ -37,6 +37,10 @@ def artifact_uri(uri):
     return 'https://artifactory.ep.chehejia.com'+p.path
 
 
+def mode_name(mode):
+    return '普通APP' if mode == 'APP' else mode+'版'
+
+
 class Engine:
     def __init__(self, jobs, remote, verify_recipe):
         self.jobs, self.remote, self.verify_recipe = jobs, remote, verify_recipe
@@ -59,7 +63,9 @@ class Engine:
         review = checked(job['review'])
         definition = self.remote.json(JOB+'api/json?'+urlencode({'tree': 'property[parameterDefinitions[name,choices,defaultParameterValue[value]]]'}))
         fields = {v['name']: v for prop in definition.get('property', []) for v in prop.get('parameterDefinitions', [])}
-        covered = set(review['parameters']['OFF'])
+        from .pcm_release import modes, is_release, binding
+        first = modes(review)[0]
+        covered = set(review['parameters'][first])
         # Jenkins explicitly documents IMPORTANT as an inert link to its usage
         # guide. It is not a release parameter; do not omit any unknown field.
         notice_values = (None, '', 'https://example.feishu.cn/docx/DEMO00000000000000000000002')
@@ -67,7 +73,7 @@ class Engine:
                 or fields.get('IMPORTANT', {}).get('defaultParameterValue', {}).get('value') not in notice_values):
             raise BuildFailure('Jenkins参数定义已变化，请管理员核对；未创建发布分支或提交构建。')
         for name in ('CONTROLLER', 'BUILDVARIANT'):
-            if fields[name].get('choices') and review['parameters']['OFF'][name] not in fields[name]['choices']:
+            if fields[name].get('choices') and review['parameters'][first][name] not in fields[name]['choices']:
                 raise BuildFailure('Jenkins不接受本次目标或构建类型，未提交。')
         source = review['source']
         head = self.remote.json(API+'/repository/branches/'+quote(source['branch'], safe=''))
@@ -75,10 +81,16 @@ class Engine:
             raise BuildFailure('源码分支已更新，请重新校验并确认；未提交发包。')
         for proof in review['recipe_evidence'].values():
             ref = proof['ref']
-            actual = self.verify_recipe(self.remote, ref, proof['recipe_revision'])
+            actual = self.verify_recipe(self.remote, ref) if is_release(review) else self.verify_recipe(self.remote, ref, proof['recipe_revision'])
             if (actual.get('state') != 'VERIFIED' or actual.get('recipe_sha256') != proof['recipe_sha256']
                     or actual.get('ref') != ref or actual.get('recipe_revision') != proof['recipe_revision']):
                 raise BuildFailure('组件配方来源已变化，请重新校验。')
+        if is_release(review):
+            cmake = self.remote.get(API+'/repository/files/CMakeLists.txt/raw?ref='+source['commit'], 1024*1024)
+            actual_binding = binding(self.remote, review['recipe_evidence']['uroad_m100'], source, cmake)
+            if actual_binding != review['m100_binding']:
+                raise BuildFailure('M100源码或编译配置已变化，未提交构建。')
+            return {'valid': True, 'job_parameters': sorted(covered), 'source_binding': actual_binding}
         lint = self.remote.post(API+'/ci/lint', {'content': review['payload']['.gitlab-ci.yml'],
             'ref': source['commit'], 'include_jobs': True, 'include_merged_yaml': True})
         if lint.get('valid') is not True or {j['name'] for j in lint.get('jobs', [])} != {'publish-pcm-recipes'}:
@@ -181,6 +193,11 @@ class Engine:
 
     def submit(self, job, mode):
         params = job['review']['parameters'][mode]
+        from .pcm_release import is_release
+        if is_release(job['review']) and self.jobs.step(job['id'], 'JENKINS_'+mode) is None:
+            # Re-read immediately before the first write. An existing intent
+            # always reconciles the original dispatch rather than resubmitting.
+            self.preflight(job)
         return self.jobs.mutation(job, 'JENKINS_'+mode,
             {'mode': mode, 'parameters_sha': hashlib.sha256(json.dumps(params, sort_keys=True).encode()).hexdigest()},
             lambda: self.remote.submit_jenkins(params), lambda step: self.find_jenkins(params))
@@ -198,9 +215,9 @@ class Engine:
                 found = self.find_jenkins(params, queue_id=dispatch['queue_id'])
                 if not found or not found.get('build_url'): raise Uncertain('原队列已不可查，构建身份尚未确认；不会重新提交。')
                 q = {'executable': {'url': found['build_url']}}
-            if q.get('cancelled'): raise BuildFailure(mode+'版构建已被取消，不自动重新提交。')
+            if q.get('cancelled'): raise BuildFailure(mode_name(mode)+'构建已被取消，不自动重新提交。')
             if not q.get('executable'):
-                self.progress(job, mode+'版已进入Jenkins队列', mode,
+                self.progress(job, mode_name(mode)+'已进入Jenkins队列', mode,
                     {'state': 'QUEUED', 'message': '等待Jenkins构建', 'queue_id': dispatch['queue_id']})
                 return None
             url = q['executable']['url']
@@ -212,12 +229,12 @@ class Engine:
             raise Uncertain('Jenkins实际参数或构建身份与冻结输入不同。')
         common = {'build_url': url, 'number': number, 'queue_id': dispatch['queue_id']}
         if build.get('building'):
-            self.progress(job, mode+'版正在编译与打包', mode,
+            self.progress(job, mode_name(mode)+'正在编译与打包', mode,
                 dict(common, state='RUNNING', message='正在编译M100并打包APP'))
             return None
         if build.get('result') != 'SUCCESS':
             self.jobs.update(job['id'], mode=mode, result=dict(common, state='FAILED', message='Jenkins构建失败（'+str(build.get('result'))+'）'))
-            raise BuildFailure(mode+'版Jenkins构建未成功，已停止后续发包；请查看对应构建日志。')
+            raise BuildFailure(mode_name(mode)+'Jenkins构建未成功，已停止后续发包；请查看对应构建日志。')
         return common
 
     def artifacts(self, job, mode, build, published):
@@ -236,7 +253,7 @@ class Engine:
             if not candidates:
                 observed = self.saved(job, mode+'_FINISHED') or {}
                 if time.time()-observed.get('observed_at', 0) < 600:
-                    raise ReadPending('Jenkins已成功，正在等待'+mode+'版产物索引')
+                    raise ReadPending('Jenkins已成功，正在等待'+mode_name(mode)+'产物索引')
                 raise Uncertain('成功构建的'+kind+'产物仍未找到，请核对原构建；不重复发包。')
             if len(candidates) != 1: raise Uncertain('成功构建的'+kind+'产物存在歧义，请核对原构建；不重复发包。')
             uri, name = candidates[0];meta = self.remote.json(uri)
@@ -265,21 +282,26 @@ class Engine:
                 raise Uncertain('实际依赖配方修订与确认记录不一致，请核对构建；不会自动重新发包。')
         return dict(build, **outputs, state='SUCCEEDED', message='构建完成，APP与Lockfile已核对',
                     m100={'ref': expected['ref'], 'recipe_revision': expected['recipe_revision'],
-                          'package_id': m100[0]['package_id'], 'prev': m100[0]['prev'], 'recipe_compile_mode': mode})
+                          'package_id': m100[0]['package_id'], 'prev': m100[0]['prev'],
+                          'recipe_compile_mode': 'OFF' if mode == 'APP' else mode})
 
     def advance(self, job):
         checked(job['review'])
+        from .pcm_release import is_release, modes
         if not self.saved(job, 'PREFLIGHT'):
-            self.progress(job, '正在核对已确认源码与独立CI配置')
+            self.progress(job, '正在核对源码与发包配置' if is_release(job['review']) else '正在核对已确认源码与独立CI配置')
             self.checkpoint(job, 'PREFLIGHT', self.preflight(job));return
-        commit = self.commit(job)
-        pipeline = self.pipeline(job, commit)
-        published = self.saved(job, 'PUBLISHED')
-        if not published:
-            published = self.publication(job, pipeline)
-            if published is None: return
-            self.checkpoint(job, 'PUBLISHED', published)
-        for mode in ('OFF', 'ON'):
+        if is_release(job['review']):
+            published = {'APP': job['review']['recipe_evidence']['uroad_m100']}
+        else:
+            commit = self.commit(job)
+            pipeline = self.pipeline(job, commit)
+            published = self.saved(job, 'PUBLISHED')
+            if not published:
+                published = self.publication(job, pipeline)
+                if published is None: return
+                self.checkpoint(job, 'PUBLISHED', published)
+        for mode in modes(job['review']):
             done = self.saved(job, mode+'_DONE')
             if done:
                 current = self.jobs.get(job['id'])['modes'].get(mode)
@@ -291,9 +313,9 @@ class Engine:
             self.checkpoint(job, mode+'_FINISHED', dict(build, observed_at=time.time()))
             verifying = dict(build, state='VERIFYING', message='Jenkins已成功，正在核对APP与Lockfile')
             if self.jobs.get(job['id'])['modes'].get(mode) != verifying:
-                self.jobs.update(job['id'], mode=mode, result=verifying, progress=mode+'版正在核对产物')
+                self.jobs.update(job['id'], mode=mode, result=verifying, progress=mode_name(mode)+'正在核对产物')
             output = self.artifacts(job, mode, build, published)
             self.checkpoint(job, mode+'_DONE', output)
-            self.jobs.update(job['id'], mode=mode, result=output, progress=mode+'版构建完成')
+            self.jobs.update(job['id'], mode=mode, result=output, progress=mode_name(mode)+'构建完成')
             return
-        self.jobs.update(job['id'], state='SUCCEEDED', progress='ON/OFF两版APP均已完成发包')
+        self.jobs.update(job['id'], state='SUCCEEDED', progress='Jenkins发包完成' if is_release(job['review']) else 'ON/OFF两版APP均已完成发包')

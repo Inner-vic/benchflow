@@ -17,6 +17,9 @@ MODES = ('OFF', 'ON')
 
 
 def checked(review):
+    from .pcm_release import is_release, checked as checked_release
+    if is_release(review):
+        return checked_release(review)
     if (review.get('schema') != 'pcm-bot-release/v1'
             or digest({k: v for k, v in review.items() if k != 'review_sha256'}) != review.get('review_sha256')
             or set(review.get('parameters', {})) != set(MODES)

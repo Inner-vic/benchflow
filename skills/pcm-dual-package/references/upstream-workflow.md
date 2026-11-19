@@ -1,6 +1,6 @@
 # 高鹏原 Skill 的复用边界
 
-来源：[jenkins-package-build-pcm](https://ai-market.chehejia.com/?page=skills&skill=qjz8e3xjavkhlevwymgh)，高鹏，v1.0.0。2026-10-27 已核对其可见正文与 defaults。原 Skill 是现有单包 Job 的操作流程，没有部署新流水线的步骤。
+来源：[jenkins-package-build-pcm](https://ai-market.chehejia.com/?page=skills&skill=qjz8e3xjavkhlevwymgh)，高鹏，v1.0.0。2026-10-27 已核对其可见正文与 defaults。原 Skill 是现有 Jenkins Job 的操作流程，没有部署新流水线的步骤。
 
 有原 Skill 时沿用它的当时内容，并以用户已给出的范围为准。没有安装时，以下是本包保留的操作规则；它是来源明确的流程复用，不假称工具已安装。
 
@@ -11,6 +11,6 @@
 5. 监控 SUCCESS / FAILURE / ABORTED，核实实际上传。成功返回 APP、集成锁、构建链接；失败保留精简错误和已上传状态，不自动重试。
 6. 原通知继续由 Job 按 SILENT_BUILD、NOTIFY_CHAT_ID、NOTIFY_USER 处理；不自行另发私信或群消息。
 
-本 Skill 按已确认的交付范围复用以上流程：单 APP 只提交所选基础模式的一组参数；只有明确要求双 APP 时才分别提交 OFF、ON。原 defaults 中的 SW0043、旧 manifest、SDK 0.1.86 等历史版本不适用于所有分支，当前值从本次分支和匹配成功构建解析。
+2026-11-17起，本Skill默认只复用上述 Jenkins 发包流程：一套最终参数、一次Build、一个普通APP和对应Lockfile、构建链接、原正式通知。所填uroad_m100引用用于本次普通APP，不默认派生两份OFF/ON配方或补发评测APP。原defaults中的SW0043、旧manifest、SDK 0.1.86等历史值不适用于所有分支，当前值仍从本次输入和匹配来源核验。
 
-每次真实 APP 构建分别保存原通知、标准锁和构建链接。仅发布两份 M100 配方不会增加 APP 构建次数；一份普通版 APP 加 ON/OFF 两份 SO 只提交一次 OFF 基础 APP。独立 SO 的真实编译收据与 APP 构建收据分别保存。
+后续需要的依赖替换、配套M100编译及台架材料确认由原材料流程单独处理，不作为本次Jenkins发包前置或自动后置动作。原软件准备指引保留在[历史说明](legacy-software-workflow.md)，当前默认操作见[Jenkins 发包](../../../docs/17-Jenkins发包.md)。原Bot未在本次切换，不使用其确认两版按钮代替一次Build。
